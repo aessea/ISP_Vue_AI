@@ -60,7 +60,7 @@
               </div>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-col :span="12">
               <div @click="toOutsource">
                 <el-card shadow="hover" class="btn-card">
@@ -69,7 +69,7 @@
                 </el-card>
               </div>
             </el-col>
-          </el-row>
+          </el-row> -->
         </el-card>
       </el-col>
       <el-col :span="16">
