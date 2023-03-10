@@ -51,9 +51,9 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="name" label="产线名字" width="110" sortable />
-          <el-table-column prop="min_threshold" label="最低生产阈值" width="110" />
-          <el-table-column prop="max_threshold" label="最高生产阈值" width="110" />
+          <el-table-column prop="name" label="产线名字" sortable />
+          <el-table-column prop="min_threshold" label="最低生产阈值" />
+          <el-table-column prop="max_threshold" label="最高生产阈值" />
           <!-- <el-table-column prop="is_points" label="是否按点分大中小工单" width="170" /> -->
           <!-- <el-table-column prop="big_able" label="可否大工单" width="100">
             <template slot-scope="scope">
@@ -74,7 +74,7 @@
             </template>
           </el-table-column> -->
           <!-- <el-table-column prop="offset_threshold" label="阈值偏差" width="85" /> -->
-          <el-table-column prop="T_unable" label="可否制程T" width="95">
+          <!-- <el-table-column prop="T_unable" label="可否制程T" width="95">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.T_unable === 1" size="small" type="info">×</el-tag>
               <el-tag v-else-if="scope.row.T_unable === 0" size="small" type="success">✔</el-tag>
@@ -109,19 +109,31 @@
               <el-tag v-if="scope.row.S_BPR_M_unable === 1" size="small" type="info">×</el-tag>
               <el-tag v-else-if="scope.row.S_BPR_M_unable === 0" size="small" type="success">✔</el-tag>
             </template>
-          </el-table-column>
-          <el-table-column prop="S_unable" label="可否制程S" width="95">
+          </el-table-column> -->
+          <el-table-column prop="S_unable" label="可否制程S">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.S_unable === 1" size="small" type="info">×</el-tag>
               <el-tag v-else-if="scope.row.S_unable === 0" size="small" type="success">✔</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="S_THR_unable" label="可否制程S-THR" width="130">
+          <el-table-column prop="P_S_unable" label="可否制程P-S">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.P_S_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.P_S_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="T_AD_unable" label="可否制程T-AD">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.T_AD_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.T_AD_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="S_THR_unable" label="可否制程S-THR" width="130">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.S_THR_unable === 1" size="small" type="info">×</el-tag>
               <el-tag v-else-if="scope.row.S_THR_unable === 0" size="small" type="success">✔</el-tag>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column prop="is_burn_in" label="是否烧录" width="85">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.is_burn_in === 1" size="small" type="info">×</el-tag>
@@ -241,7 +253,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.T_unable" prop="T_unable" label="可否制程T">
                 <el-input v-model="model.T_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
@@ -257,8 +269,8 @@
                 <el-input v-model="model.T_BPR_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          </el-row> -->
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.B_BPR_unable" prop="B_BPR_unable" label="可否制程B-BPR">
                 <el-input v-model="model.B_BPR_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
@@ -274,19 +286,29 @@
                 <el-input v-model="model.S_BPR_M_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.S_unable" prop="S_unable" label="可否制程S">
                 <el-input v-model="model.S_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.P_S_unable" prop="P_S_unable" label="可否制程P-S">
+                <el-input v-model="model.P_S_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.T_AD_unable" prop="T_AD_unable" label="可否制程T-AD">
+                <el-input v-model="model.T_AD_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <!-- <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.S_THR_unable" prop="S_THR_unable" label="可否制程S-THR">
                 <el-input v-model="model.S_THR_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            </el-col> -->
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_burn_in" prop="is_burn_in" label="是否烧录">
                 <el-input v-model="model.is_burn_in" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
@@ -364,14 +386,16 @@
         <el-table-column prop="min_threshold" label="最低生产阈值" width="110" />
         <el-table-column prop="max_threshold" label="最高生产阈值" width="110" />
         <el-table-column prop="offset_threshold" label="阈值偏差" width="85" />
-        <el-table-column prop="T_unable" label="可否制程T" width="95" />
+        <!-- <el-table-column prop="T_unable" label="可否制程T" width="95" />
         <el-table-column prop="B_unable" label="可否制程B" width="95" />
         <el-table-column prop="T_BPR_unable" label="可否制程T-BPR" width="125" />
         <el-table-column prop="B_BPR_unable" label="可否制程B-BPR" width="130" />
         <el-table-column prop="S_BPR_unable" label="可否制程S-BPR" width="130" />
-        <el-table-column prop="S_BPR_M_unable" label="可否制程S-BPR-M" width="145" />
+        <el-table-column prop="S_BPR_M_unable" label="可否制程S-BPR-M" width="145" /> -->
         <el-table-column prop="S_unable" label="可否制程S" width="95" />
-        <el-table-column prop="S_THR_unable" label="可否制程S-THR" width="130" />
+        <el-table-column prop="P_S_unable" label="可否制程P-S" width="95" />
+        <el-table-column prop="T_AD_unable" label="可否制程T-AD" width="95" />
+        <!-- <el-table-column prop="S_THR_unable" label="可否制程S-THR" width="130" /> -->
         <el-table-column prop="is_burn_in" label="是否烧录" width="85" />
         <el-table-column prop="capacity" label="日产能" width="80" />
       </el-table>
@@ -471,7 +495,9 @@ export default {
           S_BPR_M_unable: 1,
           S_unable: 0,
           S_THR_unable: 1,
-          is_burn_in: 0
+          is_burn_in: 0,
+          P_S_unable: 1,
+          T_AD_unable: 1
         }, {
           name: '(必填)',
           is_points: '(必填)',
@@ -493,7 +519,9 @@ export default {
           S_BPR_M_unable: '(必填)',
           S_unable: '(必填)',
           S_THR_unable: '(必填)',
-          is_burn_in: '(必填)'
+          is_burn_in: '(必填)',
+          P_S_unable: '(必填)',
+          T_AD_unable: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -536,6 +564,8 @@ export default {
         S_unable: '',
         S_THR_unable: '',
         is_burn_in: '',
+        P_S_unable: '',
+        T_AD_unable: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -565,6 +595,8 @@ export default {
         S_unable: '',
         S_THR_unable: '',
         is_burn_in: '',
+        P_S_unable: '',
+        T_AD_unable: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -631,46 +663,56 @@ export default {
           message: '阈值偏差不能为空',
           trigger: 'blur'
         }],
-        T_unable: [{
-          required: true,
-          message: '可否制程T不能为空',
-          trigger: 'blur'
-        }],
-        B_unable: [{
-          required: true,
-          message: '可否制程B不能为空',
-          trigger: 'blur'
-        }],
-        T_BPR_unable: [{
-          required: true,
-          message: '可否制程T-BPR不能为空',
-          trigger: 'blur'
-        }],
-        B_BPR_unable: [{
-          required: true,
-          message: '可否制程B-BPR不能为空',
-          trigger: 'blur'
-        }],
-        S_BPR_unable: [{
-          required: true,
-          message: '可否制程S-BPR不能为空',
-          trigger: 'blur'
-        }],
-        S_BPR_M_unable: [{
-          required: true,
-          message: '可否制程S-BPR-M不能为空',
-          trigger: 'blur'
-        }],
+        // T_unable: [{
+        //   required: true,
+        //   message: '可否制程T不能为空',
+        //   trigger: 'blur'
+        // }],
+        // B_unable: [{
+        //   required: true,
+        //   message: '可否制程B不能为空',
+        //   trigger: 'blur'
+        // }],
+        // T_BPR_unable: [{
+        //   required: true,
+        //   message: '可否制程T-BPR不能为空',
+        //   trigger: 'blur'
+        // }],
+        // B_BPR_unable: [{
+        //   required: true,
+        //   message: '可否制程B-BPR不能为空',
+        //   trigger: 'blur'
+        // }],
+        // S_BPR_unable: [{
+        //   required: true,
+        //   message: '可否制程S-BPR不能为空',
+        //   trigger: 'blur'
+        // }],
+        // S_BPR_M_unable: [{
+        //   required: true,
+        //   message: '可否制程S-BPR-M不能为空',
+        //   trigger: 'blur'
+        // }],
         S_unable: [{
           required: true,
           message: '可否制程S不能为空',
           trigger: 'blur'
         }],
-        S_THR_unable: [{
+        P_S_unable: [{
           required: true,
-          message: '可否制程S-THR不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
+        T_AD_unable: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        // S_THR_unable: [{
+        //   required: true,
+        //   message: '可否制程S-THR不能为空',
+        //   trigger: 'blur'
+        // }],
         is_burn_in: [{
           required: true,
           message: '是否烧录不能为空',
