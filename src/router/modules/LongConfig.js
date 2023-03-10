@@ -131,11 +131,29 @@ const LongConfigRouter = {
       }
     },
     {
+      path: 'correspondencedata',
+      component: () => import('@/views/LongConfig/CorrespondenceData'),
+      name: 'CorrespondenceData',
+      meta: {
+        title: 'AI点胶对应关系表',
+        roles: ['admin', 'common']
+      }
+    },
+    {
       path: 'keyboardspecialmodel',
       component: () => import('@/views/LongConfig/KeyBoardSpecialModel'),
       name: 'KeyBoardSpecialModel',
       meta: {
-        title: '小板特殊机种表',
+        title: '只烧录不打板特殊机种表',
+        roles: ['admin', 'common']
+      }
+    },
+    {
+      path: 'dispensingbeforeaimachine',
+      component: () => import('@/views/LongConfig/DispensingBeforeAIMachine'),
+      name: 'DispensingBeforeAIMachine',
+      meta: {
+        title: '先点胶后AI特殊机种表',
         roles: ['admin', 'common']
       }
     },

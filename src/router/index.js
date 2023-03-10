@@ -7,9 +7,9 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import OutsourceConstraintsRouter from './modules/OutsourceConstraints'
-import OutsourceBaseDataRouter from './modules/OutsourceBaseData'
-import OutsourceOtherDataRouter from './modules/OutsourceOtherData'
+// import OutsourceConstraintsRouter from './modules/OutsourceConstraints'
+// import OutsourceBaseDataRouter from './modules/OutsourceBaseData'
+// import OutsourceOtherDataRouter from './modules/OutsourceOtherData'
 import DayConfigRouter from './modules/DayConfig'
 import LongConfigRouter from './modules/LongConfig'
 import PredictRouter from './modules/Predict'
@@ -108,7 +108,7 @@ export const asyncRoutes = [
         component: () => import('@/views/Control/SchedulePanel'),
         name: 'SchedulePanel',
         meta: {
-          title: '主板小板排程',
+          title: 'AI点胶排程',
           roles: ['admin', 'common']
         }
       },
@@ -129,25 +129,25 @@ export const asyncRoutes = [
           title: '在线表格',
           roles: ['admin', 'common']
         }
-      },
-      {
-        path: 'outsourcecontrol',
-        component: () => import('@/views/Control/OutsourceControl'),
-        name: 'OutsourceControl',
-        meta: {
-          title: '外包控制面板',
-          roles: ['admin', 'common']
-        }
       }
+      // {
+      //   path: 'outsourcecontrol',
+      //   component: () => import('@/views/Control/OutsourceControl'),
+      //   name: 'OutsourceControl',
+      //   meta: {
+      //     title: '外包控制面板',
+      //     roles: ['admin', 'common']
+      //   }
+      // }
     ]
   },
 
   DayConfigRouter,
   LongConfigRouter,
   PredictRouter,
-  OutsourceConstraintsRouter,
-  OutsourceBaseDataRouter,
-  OutsourceOtherDataRouter,
+  // OutsourceConstraintsRouter,
+  // OutsourceBaseDataRouter,
+  // OutsourceOtherDataRouter,
 
   {
     path: '/permission',

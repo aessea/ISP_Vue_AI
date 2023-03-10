@@ -220,8 +220,8 @@
       <el-row>
         <el-col :span="24">
           <el-radio-group v-model="componentType">
-            <el-radio :label="1">SMT主板</el-radio>
-            <el-radio :label="2">SMT小板</el-radio>
+            <el-radio :label="1">SMTAI</el-radio>
+            <el-radio :label="2">SMT点胶</el-radio>
             <el-radio :label="3">AI</el-radio>
             <el-radio :label="4">SMT点胶</el-radio>
           </el-radio-group>
@@ -288,7 +288,7 @@ export default {
     return {
       progressColor: '#02bafd', // 进度条颜色
 
-      dialogVisibleImport: false, // 计算主板排程dialog
+      dialogVisibleImport: false, // 计算AI排程dialog
       importLoading: {
         text: '拼命导入中...',
         background: 'rgba(0, 0, 0, 0.5)'
@@ -459,7 +459,7 @@ export default {
     computeDialog() {
       this.dialogVisibleCompute = true
     },
-    // 关闭计算主板
+    // 关闭计算AI
     handleCloseImport() {
       this.dialogVisibleImport = false
     },
@@ -620,8 +620,8 @@ export default {
         return
       }
       const map_1 = {
-        1: 'SMT主板',
-        2: 'SMT小板',
+        1: 'SMTAI',
+        2: 'SMT点胶',
         3: 'AI',
         4: 'SMT点胶'
       }
@@ -652,7 +652,7 @@ export default {
       }
       this.loadingInstance = Loading.service(loadingMessage)
       const form = {}
-      form['component_type'] = this.componentType // ["SMT主板", "SMT小板", "AI", "SMT点胶"]
+      form['component_type'] = this.componentType // ["SMTAI", "SMT点胶", "AI", "SMT点胶"]
       form['run_mode'] = this.runMode // ["自制优先", "外包优先"]
       setTimeout(() => {
         this.handleCloseCompute()
@@ -685,7 +685,7 @@ export default {
       }
       this.listenProgress()
       const form = {}
-      form['component_type'] = this.componentType // ["SMT主板", "SMT小板", "AI", "SMT点胶"]
+      form['component_type'] = this.componentType // ["SMTAI", "SMT点胶", "AI", "SMT点胶"]
       form['run_mode'] = this.runMode // ["自制优先", "外包优先"]
       GenerateOutput(form).then(res => {
         this.clearListenProgress()

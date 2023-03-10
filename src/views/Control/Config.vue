@@ -76,19 +76,19 @@
             <el-tag v-if="modelOriginal.force_day_shift_time_rule === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.force_day_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="排xx夜班约束">
+          <el-descriptions-item label="排xx夜班约束" :span="2">
             <el-tag v-if="modelOriginal.force_night_shift_time_rule === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.force_night_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="非Gaia工单赌物料到20:00">
+          <!-- <el-descriptions-item label="非Gaia工单赌物料到20:00">
             <el-tag v-if="modelOriginal.not_gaia_release_time_eight === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.not_gaia_release_time_eight === false" size="small" type="danger">关闭</el-tag>
-          </el-descriptions-item>
+          </el-descriptions-item> -->
 
-          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}万</el-descriptions-item>
+          <!-- <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}万</el-descriptions-item>
           <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ modelOriginal.sm21_top_led_threshold }}点</el-descriptions-item>
           <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_le_predict }}万</el-descriptions-item>
-          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}万</el-descriptions-item> -->
 
           <el-descriptions-item label="是否执行分组">
             <el-tag v-if="modelOriginal.need_dispatch === true" size="small" type="success">开启</el-tag>
@@ -114,10 +114,10 @@
             <el-tag v-if="modelOriginal.deep_search === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.deep_search === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="小板线单面点数阈值(大于此值去SM12)">
+          <!-- <el-descriptions-item label="点胶线单面点数阈值(大于此值去SM12)">
             {{ modelOriginal.small_board_single_points_threshold }}
           </el-descriptions-item>
-          <el-descriptions-item label="小板线大小工单阈值">
+          <el-descriptions-item label="点胶线大小工单阈值">
             {{ modelOriginal.small_board_total_points_threshold }}
           </el-descriptions-item>
           <el-descriptions-item label="后工序为AI提前时间">
@@ -126,9 +126,9 @@
           <el-descriptions-item label="LED工单是否纳入目标函数">
             <el-tag v-if="modelOriginal.is_run_recognize_ignore_overdue_jobs === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.is_run_recognize_ignore_overdue_jobs === false" size="small" type="danger">关闭</el-tag>
-          </el-descriptions-item>
+          </el-descriptions-item> -->
 
-          <el-descriptions-item label="大工单线线体" :span="2">{{ modelOriginal.big_lines }}</el-descriptions-item>
+          <!-- <el-descriptions-item label="大工单线线体" :span="2">{{ modelOriginal.big_lines }}</el-descriptions-item>
           <el-descriptions-item label="优先排大工单线体" :span="2">{{ modelOriginal.Big_lines_remove22 }}</el-descriptions-item>
           <el-descriptions-item label="该线体工单优先排大工单线" :span="2">{{ modelOriginal.Non_big_lines }}</el-descriptions-item>
           <el-descriptions-item label="西门子线体配置" :span="2">{{ modelOriginal.ximenzi_lines }}</el-descriptions-item>
@@ -136,7 +136,7 @@
           <el-descriptions-item label="BPR线体" :span="2">{{ modelOriginal.Four_SR_lines }}</el-descriptions-item>
           <el-descriptions-item label="安必昂不能绑定线体" :span="4">{{ modelOriginal.AX_lines }}</el-descriptions-item>
 
-          <el-descriptions-item label="西门子特殊板宽宽度配置" :span="4">{{ modelOriginal.board_width }}毫米</el-descriptions-item>
+          <el-descriptions-item label="西门子特殊板宽宽度配置" :span="4">{{ modelOriginal.board_width }}毫米</el-descriptions-item> -->
 
           <el-descriptions-item label="输入的列" :span="4">{{ modelOriginal.input_col }}</el-descriptions-item>
           <el-descriptions-item label="导出的列" :span="4">{{ modelOriginal.output_col }}</el-descriptions-item>
@@ -256,7 +256,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.sm13_buttom_new_machine_predict" prop="sm13_buttom_new_machine_predict" label="SM13下板新机种每班产能点数，单位为万">
                 <el-input-number v-model="model.sm13_buttom_new_machine_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
@@ -267,9 +267,9 @@
                 <el-input-number v-model="model.sm21_top_led_threshold" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <!-- <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.sm21_top_le_predict" prop="sm21_top_le_predict" label="SM21上板小于界限产能点数，单位为万">
                 <el-input-number v-model="model.sm21_top_le_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
@@ -278,21 +278,21 @@
               <el-form-item :rules="rules.sm21_top_gt_predict" prop="sm21_top_gt_predict" label="SM21上板大于界限产能点数，单位为万">
                 <el-input-number v-model="model.sm21_top_gt_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
-            </el-col>
+            </el-col> -->
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.led_extra_setup_time" prop="led_extra_setup_time" label="LED额外切换时间">
                 <el-input-number v-model="model.led_extra_setup_time" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.small_board_single_points_threshold" prop="small_board_single_points_threshold" label="小板线单面点数阈值(大于此值去SM12)">
+              <el-form-item :rules="rules.small_board_single_points_threshold" prop="small_board_single_points_threshold" label="点胶线单面点数阈值(大于此值去SM12)">
                 <el-input-number v-model="model.small_board_single_points_threshold" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.small_board_total_points_threshold" prop="small_board_total_points_threshold" label="小板线大小工单阈值">
+              <el-form-item :rules="rules.small_board_total_points_threshold" prop="small_board_total_points_threshold" label="点胶线大小工单阈值">
                 <el-input-number v-model="model.small_board_total_points_threshold" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
@@ -301,7 +301,7 @@
                 <el-input-number v-model="model.ai_post_process" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.block_time_rule" prop="block_time_rule" label="维护时间约束">
@@ -340,11 +340,11 @@
                 <el-switch v-model="model.force_night_shift_time_rule" />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <!-- <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.not_gaia_release_time_eight" prop="not_gaia_release_time_eight" label="非Gaia工单赌物料到20:00">
                 <el-switch v-model="model.not_gaia_release_time_eight" />
               </el-form-item>
-            </el-col>
+            </el-col> -->
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
@@ -384,13 +384,13 @@
                 <el-switch v-model="model.deep_search" />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <!-- <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_run_recognize_ignore_overdue_jobs" prop="is_run_recognize_ignore_overdue_jobs" label="LED工单是否纳入目标函数">
                 <el-switch v-model="model.is_run_recognize_ignore_overdue_jobs" />
               </el-form-item>
-            </el-col>
+            </el-col> -->
           </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.big_lines" prop="big_lines" label="大工单线线体(线体用顿号隔开)">
                 <el-input v-model="model.big_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
@@ -413,8 +413,8 @@
                 <el-input v-model="model.ximenzi_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          </el-row> -->
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.cannot_binding_lines" prop="cannot_binding_lines" label="不能绑定的线体配置(线体用顿号隔开)">
                 <el-input v-model="model.cannot_binding_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
@@ -432,14 +432,14 @@
                 <el-input v-model="model.AX_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          </el-row> -->
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.board_width" prop="board_width" label="西门子特殊板宽宽度配置">
                 <el-input-number v-model="model.board_width" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.input_col" prop="input_col" label="输入的列">
@@ -718,31 +718,31 @@ export default {
           message: '排xx夜班约束不能为空',
           trigger: 'change'
         }],
-        not_gaia_release_time_eight: [{
-          required: true,
-          message: '该选项不能为空',
-          trigger: 'change'
-        }],
-        sm13_buttom_new_machine_predict: [{
-          required: true,
-          message: 'SM13下板新机种每班产能点数不能为空',
-          trigger: 'blur'
-        }],
-        sm21_top_led_threshold: [{
-          required: true,
-          message: 'SM21上板产能点数预测界限不能为空',
-          trigger: 'blur'
-        }],
-        sm21_top_le_predict: [{
-          required: true,
-          message: 'SM21上板小于界限产能点数不能为空',
-          trigger: 'blur'
-        }],
-        sm21_top_gt_predict: [{
-          required: true,
-          message: 'SM21上板大于界限产能点数不能为空',
-          trigger: 'blur'
-        }],
+        // not_gaia_release_time_eight: [{
+        //   required: true,
+        //   message: '该选项不能为空',
+        //   trigger: 'change'
+        // }],
+        // sm13_buttom_new_machine_predict: [{
+        //   required: true,
+        //   message: 'SM13下板新机种每班产能点数不能为空',
+        //   trigger: 'blur'
+        // }],
+        // sm21_top_led_threshold: [{
+        //   required: true,
+        //   message: 'SM21上板产能点数预测界限不能为空',
+        //   trigger: 'blur'
+        // }],
+        // sm21_top_le_predict: [{
+        //   required: true,
+        //   message: 'SM21上板小于界限产能点数不能为空',
+        //   trigger: 'blur'
+        // }],
+        // sm21_top_gt_predict: [{
+        //   required: true,
+        //   message: 'SM21上板大于界限产能点数不能为空',
+        //   trigger: 'blur'
+        // }],
         need_preprocess: [{
           required: true,
           message: '是否执行预处理不能为空',
@@ -778,31 +778,31 @@ export default {
           message: '开放搜索解不能为空',
           trigger: 'change'
         }],
-        small_board_single_points_threshold: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        small_board_total_points_threshold: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        ai_post_process: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        is_run_recognize_ignore_overdue_jobs: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        big_lines: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
+        // small_board_single_points_threshold: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // small_board_total_points_threshold: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // ai_post_process: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // is_run_recognize_ignore_overdue_jobs: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // big_lines: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
         // AX_lines: [{
         //   required: true,
         //   message: '该项不能为空',

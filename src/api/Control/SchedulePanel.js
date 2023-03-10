@@ -35,7 +35,7 @@ export function ImportSchedule(data) {
     data
   })
 }
-// 导入主板+小板排程表格接口
+// 导入AI+点胶排程表格接口
 export function ImportScheduleBoth(data) {
   return request({
     url: '/Control/SchedulePanel/import_schedule_both/',
@@ -140,7 +140,7 @@ export function DownloadNoProgram() {
     responseType: 'blob'
   })
 }
-// 下载主板idle明细
+// 下载AIidle明细
 export function DownloadIdleInfoMain() {
   return request({
     method: 'get',
@@ -148,7 +148,7 @@ export function DownloadIdleInfoMain() {
     responseType: 'blob'
   })
 }
-// 下载主板量化结果
+// 下载AI量化结果
 export function DownloadStatisticsMain() {
   return request({
     method: 'get',
@@ -156,7 +156,7 @@ export function DownloadStatisticsMain() {
     responseType: 'blob'
   })
 }
-// 下载小板idle明细
+// 下载点胶idle明细
 export function DownloadIdleInfoSmall() {
   return request({
     method: 'get',
@@ -164,7 +164,7 @@ export function DownloadIdleInfoSmall() {
     responseType: 'blob'
   })
 }
-// 下载小板量化结果
+// 下载点胶量化结果
 export function DownloadStatisticsSmall() {
   return request({
     method: 'get',
@@ -239,7 +239,7 @@ export function GetApsDeliveryDay(data) {
     data
   })
 }
-// 导出主板接口
+// 导出AI接口
 export function ExportMainScheduleData(data) {
   return request({
     method: 'get',
@@ -247,7 +247,7 @@ export function ExportMainScheduleData(data) {
     responseType: 'blob'
   })
 }
-// 导出小板接口
+// 导出点胶接口
 export function ExportSmallScheduleData(data) {
   return request({
     method: 'get',
@@ -263,14 +263,14 @@ export function DownloadScheduleSmall() {
     responseType: 'blob'
   })
 }
-// 下载主板上传排程
+// 下载AI上传排程
 export function DownloadUploadFileMain() {
   return request({
     method: 'get',
     url: '/Control/SchedulePanel/download_uploadfile_main/'
   })
 }
-// 下载小板上传排程
+// 下载点胶上传排程
 export function DownloadUploadFileSmall() {
   return request({
     method: 'get',

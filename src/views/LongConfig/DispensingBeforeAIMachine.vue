@@ -51,7 +51,7 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="SMT_machine_name" label="SMT机种名" sortable />
+          <el-table-column prop="machine_name" label="机种名" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -92,8 +92,8 @@
       @dragDialog="handleDrag"
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
-        <el-form-item :rules="rules.SMT_machine_name" prop="SMT_machine_name" label="SMT机种名">
-          <el-input v-model="model.SMT_machine_name" placeholder="请输入" clearable />
+        <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
+          <el-input v-model="model.machine_name" placeholder="请输入" clearable />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -133,7 +133,7 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="SMT_machine_name" label="SMT机种名" />
+        <el-table-column prop="machine_name" label="机种名" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -195,10 +195,10 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/KeyBoardSpecialModel'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/DispensingBeforeAIMachine'
 import { LineOptions } from '@/utils/items'
 export default {
-  name: 'KeyBoardSpecialModel',
+  name: 'DispensingBeforeAIMachine',
   directives: { elDragDialog },
   data() {
     return {
@@ -211,9 +211,9 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          SMT_machine_name: 'MLPD1XLA443AEZSMT'
+          machine_name: 'MLPD1XLA443AEZSMT'
         }, {
-          SMT_machine_name: '(必填)'
+          machine_name: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -235,15 +235,15 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        SMT_machine_name: ''
+        machine_name: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        SMT_machine_name: ''
+        machine_name: ''
       },
       rules: {
-        SMT_machine_name: [{
+        machine_name: [{
           required: true,
           message: '机种名不能为空',
           trigger: 'blur'
@@ -483,7 +483,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['SMT_machine_name'] = row.SMT_machine_name
+        data['machine_name'] = row.machine_name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -613,7 +613,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/LongConfig/KeyBoardSpecialModel.scss';
+  @import '../../assets/css/LongConfig/DispensingBeforeAIMachine.scss';
 </style>
 <style>
 .btnDanger{

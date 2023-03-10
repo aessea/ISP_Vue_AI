@@ -154,19 +154,19 @@
                   <el-col :span="8">
                     <el-button type="primary" plain @click="computeDialogMain">
                       <i class="el-icon-monitor" />
-                      计算主板排程
+                      计算AI排程
                     </el-button>
                   </el-col>
                   <el-col :span="8">
                     <el-button type="primary" plain @click="computeDialogSmall">
                       <i class="el-icon-monitor" />
-                      计算小板排程
+                      计算点胶排程
                     </el-button>
                   </el-col>
                   <el-col :span="8">
                     <el-button type="primary" plain @click="computeDialogBoth">
                       <i class="el-icon-monitor" />
-                      计算主板小板
+                      计算AI点胶
                     </el-button>
                   </el-col>
                 </el-row>
@@ -198,16 +198,16 @@
       <el-col :span="8">
         <el-card style="margin-right: 16px;height: 400px;">
           <el-tabs v-model="activeName" type="card">
-            <el-tab-pane label="主板下载" name="main">
+            <el-tab-pane label="AI下载" name="main">
               <el-row>
                 <el-col :span="24">
                   <el-alert
-                    title="主板下载历史数据"
+                    title="AI下载历史数据"
                     type="info"
                     :closable="false"
                   />
                   <div class="box-button">
-                    <el-select v-model="selectExcelValue" placeholder="选择主板历史排程">
+                    <el-select v-model="selectExcelValue" placeholder="选择AI历史排程">
                       <el-option
                         v-for="item in options_history_excel"
                         :key="item.value"
@@ -221,7 +221,7 @@
                     </el-button>
                   </div>
                   <el-alert
-                    title="主板下载最新数据"
+                    title="AI下载最新数据"
                     type="info"
                     :closable="false"
                   />
@@ -230,7 +230,7 @@
                       <el-col :span="8">
                         <el-button type="primary" plain @click="downloadSchedule">
                           <i class="el-icon-download" />
-                          下载主板排程
+                          下载AI排程
                         </el-button>
                       </el-col>
                       <el-col :span="8">
@@ -260,16 +260,16 @@
                 </el-col>
               </el-row>
             </el-tab-pane>
-            <el-tab-pane label="小板下载" name="small">
+            <el-tab-pane label="点胶下载" name="small">
               <el-row>
                 <el-col :span="24">
                   <el-alert
-                    title="小板下载历史数据"
+                    title="点胶下载历史数据"
                     type="info"
                     :closable="false"
                   />
                   <div class="box-button">
-                    <el-select v-model="selectExcelValue" placeholder="选择小板历史排程">
+                    <el-select v-model="selectExcelValue" placeholder="选择点胶历史排程">
                       <el-option
                         v-for="item in options_history_excel"
                         :key="item.value"
@@ -283,7 +283,7 @@
                     </el-button>
                   </div>
                   <el-alert
-                    title="小板下载最新数据"
+                    title="点胶下载最新数据"
                     type="info"
                     :closable="false"
                   />
@@ -292,7 +292,7 @@
                       <el-col :span="8">
                         <el-button type="primary" plain @click="downloadScheduleSmall">
                           <i class="el-icon-download" />
-                          下载小板排程
+                          下载点胶排程
                         </el-button>
                       </el-col>
                       <el-col :span="8">
@@ -364,7 +364,7 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="计算主板和小板排程"
+      title="计算AI和点胶排程"
       :visible.sync="computeBothDialogVisible"
       width="60%"
       :close-on-click-modal="false"
@@ -379,7 +379,7 @@
       </el-steps>
       <el-row style="margin-top:10px;">
         <el-col :span="6">
-          <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
+          <el-input placeholder="请上传AI排程文件" :value="uploadFileNameMain" />
         </el-col>
         <el-col :span="4">
           <el-upload
@@ -394,7 +394,7 @@
             style="margin-left: 10px;"
           >
             <el-button slot="trigger" type="primary">
-              上传主板排程
+              上传AI排程
             </el-button>
           </el-upload>
         </el-col>
@@ -406,7 +406,7 @@
           </el-tooltip>
         </el-col> -->
         <el-col :span="6">
-          <el-input style="margin-left: 10px;" placeholder="请上传小板排程文件" :value="uploadFileNameSmall" />
+          <el-input style="margin-left: 10px;" placeholder="请上传点胶排程文件" :value="uploadFileNameSmall" />
         </el-col>
         <el-col :span="4">
           <el-upload
@@ -421,7 +421,7 @@
             style="margin-left: 20px;"
           >
             <el-button slot="trigger" type="primary">
-              上传小板排程
+              上传点胶排程
             </el-button>
           </el-upload>
         </el-col>
@@ -433,19 +433,19 @@
       </el-row>
       <el-row style="margin-top: 10px;">
         <el-button @click="exportScheduleDataMain">
-          导出主板
+          导出AI
         </el-button>
         <el-button @click="exportScheduleDataSmall">
-          导出小板
+          导出点胶
         </el-button>
         <el-tooltip class="item" effect="dark" :content="mainUploadName" placement="top">
           <el-button style="margin-left: 10px;" @click="getUploadFileMain">
-            获取主板上传文件
+            获取AI上传文件
           </el-button>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" :content="smallUploadName" placement="top">
           <el-button style="margin-left: 10px;" @click="getUploadFileSmall">
-            获取小板上传文件
+            获取点胶上传文件
           </el-button>
         </el-tooltip>
       </el-row>
@@ -507,7 +507,7 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="计算主板排程"
+      title="计算AI排程"
       :visible.sync="computeMainDialogVisible"
       width="50%"
       :close-on-click-modal="false"
@@ -522,7 +522,7 @@
       </el-steps>
       <el-row style="margin-top:10px;">
         <el-col :span="8">
-          <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
+          <el-input placeholder="请上传AI排程文件" :value="uploadFileNameMain" />
         </el-col>
         <el-col :span="16">
           <el-upload
@@ -537,13 +537,13 @@
             style="margin-left: 10px;"
           >
             <el-button slot="trigger" type="primary">
-              上传主板排程
+              上传AI排程
             </el-button>
             <el-button type="success" style="margin-left:10px;" @click="beforeImportMain">
               导入排程
             </el-button>
             <el-button @click="exportScheduleDataMain">
-              导出主板
+              导出AI
             </el-button>
           </el-upload>
         </el-col>
@@ -601,7 +601,7 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="计算小板排程"
+      title="计算点胶排程"
       :visible.sync="computeSmallDialogVisible"
       width="50%"
       :close-on-click-modal="false"
@@ -616,7 +616,7 @@
       </el-steps>
       <el-row style="margin-top:10px;">
         <el-col :span="8">
-          <el-input placeholder="请上传小板排程文件" :value="uploadFileNameSmall" />
+          <el-input placeholder="请上传点胶排程文件" :value="uploadFileNameSmall" />
         </el-col>
         <el-col :span="16">
           <el-upload
@@ -631,13 +631,13 @@
             style="margin-left: 10px;"
           >
             <el-button slot="trigger" type="primary">
-              上传小板排程
+              上传点胶排程
             </el-button>
             <el-button type="success" style="margin-left:10px;" @click="beforeImportSmall">
               导入排程
             </el-button>
             <el-button @click="exportScheduleDataSmall">
-              导出小板
+              导出点胶
             </el-button>
           </el-upload>
         </el-col>
@@ -729,21 +729,21 @@ export default {
     return {
       progressColor: '#02bafd', // 进度条颜色
 
-      computeMainDialogVisible: false, // 计算主板排程dialog
-      computeSmallDialogVisible: false, // 计算小板排程dialog
-      computeBothDialogVisible: false, // 计算主板+小板排程dialog
+      computeMainDialogVisible: false, // 计算AI排程dialog
+      computeSmallDialogVisible: false, // 计算点胶排程dialog
+      computeBothDialogVisible: false, // 计算AI+点胶排程dialog
 
-      stepNowMain: 0, // 计算主板排程
-      stepNowSmall: 0, // 计算主板排程
-      stepNowBoth: 0, // 计算主板+小板排程
+      stepNowMain: 0, // 计算AI排程
+      stepNowSmall: 0, // 计算AI排程
+      stepNowBoth: 0, // 计算AI+点胶排程
 
-      uploadFileListMain: [], // 主板上传的文件列表
-      uploadFileMain: null, // 主板上传的文件
-      uploadFileNameMain: '', // 主板文件名
+      uploadFileListMain: [], // AI上传的文件列表
+      uploadFileMain: null, // AI上传的文件
+      uploadFileNameMain: '', // AI文件名
 
-      uploadFileListSmall: [], // 小板上传的文件列表
-      uploadFileSmall: null, // 小板上传的文件
-      uploadFileNameSmall: '', // 小板文件名
+      uploadFileListSmall: [], // 点胶上传的文件列表
+      uploadFileSmall: null, // 点胶上传的文件
+      uploadFileNameSmall: '', // 点胶文件名
 
       checkLoading: {
         text: '拼命检查中...',
@@ -761,8 +761,8 @@ export default {
       options_history_excel: [], // 历史排程列表
       selectExcelValue: '', // 当前选中的要下载的历史日志
       isImportMain: false, // 是否上传文件
-      isImportMainSmall: false, // 是否上传小板
-      isImportBoth: false, // 是否上传主板小板
+      isImportMainSmall: false, // 是否上传点胶
+      isImportBoth: false, // 是否上传AI点胶
       // 进度条相关
       percentage_1: 0,
       percentage_2: 0,
@@ -795,8 +795,8 @@ export default {
       trainDateTip: '', // 训练日期提示
 
       activeName: 'main',
-      mainUploadName: '获取主板上传文件',
-      smallUploadName: '获取小板上传文件',
+      mainUploadName: '获取AI上传文件',
+      smallUploadName: '获取点胶上传文件',
 
       saveApsOutPutCountTip: '未推送',
 
@@ -918,35 +918,35 @@ export default {
         }
       })
     },
-    // 计算主板排程
+    // 计算AI排程
     computeDialogMain() {
       this.computeMainDialogVisible = true
     },
-    // 计算小板排程
+    // 计算点胶排程
     computeDialogSmall() {
       this.computeSmallDialogVisible = true
     },
-    // 计算主板+小板
+    // 计算AI+点胶
     computeDialogBoth() {
       this.computeBothDialogVisible = true
       this.getUploadFileTime()
     },
-    // 关闭计算主板
+    // 关闭计算AI
     handleCloseMain() {
       this.clickComputeCount = 0
       this.computeMainDialogVisible = false
     },
-    // 关闭计算小板
+    // 关闭计算点胶
     handleCloseSmall() {
       this.clickComputeCount = 0
       this.computeSmallDialogVisible = false
     },
-    // 关闭计算主板+小板
+    // 关闭计算AI+点胶
     handleCloseBoth() {
       this.clickComputeCount = 0
       this.computeBothDialogVisible = false
     },
-    // 主板文件上传钩子
+    // AI文件上传钩子
     handleChangeMain(file, fileList) {
       const fileName = file.name
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
@@ -958,8 +958,8 @@ export default {
         })
         return
       }
-      if (!fileName.includes('主板')) {
-        const tip = '上传的文件名未指明是主板排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含主板，例如：0901主板预排）'
+      if (!fileName.includes('AI')) {
+        const tip = '上传的文件名未指明是AI排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含AI，例如：0901AI预排）'
         this.$alert(tip, '错误', {
           confirmButtonText: '确定',
           dangerouslyUseHTMLString: true,
@@ -976,7 +976,7 @@ export default {
         this.checkDataBackend(this.uploadFileMain, this.uploadFileNameMain)
       }
     },
-    // 小板文件上传钩子
+    // 点胶文件上传钩子
     handleChangeSmall(file, fileList) {
       const fileName = file.name
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
@@ -988,8 +988,8 @@ export default {
         })
         return
       }
-      if (!fileName.includes('小板')) {
-        const tip = '上传的文件名未指明是小板排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含小板，例如：0901小板预排）'
+      if (!fileName.includes('点胶')) {
+        const tip = '上传的文件名未指明是点胶排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含点胶，例如：0901点胶预排）'
         this.$alert(tip, '错误', {
           confirmButtonText: '确定',
           dangerouslyUseHTMLString: true,
@@ -1078,7 +1078,7 @@ export default {
         })
       })
     },
-    // 获取主板上传的文件
+    // 获取AI上传的文件
     getUploadFileMain() {
       DownloadUploadFileMain().then(res => {
         this.uploadFileNameMain = res.file_name
@@ -1094,7 +1094,7 @@ export default {
         })
       })
     },
-    // 获取小板上传的文件
+    // 获取点胶上传的文件
     getUploadFileSmall() {
       DownloadUploadFileSmall().then(res => {
         this.uploadFileNameSmall = res.file_name
@@ -1114,8 +1114,8 @@ export default {
     getUploadFileTime() {
       GetUploadFileTime().then(res => {
         if (res.code === 20000) {
-          this.mainUploadName = '获取主板上传文件' + res.main_time
-          this.smallUploadName = '获取小板上传文件' + res.small_time
+          this.mainUploadName = '获取AI上传文件' + res.main_time
+          this.smallUploadName = '获取点胶上传文件' + res.small_time
         }
       })
     },
@@ -1177,7 +1177,7 @@ export default {
       this.stepNowMain = 3
       this.stepNowSmall = 3
     },
-    // 导入主板前判断是否在跑排程
+    // 导入AI前判断是否在跑排程
     beforeImportMain() {
       if (this.uploadFileNameMain === '') {
         this.$message({
@@ -1214,7 +1214,7 @@ export default {
         }
       })
     },
-    // 计算主板前判断是否在跑排程
+    // 计算AI前判断是否在跑排程
     beforeComputeMain() {
       if (this.isImportMain === false) {
         this.$message({
@@ -1265,7 +1265,7 @@ export default {
       this.schedule_time = res.date
       this.trainDateTip = '当前模型日期：' + res.train_date
     },
-    // 开始计算主板排程
+    // 开始计算AI排程
     computeScheduleMain() {
       this.clickComputeCount = 1
       this.listenProgress()
@@ -1296,7 +1296,7 @@ export default {
         }
       })
     },
-    // 导入小板前判断是否在跑排程
+    // 导入点胶前判断是否在跑排程
     beforeImportSmall() {
       if (this.uploadFileNameSmall === '') {
         this.$message({
@@ -1333,7 +1333,7 @@ export default {
         }
       })
     },
-    // 计算小板前判断是否在跑排程
+    // 计算点胶前判断是否在跑排程
     beforeComputeSmall() {
       if (this.isImportSmall === false) {
         this.$message({
@@ -1377,7 +1377,7 @@ export default {
         }
       })
     },
-    // 开始计算小板排程
+    // 开始计算点胶排程
     computeScheduleSmall() {
       this.clickComputeCount = 1
       this.listenProgress()
@@ -1446,7 +1446,7 @@ export default {
       if (this.uploadFileNameMain === '' || this.uploadFileNameSmall === '') {
         this.$message({
           type: 'warning',
-          message: '主板和小板的排程文件未全部上传，无法导入'
+          message: 'AI和点胶的排程文件未全部上传，无法导入'
         })
         return
       }
@@ -2020,7 +2020,7 @@ export default {
       URL.revokeObjectURL(link.href) // 释放URL对象
       document.body.removeChild(link)
     },
-    // 导出主板
+    // 导出AI
     exportScheduleDataMain() {
       if (!this.isImportMain && !this.isImportBoth) {
         this.$message({
@@ -2043,7 +2043,7 @@ export default {
         })
       })
     },
-    // 导出小板
+    // 导出点胶
     exportScheduleDataSmall() {
       if (!this.isImportSmall && !this.isImportBoth) {
         this.$message({
@@ -2066,7 +2066,7 @@ export default {
         })
       })
     },
-    // 下载主板最新排程
+    // 下载AI最新排程
     downloadSchedule() {
       DownloadSchedule().then(res => {
         this.downloadFile(res)
@@ -2202,7 +2202,7 @@ export default {
         })
       })
     },
-    // 下载小板最新排程
+    // 下载点胶最新排程
     downloadScheduleSmall() {
       DownloadScheduleSmall().then(res => {
         this.downloadFile(res)
@@ -2218,7 +2218,7 @@ export default {
         })
       })
     },
-    // 下载小板idle明细
+    // 下载点胶idle明细
     downloadIdleInfoSmall() {
       DownloadIdleInfoSmall().then(res => {
         this.downloadFile(res)
@@ -2234,7 +2234,7 @@ export default {
         })
       })
     },
-    // 下载小板量化结果
+    // 下载点胶量化结果
     downloadStatisticsSmall() {
       DownloadStatisticsSmall().then(res => {
         this.downloadFile(res)
@@ -2250,7 +2250,7 @@ export default {
         })
       })
     },
-    // 下载小板无程序表
+    // 下载点胶无程序表
     downloadNoProgramSmall() {
       DownloadNoProgram().then(res => {
         this.downloadFile(res)

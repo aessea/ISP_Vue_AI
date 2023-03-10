@@ -51,7 +51,8 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="SMT_machine_name" label="SMT机种名" sortable />
+          <el-table-column prop="AI_name" label="AI线体" sortable />
+          <el-table-column prop="DJ_name" label="点胶线体" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -92,9 +93,18 @@
       @dragDialog="handleDrag"
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
-        <el-form-item :rules="rules.SMT_machine_name" prop="SMT_machine_name" label="SMT机种名">
-          <el-input v-model="model.SMT_machine_name" placeholder="请输入" clearable />
-        </el-form-item>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.AI_name" prop="AI_name" label="AI线体">
+              <el-input v-model="model.AI_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.DJ_name" prop="DJ_name" label="点胶线体">
+              <el-input v-model="model.DJ_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
@@ -133,7 +143,8 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="SMT_machine_name" label="SMT机种名" />
+        <el-table-column prop="AI_name" label="AI线体" />
+        <el-table-column prop="DJ_name" label="点胶线体" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -195,10 +206,10 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/KeyBoardSpecialModel'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/CorrespondenceData'
 import { LineOptions } from '@/utils/items'
 export default {
-  name: 'KeyBoardSpecialModel',
+  name: 'CorrespondenceData',
   directives: { elDragDialog },
   data() {
     return {
@@ -211,9 +222,11 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          SMT_machine_name: 'MLPD1XLA443AEZSMT'
+          AI_name: '',
+          DJ_name: ''
         }, {
-          SMT_machine_name: '(必填)'
+          AI_name: '(必填)',
+          DJ_name: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -235,17 +248,24 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        SMT_machine_name: ''
+        AI_name: '',
+        DJ_name: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        SMT_machine_name: ''
+        AI_name: '',
+        DJ_name: ''
       },
       rules: {
-        SMT_machine_name: [{
+        AI_name: [{
           required: true,
-          message: '机种名不能为空',
+          message: 'AI线体不能为空',
+          trigger: 'blur'
+        }],
+        DJ_name: [{
+          required: true,
+          message: '点胶线体不能为空',
           trigger: 'blur'
         }]
       },
@@ -483,7 +503,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['SMT_machine_name'] = row.SMT_machine_name
+        data['AI_name'] = row.AI_name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -613,7 +633,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/LongConfig/KeyBoardSpecialModel.scss';
+  @import '../../assets/css/LongConfig/CorrespondenceData.scss';
 </style>
 <style>
 .btnDanger{
