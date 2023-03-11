@@ -94,15 +94,15 @@ const LongConfigRouter = {
         roles: ['admin', 'common']
       }
     },
-    {
-      path: 'keyBoardlinedata',
-      component: () => import('@/views/LongConfig/KeyBoardLineData'),
-      name: 'KeyBoardLineData',
-      meta: {
-        title: '按键板表',
-        roles: ['admin', 'common']
-      }
-    },
+    // {
+    //   path: 'keyBoardlinedata',
+    //   component: () => import('@/views/LongConfig/KeyBoardLineData'),
+    //   name: 'KeyBoardLineData',
+    //   meta: {
+    //     title: '按键板表',
+    //     roles: ['admin', 'common']
+    //   }
+    // },
     {
       path: 'earlyduedateboard8',
       component: () => import('@/views/LongConfig/EarlyDueDateBoard8'),

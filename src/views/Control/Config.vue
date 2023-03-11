@@ -114,6 +114,9 @@
             <el-tag v-if="modelOriginal.deep_search === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.deep_search === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
+
+          <el-descriptions-item label="无程序机种锁定时间节点距离正常锁定时间节点时长(单位：小时)" :span="2">{{ modelOriginal.no_program_machine_to_lock_time }}</el-descriptions-item>
+          <el-descriptions-item label="AI去向列识别内容" :span="2">{{ modelOriginal.go_where_remark_info }}</el-descriptions-item>
           <!-- <el-descriptions-item label="点胶线单面点数阈值(大于此值去SM12)">
             {{ modelOriginal.small_board_single_points_threshold }}
           </el-descriptions-item>
@@ -282,6 +285,16 @@
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.led_extra_setup_time" prop="led_extra_setup_time" label="LED额外切换时间">
                 <el-input-number v-model="model.led_extra_setup_time" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.go_where_remark_info" prop="go_where_remark_info" label="AI去向列识别内容">
+                <el-input v-model="model.go_where_remark_info" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.no_program_machine_to_lock_time" prop="no_program_machine_to_lock_time" label="无程序机种锁定时间节点距离正常锁定时间节点时长(单位：小时)">
+                <el-input v-model="model.no_program_machine_to_lock_time" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -536,6 +549,8 @@ export default {
         input_col: '',
         output_col: '',
         output_line_order: '',
+        no_program_machine_to_lock_time: '',
+        go_where_remark_info: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -593,6 +608,8 @@ export default {
         input_col: '',
         output_col: '',
         output_line_order: '',
+        no_program_machine_to_lock_time: '',
+        go_where_remark_info: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -776,6 +793,16 @@ export default {
         deep_search: [{
           required: true,
           message: '开放搜索解不能为空',
+          trigger: 'change'
+        }],
+        no_program_machine_to_lock_time: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'change'
+        }],
+        go_where_remark_info: [{
+          required: true,
+          message: '不能为空',
           trigger: 'change'
         }],
         // small_board_single_points_threshold: [{
