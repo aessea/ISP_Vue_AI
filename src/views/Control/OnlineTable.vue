@@ -348,17 +348,17 @@
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="smtUnscheduledTip" placement="top">
             <el-button type="apiBtn" @click="post_unscheduled">
-              推送SMT未排
+              推送点胶未排
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="smtPrescheduledTip" placement="top">
             <el-button type="apiBtn" @click="post_pre_scheduled">
-              推送SMT预排
+              推送点胶预排
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="smtScheduledTip" placement="top">
             <el-button type="apiBtn" @click="post_scheduled">
-              推送SMT正排
+              推送点胶正排
             </el-button>
           </el-tooltip>
         </el-col>
@@ -372,17 +372,17 @@
       <el-row style="text-align: center;">
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="aiUnscheduledTip" placement="top">
-            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_unscheduled">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" @click="post_ai_unscheduled">
               推送AI未排
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="aitPrescheduledTip" placement="top">
-            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_pre_scheduled">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" @click="post_ai_pre_scheduled">
               推送AI预排
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="aitScheduledTip" placement="top">
-            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_scheduled">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" @click="post_ai_scheduled">
               推送AI正排
             </el-button>
           </el-tooltip>
