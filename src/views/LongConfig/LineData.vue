@@ -417,7 +417,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
                 <el-input v-model="model.CREATED_BY" disabled />
@@ -438,7 +438,7 @@
                 <el-input v-model="model.UPDATED_TIME" disabled />
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
         </el-form>
       </el-card>
       <span slot="footer" class="dialog-footer">
@@ -676,13 +676,10 @@ export default {
         onehot_code: '',
         is_burn_in: '',
         enable: false,
-        is_AX_line: false,
+        is_AX_line: false
         // P_S_unable: '',
         // B_AD_unable: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
@@ -715,13 +712,9 @@ export default {
         // S_BPR_M_unable: '',
         // S_unable: '',
         // S_THR_unable: '',
-        is_burn_in: '',
+        is_burn_in: ''
         // P_S_unable: '',
         // B_AD_unable: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
       },
       rules: {
         name: [{
