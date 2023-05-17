@@ -143,7 +143,7 @@
 
           <el-descriptions-item label="输入的列" :span="4">{{ modelOriginal.input_col }}</el-descriptions-item>
           <el-descriptions-item label="导出的列" :span="4">{{ modelOriginal.output_col }}</el-descriptions-item>
-          <el-descriptions-item label="导出线体顺序" :span="4">{{ modelOriginal.output_line_order }}</el-descriptions-item>
+          <!-- <el-descriptions-item label="导出线体顺序" :span="4">{{ modelOriginal.output_line_order }}</el-descriptions-item> -->
 
           <el-descriptions-item label="创建人">{{ modelOriginal.CREATED_BY }}</el-descriptions-item>
           <el-descriptions-item label="创建时间">{{ modelOriginal.CREATED_TIME }}</el-descriptions-item>

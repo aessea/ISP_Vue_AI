@@ -27,6 +27,18 @@ const PermissionOptions = [
 const lineOptions = [
   'V1', 'V2', 'V3', 'V4', 'V6'
 ]
+
+const lineTypeOptions = [
+  { label: 'AI线', value: 1 },
+  { label: '点胶线', value: 2 }
+]
+
+const lineSizeTypeOptions = [
+  { label: '小工单线', value: 1 },
+  { label: '中工单线', value: 2 },
+  { label: '大工单线', value: 3 }
+]
+
 const lockedList = ['锁定', '新增锁定', '新上锁定', '插入锁定']
 const unLockedList = ['未锁定', '新上排程', '未上排程']
-export { LineOptions, ProcessOptions, PermissionOptions, lineOptions, lockedList, unLockedList }
+export { LineOptions, ProcessOptions, PermissionOptions, lineOptions, lockedList, unLockedList, lineTypeOptions, lineSizeTypeOptions }

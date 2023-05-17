@@ -10,9 +10,9 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <!-- <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
-            </el-button>
+            </el-button> -->
             <el-button @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
@@ -52,6 +52,12 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="name" label="制程" width="90" sortable />
+          <el-table-column prop="enable" label="是否启用该制程" width="130">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.enable === true" size="small" type="success">启用</el-tag>
+              <el-tag v-else size="small" type="danger">关闭</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column prop="TB" label="面" width="50" />
           <el-table-column prop="paired_process" label="配对制程名" width="100" />
           <el-table-column prop="grouping_factor_day" label="第一块和第二块工单划分参数(天)" width="240" />
@@ -70,7 +76,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="buffer_time" label="上下板间隔时间" width="130" />
-          <el-table-column prop="is_point" label="是否按点数" width="110">
+          <el-table-column prop="is_point" label="是否按点数">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.is_point === true" size="small" type="success">是</el-tag>
               <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">否</el-tag>
@@ -118,19 +124,24 @@
       <el-card class="card-form" shadow="never">
         <el-form ref="$form" :model="model" label-position="left" size="small">
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.name" prop="name" label="制程">
                 <el-input v-model="model.name" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.enable" prop="enable" label="是否启用该制程">
+                <el-switch v-model="model.enable" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.TB" prop="TB" label="面">
                 <el-select v-model="model.TB" placeholder="Top面/Button面/Single面" :style="{width: '100%'}">
                   <el-option v-for="(item) in TBOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.paired_process" prop="paired_process" label="配对制程名">
                 <el-input v-model="model.paired_process" placeholder="对应的另一面，如果是单面则为空" clearable />
               </el-form-item>
@@ -352,7 +363,9 @@ export default {
         grouping_combination_flag: '',
         first_second_combination_flag: '',
         is_point: '',
-        buffer_time: 0
+        buffer_time: 0,
+        onehot_code: '',
+        enable: false
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
@@ -366,7 +379,9 @@ export default {
         grouping_combination_flag: '',
         first_second_combination_flag: '',
         is_point: '',
-        buffer_time: 0
+        buffer_time: 0,
+        onehot_code: '',
+        enable: false
       },
       rules: {
         name: [{
@@ -414,6 +429,11 @@ export default {
         buffer_time: [{
           required: true,
           message: '上下板间隔时间不能为空',
+          trigger: 'blur'
+        }],
+        enable: [{
+          required: true,
+          message: '不能为空',
           trigger: 'blur'
         }]
       },
