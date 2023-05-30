@@ -358,11 +358,32 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-card class="card-gantt">
-      <div slot="header" class="clearfix">
-        <span>甘特图</span>
-      </div>
-    </el-card>
+    <el-row>
+      <el-col :span="12">
+        <el-card class="card-config">
+          <div slot="header" class="clearfix">
+            <span>配置</span>
+          </div>
+          <el-date-picker
+            v-model="pack_holiday_day_list"
+            type="dates"
+            placeholder="选择一个或多个包装放假日期"
+            :style="{width: '70%'}"
+            value-format="yyyy-MM-dd"
+          />
+          <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="modifyHoliday">
+            修改包装放假
+          </el-button>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card class="card-gantt">
+          <div slot="header" class="clearfix">
+            <span>甘特图</span>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <el-dialog
       v-el-drag-dialog
@@ -721,7 +742,7 @@ import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadS
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfoMain, GetRunFlag, StopTabu,
   GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportMainScheduleData, GetApsProgram, DownloadStatisticsMain,
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
-  GetApsMoBaseData, GetApsMoProgData, DownloadUploadFileMain, DownloadUploadFileSmall,
+  GetApsMoBaseData, GetApsMoProgData, DownloadUploadFileMain, DownloadUploadFileSmall, ModifyHoliday,
   GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount,
   DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckDataNew } from '@/api/Control/SchedulePanel'
 export default {
@@ -802,7 +823,8 @@ export default {
 
       saveApsOutPutCountTip: '未推送',
 
-      clickComputeCount: 0 // 点击计算排程的次数
+      clickComputeCount: 0, // 点击计算排程的次数
+      pack_holiday_day_list: []
     }
   },
   computed: {
@@ -879,6 +901,7 @@ export default {
           this.schedule_mode = res.mode
           this.schedule_time = res.date
           this.trainDateTip = '当前模型日期：' + res.train_date
+          this.pack_holiday_day_list = res.pack_holiday_day_list
         }
       })
     },
@@ -2309,6 +2332,30 @@ export default {
         this.$message({
           type: 'info',
           message: '取消推送'
+        })
+      })
+    },
+    modifyHoliday() {
+      this.$confirm('确定要修改放假日期？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const data = {}
+        data['pack_holiday_day_list'] = this.pack_holiday_day_list
+        data['user_name'] = this.name
+        ModifyHoliday(data).then(res => {
+          if (res.code === 20000) {
+            this.$message({
+              message: res.message,
+              type: res.message_type
+            })
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
         })
       })
     }

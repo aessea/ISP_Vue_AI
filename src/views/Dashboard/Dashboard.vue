@@ -150,7 +150,7 @@ export default {
       this.$router.push({ path: 'historylog/historyopera' })
     },
     toConfig() {
-      this.$router.push({ path: 'Control/config' })
+      this.$router.push({ path: 'Control/paramsconfig' })
     },
     toBlockTimeData() {
       this.$router.push({ path: 'dayconfig/blocktimedata' })

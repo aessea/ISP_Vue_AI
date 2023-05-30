@@ -84,10 +84,16 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="is_AX_line" label="是否安必昂不能绑定线体" width="160">
+          <el-table-column prop="is_AX_line" label="是否点胶安必昂不能绑定线体" width="160">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.is_AX_line === true" size="small" type="success">是</el-tag>
               <el-tag v-else-if="scope.row.is_AX_line === false" size="small" type="info">否</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="is_CM_line" label="是否为点胶松下线体" width="160">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_CM_line === true" size="small" type="success">是</el-tag>
+              <el-tag v-else-if="scope.row.is_CM_line === false" size="small" type="info">否</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="min_threshold" label="最低生产阈值" />
@@ -250,7 +256,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line_size_type" prop="line_size_type" label="大/中/小">
+              <el-form-item :rules="rules.line_size_type" prop="line_size_type" label="线体类别">
                 <el-select v-model="model.line_size_type" placeholder="请选择">
                   <el-option
                     v-for="item in lineSizeTypeOptions"
@@ -272,19 +278,24 @@
             </el-form-item>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_points" prop="is_points" label="是否按点分大中小工单">
                 <el-input v-model="model.is_points" placeholder="1按点数，0按工单量区分大中小工单" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.capacity" prop="capacity" label="日产能">
                 <el-input-number v-model="model.capacity" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_AX_line" prop="is_AX_line" label="是否安必昂不能绑定线体">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_AX_line" prop="is_AX_line" label="是否点胶安必昂不能绑定线体">
                 <el-switch v-model="model.is_AX_line" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_CM_line" prop="is_CM_line" label="是否点胶松下绑定线体">
+                <el-switch v-model="model.is_CM_line" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -676,7 +687,8 @@ export default {
         onehot_code: '',
         is_burn_in: '',
         enable: false,
-        is_AX_line: false
+        is_AX_line: false,
+        is_CM_line: false
         // P_S_unable: '',
         // B_AD_unable: '',
 
@@ -704,6 +716,7 @@ export default {
         enable_process_list: [],
         enable: false,
         is_AX_line: false,
+        is_CM_line: false,
         // T_unable: '',
         // B_unable: '',
         // T_BPR_unable: '',
@@ -774,12 +787,17 @@ export default {
         }],
         offset_threshold: [{
           required: true,
-          message: '阈值偏差不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         is_AX_line: [{
           required: true,
-          message: '阈值偏差不能为空',
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        is_CM_line: [{
+          required: true,
+          message: '不能为空',
           trigger: 'blur'
         }],
         // T_unable: [{
@@ -864,7 +882,7 @@ export default {
         }],
         enable: [{
           required: true,
-          message: '是否烧录不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }]
       },

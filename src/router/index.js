@@ -112,12 +112,21 @@ export const asyncRoutes = [
           roles: ['admin', 'common']
         }
       },
+      // {
+      //   path: 'config',
+      //   component: () => import('@/views/Control/Config'),
+      //   name: 'Config',
+      //   meta: {
+      //     title: '排程配置',
+      //     roles: ['admin', 'common']
+      //   }
+      // },
       {
-        path: 'config',
-        component: () => import('@/views/Control/Config'),
-        name: 'Config',
+        path: 'paramsconfig',
+        component: () => import('@/views/Control/ParamsConfig'),
+        name: 'ParamsConfig',
         meta: {
-          title: '排程配置',
+          title: '排程配置表',
           roles: ['admin', 'common']
         }
       },
