@@ -359,7 +359,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="12">
+      <el-col :span="24">
         <el-card class="card-config">
           <div slot="header" class="clearfix">
             <span>配置</span>
@@ -376,13 +376,13 @@
           </el-button>
         </el-card>
       </el-col>
-      <el-col :span="12">
+      <!-- <el-col :span="12">
         <el-card class="card-gantt">
           <div slot="header" class="clearfix">
-            <span>甘特图</span>
+            <span>其它</span>
           </div>
         </el-card>
-      </el-col>
+      </el-col> -->
     </el-row>
 
     <el-dialog
