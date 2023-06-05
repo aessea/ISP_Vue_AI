@@ -973,18 +973,11 @@ export default {
     },
     // AI文件上传钩子
     handleChangeMain(file, fileList) {
-      const fileName = file.name
-      if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        const tip = '上传的文件名未指明预排/正排，请修改后重新上传！！' + `<br/>` + '（注：文件名中需要包含正排或预排）'
-        this.$alert(tip, '错误', {
-          confirmButtonText: '确定',
-          dangerouslyUseHTMLString: true,
-          type: 'error'
-        })
-        return
-      }
-      if (!fileName.includes('AI')) {
-        const tip = '上传的文件名未指明是AI排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含AI，例如：0901AI预排）'
+      const fileName = file.name.replace(/\.xlsx$/, '')
+      const regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI)(正排|预排)$/
+
+      if (!regex.test(fileName)) {
+        const tip = '文件命名格式错误，请修改后重新上传！' + `<br/>` + '（正确文件名示例：0901AI预排）'
         this.$alert(tip, '错误', {
           confirmButtonText: '确定',
           dangerouslyUseHTMLString: true,
@@ -1003,18 +996,11 @@ export default {
     },
     // 点胶文件上传钩子
     handleChangeSmall(file, fileList) {
-      const fileName = file.name
-      if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        const tip = '上传的文件名未指明预排/正排，请修改后重新上传！！' + `<br/>` + '（注：文件名中需要包含正排或预排）'
-        this.$alert(tip, '错误', {
-          confirmButtonText: '确定',
-          dangerouslyUseHTMLString: true,
-          type: 'error'
-        })
-        return
-      }
-      if (!fileName.includes('点胶')) {
-        const tip = '上传的文件名未指明是点胶排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含点胶，例如：0901点胶预排）'
+      const fileName = file.name.replace(/\.xlsx$/, '')
+      const regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(点胶)(正排|预排)$/
+
+      if (!regex.test(fileName)) {
+        const tip = '文件命名格式错误，请修改后重新上传！' + `<br/>` + '（正确文件名示例：0901点胶预排）'
         this.$alert(tip, '错误', {
           confirmButtonText: '确定',
           dangerouslyUseHTMLString: true,
