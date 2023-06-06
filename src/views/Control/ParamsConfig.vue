@@ -31,68 +31,120 @@
         </el-col>
       </el-row>
       <div class="table-box">
-        <el-table
-          id="mytable"
-          v-loading="loading"
-          :data="table_data"
-          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
-          :cell-style="{padding: '3px'}"
+        <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tab-pane label="AI配置" name="first">
+            <el-table
+              id="mytable"
+              v-loading="loading"
+              :data="table_data_ai"
+              :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
+              :cell-style="{padding: '3px'}"
 
-          stripe
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column type="selection" width="55" />
-          <!-- <el-table-column prop="param_name_backend" label="包装线" sortable /> -->
-          <el-table-column prop="param_type" label="配置类别" width="130" sortable>
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.param_type === 'AI'" size="small" type="primary">AI配置</el-tag>
-              <el-tag v-else-if="scope.row.param_type === 'DJ'" size="small" type="primary">点胶配置</el-tag>
-              <el-tag v-else size="small" type="info">未知</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="param_name_front" label="配置名" sortable>
-            <template slot-scope="scope">
-              <span style="font-weight: bold" type="info">{{ scope.row.param_name_front }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="param_value" label="配置值">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.param_value === true" size="small" type="success">开启</el-tag>
-              <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">关闭</el-tag>
-              <span v-else type="info">{{ scope.row.param_value }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="param_description" label="配置描述" />
-          <!-- <el-table-column prop="param_default_value" label="配置默认值">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.param_default_value === true" size="small" type="primary">开启</el-tag>
-              <el-tag v-else-if="scope.row.param_default_value === false" size="small" type="primary">关闭</el-tag>
-              <span v-else size="small" type="info">{{ scope.row.param_default_value }}</span>
-            </template>
-          </el-table-column> -->
-          <el-table-column width="110" fixed="right" label="操作">
-            <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" content="修改配置" placement="top">
-                <el-button
-                  type="primary"
-                  size="mini"
-                  icon="el-icon-edit"
-                  circle
-                  @click="handleModify(scope.$index, scope.row)"
-                />
-              </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="恢复默认值" placement="top">
-                <el-button
-                  type="danger"
-                  size="mini"
-                  icon="el-icon-refresh"
-                  circle
-                  @click="restoreDefault(scope.$index, scope.row)"
-                />
-              </el-tooltip>
-            </template>
-          </el-table-column>
-        </el-table>
+              stripe
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="param_type" label="配置类别" width="130" sortable>
+                <template slot-scope="scope">
+                  <el-tag v-if="scope.row.param_type === 'AI'" size="small" type="primary">AI配置</el-tag>
+                  <el-tag v-else-if="scope.row.param_type === 'DJ'" size="small" type="primary">点胶配置</el-tag>
+                  <el-tag v-else size="small" type="info">未知</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="param_name_front" label="配置名" sortable>
+                <template slot-scope="scope">
+                  <span style="font-weight: bold" type="info">{{ scope.row.param_name_front }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="param_value" label="配置值">
+                <template slot-scope="scope">
+                  <el-tag v-if="scope.row.param_value === true" size="small" type="success">开启</el-tag>
+                  <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">关闭</el-tag>
+                  <span v-else type="info">{{ scope.row.param_value }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="param_description" label="配置描述" />
+              <el-table-column width="110" fixed="right" label="操作">
+                <template slot-scope="scope">
+                  <el-tooltip class="item" effect="dark" content="修改配置" placement="top">
+                    <el-button
+                      type="primary"
+                      size="mini"
+                      icon="el-icon-edit"
+                      circle
+                      @click="handleModify(scope.$index, scope.row)"
+                    />
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="恢复默认值" placement="top">
+                    <el-button
+                      type="danger"
+                      size="mini"
+                      icon="el-icon-refresh"
+                      circle
+                      @click="restoreDefault(scope.$index, scope.row)"
+                    />
+                  </el-tooltip>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="点胶配置" name="second">
+            <el-table
+              id="mytable"
+              v-loading="loading"
+              :data="table_data_dj"
+              :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
+              :cell-style="{padding: '3px'}"
+
+              stripe
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="param_type" label="配置类别" width="130" sortable>
+                <template slot-scope="scope">
+                  <el-tag v-if="scope.row.param_type === 'AI'" size="small" type="primary">AI配置</el-tag>
+                  <el-tag v-else-if="scope.row.param_type === 'DJ'" size="small" type="primary">点胶配置</el-tag>
+                  <el-tag v-else size="small" type="info">未知</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="param_name_front" label="配置名" sortable>
+                <template slot-scope="scope">
+                  <span style="font-weight: bold" type="info">{{ scope.row.param_name_front }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="param_value" label="配置值">
+                <template slot-scope="scope">
+                  <el-tag v-if="scope.row.param_value === true" size="small" type="success">开启</el-tag>
+                  <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">关闭</el-tag>
+                  <span v-else type="info">{{ scope.row.param_value }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="param_description" label="配置描述" />
+              <el-table-column width="110" fixed="right" label="操作">
+                <template slot-scope="scope">
+                  <el-tooltip class="item" effect="dark" content="修改配置" placement="top">
+                    <el-button
+                      type="primary"
+                      size="mini"
+                      icon="el-icon-edit"
+                      circle
+                      @click="handleModify(scope.$index, scope.row)"
+                    />
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="恢复默认值" placement="top">
+                    <el-button
+                      type="danger"
+                      size="mini"
+                      icon="el-icon-refresh"
+                      circle
+                      @click="restoreDefault(scope.$index, scope.row)"
+                    />
+                  </el-tooltip>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+        </el-tabs>
         <el-pagination
           background
           :hide-on-single-page="true"
@@ -117,7 +169,7 @@
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="4" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.param_type" prop="param_type" label="配置类别">
-              <el-select v-model="model.param_type" placeholder="请选择" style="width: 100%">
+              <el-select v-model="model.param_type" placeholder="请选择" style="width: 100%" disabled>
                 <el-option
                   v-for="item in lineTypeOptions"
                   :key="item.value"
@@ -240,7 +292,9 @@ export default {
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       loadingInstance: null,
-      table_data: [], // 表格数据
+      table_data_ai: [], // AI配置
+      table_data_dj: [], // 点胶配置
+      activeName: 'first',
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -353,7 +407,8 @@ export default {
       const data = { 'current_page': currentPage, 'page_size': pageSize }
       GetTableData(data).then(res => {
         if (res.code === 20000) {
-          this.table_data = res.table_data
+          this.table_data_ai = res.table_data_ai
+          this.table_data_dj = res.table_data_dj
           this.total_num = res.total_num
           this.loading = false
         }
