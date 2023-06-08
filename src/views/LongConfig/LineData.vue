@@ -65,11 +65,13 @@
               <el-tag v-else size="small" type="info">未知</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="line_size_type" label="线体类别" width="110">
+          <el-table-column prop="line_size_type" label="智能阈值线体类型" width="110">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.line_size_type === 1" size="small" type="primary">小工单线</el-tag>
-              <el-tag v-else-if="scope.row.line_size_type === 2" size="small" type="primary">中工单线</el-tag>
-              <el-tag v-else-if="scope.row.line_size_type === 3" size="small" type="primary">大工单线</el-tag>
+              <el-tag v-else-if="scope.row.line_size_type === 2" size="small" type="primary">中小工单线</el-tag>
+              <el-tag v-else-if="scope.row.line_size_type === 3" size="small" type="primary">中工单线</el-tag>
+              <el-tag v-else-if="scope.row.line_size_type === 4" size="small" type="primary">中大工单线</el-tag>
+              <el-tag v-else-if="scope.row.line_size_type === 5" size="small" type="primary">大工单线</el-tag>
               <el-tag v-else size="small" type="info">未知</el-tag>
             </template>
           </el-table-column>
@@ -98,93 +100,6 @@
           </el-table-column>
           <el-table-column prop="min_threshold" label="最低生产阈值" />
           <el-table-column prop="max_threshold" label="最高生产阈值" />
-          <!-- <el-table-column prop="is_points" label="是否按点分大中小工单" width="170" /> -->
-          <!-- <el-table-column prop="big_able" label="可否大工单" width="100">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.big_able === 1" size="small" type="success">✔</el-tag>
-              <el-tag v-else-if="scope.row.big_able === 0" size="small" type="info">×</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="middle_able" label="可否中工单" width="100">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.middle_able === 1" size="small" type="success">✔</el-tag>
-              <el-tag v-else-if="scope.row.middle_able === 0" size="small" type="info">×</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="small_able" label="可否小工单" width="100">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.small_able === 1" size="small" type="success">✔</el-tag>
-              <el-tag v-else-if="scope.row.small_able === 0" size="small" type="info">×</el-tag>
-            </template>
-          </el-table-column> -->
-          <!-- <el-table-column prop="offset_threshold" label="阈值偏差" width="85" /> -->
-          <!-- <el-table-column prop="T_unable" label="可否制程T" width="95">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.T_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.T_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="B_unable" label="可否制程B" width="95">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.B_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.B_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="T_BPR_unable" label="可否制程T-BPR" width="125">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.T_BPR_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.T_BPR_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="B_BPR_unable" label="可否制程B-BPR" width="130">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.B_BPR_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.B_BPR_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="S_BPR_unable" label="可否制程S-BPR" width="130">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.S_BPR_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.S_BPR_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="S_BPR_M_unable" label="可否制程S-BPR-M" width="145">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.S_BPR_M_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.S_BPR_M_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column> -->
-          <!-- <el-table-column prop="S_unable" label="可否制程S">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.S_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.S_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="P_S_unable" label="可否制程P-S">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.P_S_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.P_S_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="B_AD_unable" label="可否制程B-AD">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.B_AD_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.B_AD_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column> -->
-          <!-- <el-table-column prop="S_THR_unable" label="可否制程S-THR" width="130">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.S_THR_unable === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.S_THR_unable === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column> -->
-          <!-- <el-table-column prop="is_burn_in" label="是否烧录" width="85">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_burn_in === 1" size="small" type="info">×</el-tag>
-              <el-tag v-else-if="scope.row.is_burn_in === 0" size="small" type="success">✔</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="capacity" label="日产能" width="80" /> -->
           <el-table-column prop="config_class" label="配置类型" width="85" />
           <el-table-column prop="program_class" label="程序类型" width="85" />
           <el-table-column prop="balance_class" label="线平衡类型" width="100" />
@@ -240,12 +155,12 @@
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.enable" prop="enable" label="是否启用该线体">
-                <el-switch v-model="model.enable" />
+                <el-switch v-model="model.enable" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.line_type" prop="line_type" label="线体类型">
-                <el-select v-model="model.line_type" placeholder="请选择">
+                <el-select v-model="model.line_type" placeholder="请选择" :style="{width: '100%'}">
                   <el-option
                     v-for="item in lineTypeOptions"
                     :key="item.value"
@@ -256,8 +171,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line_size_type" prop="line_size_type" label="线体类别">
-                <el-select v-model="model.line_size_type" placeholder="请选择">
+              <el-form-item :rules="rules.line_size_type" prop="line_size_type" label="智能阈值线体类型">
+                <el-select v-model="model.line_size_type" placeholder="请选择" :style="{width: '100%'}">
                   <el-option
                     v-for="item in lineSizeTypeOptions"
                     :key="item.value"
@@ -290,12 +205,12 @@
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_AX_line" prop="is_AX_line" label="是否点胶安必昂不能绑定线体">
-                <el-switch v-model="model.is_AX_line" />
+                <el-switch v-model="model.is_AX_line" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_CM_line" prop="is_CM_line" label="是否点胶松下绑定线体">
-                <el-switch v-model="model.is_CM_line" />
+                <el-switch v-model="model.is_CM_line" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -355,62 +270,6 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.T_unable" prop="T_unable" label="可否制程T">
-                <el-input v-model="model.T_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.B_unable" prop="B_unable" label="可否制程B">
-                <el-input v-model="model.B_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.T_BPR_unable" prop="T_BPR_unable" label="可否制程T-BPR">
-                <el-input v-model="model.T_BPR_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row> -->
-          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.B_BPR_unable" prop="B_BPR_unable" label="可否制程B-BPR">
-                <el-input v-model="model.B_BPR_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.S_BPR_unable" prop="S_BPR_unable" label="可否制程S-BPR">
-                <el-input v-model="model.S_BPR_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.S_BPR_M_unable" prop="S_BPR_M_unable" label="可否制程S-BPR-M">
-                <el-input v-model="model.S_BPR_M_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row> -->
-          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.S_unable" prop="S_unable" label="可否制程S">
-                <el-input v-model="model.S_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.P_S_unable" prop="P_S_unable" label="可否制程P-S">
-                <el-input v-model="model.P_S_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.B_AD_unable" prop="B_AD_unable" label="可否制程B-AD">
-                <el-input v-model="model.B_AD_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.S_THR_unable" prop="S_THR_unable" label="可否制程S-THR">
-                <el-input v-model="model.S_THR_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row> -->
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.big_setup" prop="big_setup" label="大切换">
@@ -668,6 +527,7 @@ export default {
         big_able: '',
         middle_able: '',
         small_able: '',
+        line_size_type: '',
         min_threshold: 0,
         max_threshold: 0,
         offset_threshold: 0,
@@ -705,6 +565,7 @@ export default {
         big_able: '',
         middle_able: '',
         small_able: '',
+        line_size_type: '',
         min_threshold: 0,
         max_threshold: 0,
         offset_threshold: 0,

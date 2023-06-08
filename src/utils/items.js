@@ -35,8 +35,11 @@ const lineTypeOptions = [
 
 const lineSizeTypeOptions = [
   { label: '小工单线', value: 1 },
-  { label: '中工单线', value: 2 },
-  { label: '大工单线', value: 3 }
+  { label: '中小工单线', value: 2 },
+  { label: '中工单线', value: 3 },
+  { label: '中大工单线', value: 4 },
+  { label: '大工单线', value: 5 },
+  { label: '未知', value: 0 }
 ]
 
 const lockedList = ['锁定', '新增锁定', '新上锁定', '插入锁定']
