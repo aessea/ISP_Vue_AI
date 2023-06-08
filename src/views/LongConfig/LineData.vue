@@ -65,7 +65,7 @@
               <el-tag v-else size="small" type="info">未知</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="line_size_type" label="大中小" width="110">
+          <el-table-column prop="line_size_type" label="线体类别" width="110">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.line_size_type === 1" size="small" type="primary">小工单线</el-tag>
               <el-tag v-else-if="scope.row.line_size_type === 2" size="small" type="primary">中工单线</el-tag>
