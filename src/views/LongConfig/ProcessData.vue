@@ -82,6 +82,7 @@
               <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">否</el-tag>
             </template>
           </el-table-column>
+          <el-table-column prop="process_order" label="制程分配点数的优先顺序" width="160" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -148,19 +149,24 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.grouping_factor_day" prop="grouping_factor_day" label="第一块和第二块工单划分参数(天)">
                 <el-input-number v-model="model.grouping_factor_day" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.grouping_factor_hour" prop="grouping_factor_hour" label="第二块工单控制大小(时)">
                 <el-input-number v-model="model.grouping_factor_hour" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.grouping_factor_overtime" prop="grouping_factor_overtime" label="第三块划分参数(天)">
                 <el-input-number v-model="model.grouping_factor_overtime" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.process_order" prop="process_order" label="制程分配点数的优先顺序">
+                <el-input v-model="model.process_order" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -362,6 +368,7 @@ export default {
         grouping_factor_overtime: 0,
         grouping_combination_flag: '',
         first_second_combination_flag: '',
+        process_order: '',
         is_point: '',
         buffer_time: 0,
         onehot_code: '',
@@ -378,6 +385,7 @@ export default {
         grouping_factor_overtime: 0,
         grouping_combination_flag: '',
         first_second_combination_flag: '',
+        process_order: '',
         is_point: '',
         buffer_time: 0,
         onehot_code: '',
@@ -432,6 +440,11 @@ export default {
           trigger: 'blur'
         }],
         enable: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        process_order: [{
           required: true,
           message: '不能为空',
           trigger: 'blur'
