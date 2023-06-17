@@ -825,7 +825,7 @@ export default {
     // 上传文件
     loadExcelFile(file, fileList) {
       const fileName = file.name.replace(/\.xlsx$/, '')
-      const regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI|点胶)(正排|预排)$/
+      const regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI|点胶)(正排|预排).*$/
 
       if (!regex.test(fileName)) {
         const tip = '文件命名格式错误，请修改后重新上传！' + `<br/>` + '（正确文件名示例：0901点胶预排）'
