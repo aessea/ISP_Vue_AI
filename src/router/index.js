@@ -100,7 +100,7 @@ export const asyncRoutes = [
     meta: {
       title: '控制面板',
       icon: 'component',
-      roles: ['admin', 'common']
+      roles: ['admin', 'common', 'senioradmin']
     },
     children: [
       {
@@ -109,7 +109,7 @@ export const asyncRoutes = [
         name: 'SchedulePanel',
         meta: {
           title: 'AI点胶排程',
-          roles: ['admin', 'common']
+          roles: ['admin', 'common', 'senioradmin']
         }
       },
       // {
@@ -127,7 +127,7 @@ export const asyncRoutes = [
         name: 'ParamsConfig',
         meta: {
           title: '排程配置表',
-          roles: ['admin', 'common']
+          roles: ['admin', 'common', 'senioradmin']
         }
       },
       {
@@ -136,7 +136,7 @@ export const asyncRoutes = [
         name: 'OnlineTable',
         meta: {
           title: '在线表格',
-          roles: ['admin', 'common']
+          roles: ['admin', 'common', 'senioradmin']
         }
       }
       // {
@@ -190,7 +190,7 @@ export const asyncRoutes = [
     meta: {
       title: '日志系统',
       icon: 'documentation',
-      roles: ['admin', 'common']
+      roles: ['admin', 'common', 'senioradmin']
     },
     children: [
       {
@@ -199,7 +199,7 @@ export const asyncRoutes = [
         name: 'HistoryRun',
         meta: {
           title: '运行日志',
-          roles: ['admin', 'common'],
+          roles: ['admin', 'common', 'senioradmin'],
           noCache: true
         }
       },
@@ -209,7 +209,7 @@ export const asyncRoutes = [
         name: 'HistoryOpera',
         meta: {
           title: '历史操作',
-          roles: ['admin', 'common'],
+          roles: ['admin', 'common', 'senioradmin'],
           noCache: true
         }
       }
