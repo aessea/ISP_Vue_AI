@@ -226,7 +226,6 @@ import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/Predict/FixedCTData'
-import { LineOptions, ProcessOptions } from '@/utils/items'
 import { GetLineProcess } from '@/api/Public'
 export default {
   name: 'FixedCTData',
