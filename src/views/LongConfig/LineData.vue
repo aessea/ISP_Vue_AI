@@ -86,7 +86,7 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="is_AX_line" label="是否点胶安必昂不能绑定线体" width="160">
+          <el-table-column prop="is_AX_line" label="是否点胶安必昂绑定线体" width="160">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.is_AX_line === true" size="small" type="success">是</el-tag>
               <el-tag v-else-if="scope.row.is_AX_line === false" size="small" type="info">否</el-tag>
@@ -204,7 +204,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_AX_line" prop="is_AX_line" label="是否点胶安必昂不能绑定线体">
+              <el-form-item :rules="rules.is_AX_line" prop="is_AX_line" label="是否点胶安必昂绑定线体">
                 <el-switch v-model="model.is_AX_line" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
