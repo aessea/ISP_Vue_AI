@@ -165,6 +165,15 @@ const LongConfigRouter = {
         title: '接口配置表',
         roles: ['admin', 'common', 'senioradmin']
       }
+    },
+    {
+      path: 'earlyduedategowherename',
+      component: () => import('@/views/LongConfig/EarlyDueDateGoWhereName'),
+      name: 'EarlyDueDateGoWhereName',
+      meta: {
+        title: '去向列提前天数表',
+        roles: ['admin', 'common', 'senioradmin']
+      }
     }
   ]
 }
