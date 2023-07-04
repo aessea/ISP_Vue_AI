@@ -76,15 +76,15 @@ const LongConfigRouter = {
         roles: ['admin', 'common', 'senioradmin']
       }
     },
-    {
-      path: 'setupdata',
-      component: () => import('@/views/LongConfig/SetUpData'),
-      name: 'SetUpData',
-      meta: {
-        title: '切换表',
-        roles: ['admin', 'common', 'senioradmin']
-      }
-    },
+    // {
+    //   path: 'setupdata',
+    //   component: () => import('@/views/LongConfig/SetUpData'),
+    //   name: 'SetUpData',
+    //   meta: {
+    //     title: '切换表',
+    //     roles: ['admin', 'common', 'senioradmin']
+    //   }
+    // },
     {
       path: 'processdata',
       component: () => import('@/views/LongConfig/ProcessData'),
