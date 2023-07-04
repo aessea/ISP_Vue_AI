@@ -138,7 +138,7 @@
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.enable" prop="enable" label="是否启用该制程">
-                <el-switch v-model="model.enable" />
+                <el-switch v-model="model.enable" style="width: 100%;" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
@@ -188,7 +188,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.buffer_time" prop="buffer_time" label="上下板间隔时间">
                 <el-input-number v-model="model.buffer_time" placeholder="请输入" :style="{width: '100%'}" />
@@ -196,7 +196,7 @@
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_point" prop="is_point" label="是否按点数">
-                <el-switch v-model="model.is_point" />
+                <el-switch v-model="model.is_point" style="width: 100%;" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
