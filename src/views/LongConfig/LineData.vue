@@ -107,6 +107,8 @@
           <el-table-column prop="big_setup" label="大切换" />
           <el-table-column prop="small_setup" label="小切换" />
           <el-table-column prop="setup_program" label="切软体" />
+          <el-table-column prop="max_process_time" label="新增锁定加工时长上限" width="170" />
+          <el-table-column prop="max_points" label="新增锁定点(片)数上限" width="170" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -290,6 +292,18 @@
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.setup_program" prop="setup_program" label="切软体">
                 <el-input-number v-model="model.setup_program" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.max_process_time" prop="max_process_time" label="新增锁定加工时长上限">
+                <el-input-number v-model="model.max_process_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.max_points" prop="max_points" label="新增锁定点(片)数上限">
+                <el-input-number v-model="model.max_points" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -555,7 +569,9 @@ export default {
         is_burn_in: '',
         enable: false,
         is_AX_line: false,
-        is_CM_line: false
+        is_CM_line: false,
+        max_process_time: '',
+        max_points: ''
         // P_S_unable: '',
         // B_AD_unable: '',
 
@@ -594,7 +610,9 @@ export default {
         // S_BPR_M_unable: '',
         // S_unable: '',
         // S_THR_unable: '',
-        is_burn_in: ''
+        is_burn_in: '',
+        max_process_time: '',
+        max_points: ''
         // P_S_unable: '',
         // B_AD_unable: '',
       },
@@ -755,6 +773,16 @@ export default {
           trigger: 'blur'
         }],
         min_min_threshold: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        max_points: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        max_process_time: [{
           required: true,
           message: '不能为空',
           trigger: 'blur'

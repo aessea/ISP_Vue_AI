@@ -27,7 +27,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/MainOutputFiles'),
       name: 'MainOutputFiles',
       meta: {
-        title: '主板输出文件',
+        title: 'AI输出文件',
         roles: ['admin', 'senioradmin']
       }
     },
@@ -36,7 +36,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/SmallOutputFiles'),
       name: 'SmallOutputFiles',
       meta: {
-        title: '小板输出文件',
+        title: '点胶输出文件',
         roles: ['admin', 'senioradmin']
       }
     },
