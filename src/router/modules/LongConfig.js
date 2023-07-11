@@ -174,6 +174,15 @@ const LongConfigRouter = {
         title: '去向列提前天数表',
         roles: ['admin', 'common', 'senioradmin']
       }
+    },
+    {
+      path: 'boardadvancedate',
+      component: () => import('@/views/LongConfig/BoardAdvanceDate'),
+      name: 'BoardAdvanceDate',
+      meta: {
+        title: '后工序提早交期表',
+        roles: ['admin', 'senioradmin']
+      }
     }
   ]
 }
