@@ -183,6 +183,15 @@ const LongConfigRouter = {
         title: '后工序提早交期表',
         roles: ['admin', 'senioradmin']
       }
+    },
+    {
+      path: 'dyelinedata',
+      component: () => import('@/views/LongConfig/DyeLineData'),
+      name: 'DyeLineData',
+      meta: {
+        title: '染色线体及阈值表',
+        roles: ['admin', 'senioradmin']
+      }
     }
   ]
 }
