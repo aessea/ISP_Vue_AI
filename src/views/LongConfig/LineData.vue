@@ -453,7 +453,7 @@ import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/LineData'
-import { GetLineProcess } from '@/api/Public'
+import { GetLineProcess } from '@/api/common'
 import { lineTypeOptions, lineSizeTypeOptions } from '@/utils/items'
 export default {
   name: 'LineData',

@@ -132,6 +132,15 @@ export const asyncRoutes = [
         }
       },
       {
+        path: 'analysiscontrol',
+        component: () => import('@/views/Control/AnalysisControl'),
+        name: 'AnalysisControl',
+        meta: {
+          title: '分析推送面板',
+          roles: ['AnalysisControl']
+        }
+      },
+      {
         path: 'onlinetable',
         component: () => import('@/views/Control/OnlineTable'),
         name: 'OnlineTable',
