@@ -19,7 +19,7 @@
               <div @click="toAnalysis">
                 <el-card shadow="hover" class="btn-card">
                   <span class="btn-icon"><i class="el-icon-monitor" /></span>
-                  <span style="margin-left: 10px;">在线表格</span>
+                  <span style="margin-left: 10px;">分析推送</span>
                 </el-card>
               </div>
             </el-col>
@@ -138,10 +138,10 @@ export default {
   methods: {
     // 一些快捷路由跳转
     toCompute() {
-      this.$router.push({ path: 'Control/schedulepanel' })
+      this.$router.push({ path: 'control/schedulepanel' })
     },
     toAnalysis() {
-      this.$router.push({ path: 'Control/onlinetable' })
+      this.$router.push({ path: 'control/analysiscontrol' })
     },
     toLoggingdb() {
       this.$router.push({ path: 'historylog/historyrun' })
@@ -150,13 +150,13 @@ export default {
       this.$router.push({ path: 'historylog/historyopera' })
     },
     toConfig() {
-      this.$router.push({ path: 'Control/paramsconfig' })
+      this.$router.push({ path: 'control/paramsconfig' })
     },
     toBlockTimeData() {
       this.$router.push({ path: 'dayconfig/blocktimedata' })
     },
     toOutsource() {
-      this.$router.push({ path: 'Control/outsourcecontrol' })
+      this.$router.push({ path: 'control/outsourcecontrol' })
     },
     // 画图
     drawCharts(days) {
