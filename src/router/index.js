@@ -139,16 +139,16 @@ export const asyncRoutes = [
           title: '分析推送面板',
           roles: ['AnalysisControl']
         }
-      },
-      {
-        path: 'onlinetable',
-        component: () => import('@/views/Control/OnlineTable'),
-        name: 'OnlineTable',
-        meta: {
-          title: '在线表格',
-          roles: ['admin', 'common', 'senioradmin']
-        }
       }
+      // {
+      //   path: 'onlinetable',
+      //   component: () => import('@/views/Control/OnlineTable'),
+      //   name: 'OnlineTable',
+      //   meta: {
+      //     title: '在线表格',
+      //     roles: ['admin', 'common', 'senioradmin']
+      //   }
+      // }
       // {
       //   path: 'outsourcecontrol',
       //   component: () => import('@/views/Control/OutsourceControl'),
