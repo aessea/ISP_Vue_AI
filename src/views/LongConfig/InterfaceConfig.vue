@@ -55,7 +55,7 @@
           <el-table-column prop="description" label="接口描述" />
           <el-table-column
             prop="request_test_server"
-            label="请求正式服/测试服"
+            label="请求MES的正式服/测试服"
           >
             <template slot-scope="scope">
               <el-tag v-if="scope.row.request_test_server === true" size="small" type="success">正式服</el-tag>
@@ -122,7 +122,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.request_test_server" prop="request_test_server" label="请求正式服/测试服">
+            <el-form-item :rules="rules.request_test_server" prop="request_test_server" label="请求MES的正式服/测试服">
               <el-switch
                 v-model="model.request_test_server"
                 active-text="正式库"
