@@ -203,7 +203,7 @@
             <el-tab-pane label="AI下载" name="main">
               <el-row>
                 <el-col :span="24">
-                  <el-alert
+                  <!-- <el-alert
                     title="AI下载历史数据"
                     type="info"
                     :closable="false"
@@ -221,7 +221,7 @@
                       <i class="el-icon-download" />
                       下载历史排程
                     </el-button>
-                  </div>
+                  </div> -->
                   <el-alert
                     title="AI下载最新数据"
                     type="info"
@@ -232,7 +232,7 @@
                       <el-col :span="8">
                         <el-button type="primary" plain @click="downloadSchedule">
                           <i class="el-icon-download" />
-                          下载AI排程
+                          下载最新排程
                         </el-button>
                       </el-col>
                       <el-col :span="8">
@@ -250,14 +250,14 @@
                     </el-row>
                   </div>
                   <div class="box-button">
-                    <el-row>
+                    <!-- <el-row>
                       <el-col :span="8">
                         <el-button type="primary" plain @click="downloadNoProgram">
                           <i class="el-icon-download" />
                           下载无程序表
                         </el-button>
                       </el-col>
-                    </el-row>
+                    </el-row> -->
                   </div>
                 </el-col>
               </el-row>
@@ -265,7 +265,7 @@
             <el-tab-pane label="点胶下载" name="small">
               <el-row>
                 <el-col :span="24">
-                  <el-alert
+                  <!-- <el-alert
                     title="点胶下载历史数据"
                     type="info"
                     :closable="false"
@@ -283,7 +283,7 @@
                       <i class="el-icon-download" />
                       下载历史排程
                     </el-button>
-                  </div>
+                  </div> -->
                   <el-alert
                     title="点胶下载最新数据"
                     type="info"
@@ -294,7 +294,7 @@
                       <el-col :span="8">
                         <el-button type="primary" plain @click="downloadScheduleSmall">
                           <i class="el-icon-download" />
-                          下载点胶排程
+                          下载最新排程
                         </el-button>
                       </el-col>
                       <el-col :span="8">
@@ -317,7 +317,7 @@
             <el-tab-pane label="日志下载" name="log">
               <el-row>
                 <el-col :span="24">
-                  <el-alert
+                  <!-- <el-alert
                     title="下载历史日志"
                     type="info"
                     :closable="false"
@@ -335,7 +335,7 @@
                       <i class="el-icon-download" />
                       下载历史日志
                     </el-button>
-                  </div>
+                  </div> -->
                   <el-alert
                     title="下载最新日志"
                     type="info"
