@@ -250,14 +250,14 @@
                     </el-row>
                   </div>
                   <div class="box-button">
-                    <!-- <el-row>
+                    <el-row>
                       <el-col :span="8">
                         <el-button type="primary" plain @click="downloadNoProgram">
                           <i class="el-icon-download" />
                           下载无程序表
                         </el-button>
                       </el-col>
-                    </el-row> -->
+                    </el-row>
                   </div>
                 </el-col>
               </el-row>
@@ -310,6 +310,16 @@
                         </el-button>
                       </el-col>
                     </el-row>
+                    <div class="box-button">
+                      <el-row>
+                        <el-col :span="8">
+                          <el-button type="primary" plain @click="downloadNoProgramSmall">
+                            <i class="el-icon-download" />
+                            下载无程序表
+                          </el-button>
+                        </el-col>
+                      </el-row>
+                    </div>
                   </div>
                 </el-col>
               </el-row>
@@ -744,7 +754,7 @@ import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadS
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
   GetApsMoBaseData, GetApsMoProgData, DownloadUploadFileMain, DownloadUploadFileSmall, ModifyHoliday,
   GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount,
-  DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckDataNew } from '@/api/Control/SchedulePanel'
+  DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckDataNew, DownloadNoProgramSmall } from '@/api/Control/SchedulePanel'
 export default {
   name: 'SchedulePanel',
   directives: { elDragDialog },
@@ -2263,7 +2273,7 @@ export default {
     },
     // 下载点胶无程序表
     downloadNoProgramSmall() {
-      DownloadNoProgram().then(res => {
+      DownloadNoProgramSmall().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',

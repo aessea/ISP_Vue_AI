@@ -140,6 +140,14 @@ export function DownloadNoProgram() {
     responseType: 'blob'
   })
 }
+// 下载无程序表
+export function DownloadNoProgramSmall() {
+  return request({
+    method: 'get',
+    url: '/Control/SchedulePanel/download_program_small/',
+    responseType: 'blob'
+  })
+}
 // 下载AIidle明细
 export function DownloadIdleInfoMain() {
   return request({
