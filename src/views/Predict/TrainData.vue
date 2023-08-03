@@ -10,6 +10,9 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
+            <el-button type="danger" @click="deleteAllData">
+              <i class="el-icon-delete" />清空所有数据
+            </el-button>
             <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
@@ -345,7 +348,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/Predict/TrainData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, DeleteAllData } from '@/api/Predict/TrainData'
 import { LineOptions, ProcessOptions } from '@/utils/items'
 export default {
   name: 'TrainData',
@@ -642,6 +645,29 @@ export default {
             this.$notify({
               title: '删除成功',
               message: '成功删除选中的 ' + dataLength + ' 条数据',
+              type: 'success'
+            })
+            this.refreshTableData() // 刷新表格数据
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消删除'
+        })
+      })
+    },
+    deleteAllData() {
+      this.$confirm('确定要清空所有数据？', '警告', {
+        confirmButtonText: '确定清空',
+        cancelButtonText: '取消',
+        confirmButtonClass: 'btnDanger',
+        type: 'warning'
+      }).then(() => {
+        DeleteAllData().then(res => {
+          if (res.code === 20000) {
+            this.$alert(res.message, '提示', {
+              confirmButtonText: '确定',
               type: 'success'
             })
             this.refreshTableData() // 刷新表格数据
