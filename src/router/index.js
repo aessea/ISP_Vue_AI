@@ -223,6 +223,16 @@ export const asyncRoutes = [
           roles: ['admin', 'common', 'senioradmin'],
           noCache: true
         }
+      },
+      {
+        path: 'scheduleresdata',
+        component: () => import('@/views/HistoryLog/ScheduleResData'),
+        name: 'ScheduleResData',
+        meta: {
+          title: '历史排程数据',
+          roles: ['ScheduleResData'],
+          noCache: true
+        }
       }
     ]
   },
