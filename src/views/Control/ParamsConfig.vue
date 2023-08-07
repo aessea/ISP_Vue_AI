@@ -221,10 +221,10 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="4" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.param_type" prop="param_type" label="配置类别">
-              <el-select v-model="model.param_type" placeholder="请选择" style="width: 100%" disabled>
+            <el-form-item :rules="rules.param_classify" prop="param_classify" label="配置分类">
+              <el-select v-model="model.param_classify" placeholder="请选择" style="width: 100%" disabled>
                 <el-option
-                  v-for="item in lineTypeOptions"
+                  v-for="item in param_classify_options"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
