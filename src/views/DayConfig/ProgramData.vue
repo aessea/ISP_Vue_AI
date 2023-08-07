@@ -4,16 +4,16 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button type="primary" @click="addDataDialog">
+            <el-button v-if="buttons.includes('ProgramData/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <el-button type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('ProgramData/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <el-button v-if="buttons.includes('ProgramData/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
-            <el-button @click="exportDataDialog">
+            <el-button v-if="buttons.includes('ProgramData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
@@ -62,6 +62,7 @@
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
+                v-if="buttons.includes('ProgramData/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -69,6 +70,7 @@
                 @click="handleModify(scope.$index, scope.row)"
               />
               <el-button
+                v-if="buttons.includes('ProgramData/delete')"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -257,7 +259,7 @@
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="add">追加数据</el-radio>
+            <el-radio label="append">追加数据</el-radio>
             <el-radio label="replace">替换数据</el-radio>
           </el-radio-group>
         </el-col>
@@ -497,7 +499,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'buttons'
     ])
   },
   created() {

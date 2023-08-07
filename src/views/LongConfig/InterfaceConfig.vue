@@ -4,16 +4,16 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button type="primary" @click="addDataDialog">
+            <!-- <el-button v-if="buttons.includes('InterfaceConfig/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <el-button type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('InterfaceConfig/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <!-- <el-button @click="importDataDialog">
+            <el-button v-if="buttons.includes('InterfaceConfig/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button> -->
-            <el-button @click="exportDataDialog">
+            <el-button v-if="buttons.includes('InterfaceConfig/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
@@ -53,32 +53,36 @@
           <el-table-column type="selection" width="55" />
           <el-table-column prop="name" label="接口函数名" sortable />
           <el-table-column prop="description" label="接口描述" />
+          <el-table-column prop="url" label="接口相对地址" sortable />
+          <el-table-column prop="remark" label="备注" />
           <el-table-column
             prop="request_test_server"
             label="请求MES的正式服/测试服"
+            width="160"
           >
             <template slot-scope="scope">
               <el-tag v-if="scope.row.request_test_server === true" size="small" type="success">正式服</el-tag>
               <el-tag v-else-if="scope.row.request_test_server === false" size="small" type="danger">测试服</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="remark" label="备注" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
+                v-if="buttons.includes('InterfaceConfig/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
                 circle
                 @click="handleModify(scope.$index, scope.row)"
               />
-              <el-button
+              <!-- <el-button
+                v-if="buttons.includes('InterfaceConfig/delete')"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
                 circle
                 @click="handleDelete(scope.$index, scope.row)"
-              />
+              /> -->
             </template>
           </el-table-column>
         </el-table>
@@ -104,11 +108,11 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+          <!-- <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.name" prop="name" label="接口函数名">
               <el-input v-model="model.name" placeholder="请输入" clearable />
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.description" prop="description" label="接口描述">
               <el-input v-model="model.description" placeholder="请输入" clearable />
@@ -117,7 +121,7 @@
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.url" prop="url" label="接口地址，基地址+接口函数名">
+            <el-form-item :rules="rules.url" prop="url" label="接口相对地址">
               <el-input v-model="model.url" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
@@ -158,61 +162,6 @@
         <el-button @click="helpDialogVisible = false">关闭</el-button>
       </span>
     </el-dialog>
-
-    <!-- <el-dialog
-      v-el-drag-dialog
-      title="导入数据"
-      :visible.sync="importDialogVisible"
-      width="60%"
-      :before-close="handleImportClose"
-      @dragDialog="handleDrag"
-    >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="process" label="制程" />
-        <el-table-column prop="under_single_points" label="单板点数[以下]" />
-        <el-table-column prop="add_feasible_line" label="补充的可排线别" />
-      </el-table>
-      <el-row>
-        <el-col :span="8">
-          <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="add">追加数据</el-radio>
-            <el-radio label="replace">替换数据</el-radio>
-          </el-radio-group>
-        </el-col>
-        <el-col :span="16">
-          <div style="display: flex;margin-top: 16px;margin-bottom: 16px;">
-            <el-upload
-              ref="upload"
-              name="file"
-              class="upload-demo"
-              accept=".xlsx"
-              action=""
-              :on-change="handleChange"
-              :auto-upload="false"
-              :show-file-list="true"
-              :file-list="uploadFileList"
-            >
-              <el-button slot="trigger" type="primary" style="margin-left: 10px;">
-                <i class="el-icon-upload" />
-                上传文件
-              </el-button>
-            </el-upload>
-          </div>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleImportClose">关闭</el-button>
-        <el-button type="primary" @click="confirmImport">确认导入</el-button>
-      </span>
-    </el-dialog> -->
 
     <el-dialog
       v-el-drag-dialog
@@ -276,7 +225,7 @@ export default {
       uploadFileName: '', // 上传的文件名
       uploadFileList: [], // 上传的文件列表
       uploadFile: null, // 上传的文件
-      importMode: 'add', // 导入方式选择:追加或替换（方便以后扩展）
+      importMode: 'append', // 导入方式选择:追加或替换（方便以后扩展）
       exportRadio: 'xlsx', // 导出格式选择（方便以后扩展）
       isClick: false, // 是否点击了保存或者提交
       // 表单相关数据
@@ -309,7 +258,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'buttons'
     ])
   },
   created() {

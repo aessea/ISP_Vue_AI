@@ -4,16 +4,16 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button type="primary" @click="addDataDialog">
+            <el-button v-if="buttons.includes('EarlyDueDateGoWhereName/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <el-button type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('EarlyDueDateGoWhereName/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <!-- <el-button @click="importDataDialog">
+            <el-button v-if="buttons.includes('EarlyDueDateGoWhereName/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
-            </el-button> -->
-            <el-button @click="exportDataDialog">
+            </el-button>
+            <el-button v-if="buttons.includes('EarlyDueDateGoWhereName/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
@@ -56,6 +56,7 @@
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
+                v-if="buttons.includes('EarlyDueDateGoWhereName/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -63,6 +64,7 @@
                 @click="handleModify(scope.$index, scope.row)"
               />
               <el-button
+                v-if="buttons.includes('EarlyDueDateGoWhereName/delete')"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -150,7 +152,7 @@
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="add">追加数据</el-radio>
+            <el-radio label="append">追加数据</el-radio>
             <el-radio label="replace">替换数据</el-radio>
           </el-radio-group>
         </el-col>
@@ -242,7 +244,7 @@ export default {
       uploadFileName: '', // 上传的文件名
       uploadFileList: [], // 上传的文件列表
       uploadFile: null, // 上传的文件
-      importMode: 'add', // 导入方式选择:追加或替换（方便以后扩展）
+      importMode: 'append', // 导入方式选择:追加或替换（方便以后扩展）
       exportRadio: 'xlsx', // 导出格式选择（方便以后扩展）
       isClick: false, // 是否点击了保存或者提交
       // 表单相关数据
@@ -280,7 +282,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'buttons'
     ])
   },
   created() {

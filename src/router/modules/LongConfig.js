@@ -12,7 +12,8 @@ const LongConfigRouter = {
     icon: 'el-icon-setting',
     roles: ['MP1AddLineData', 'NotMP1AddLineData', 'ExchangeLineData', 'LineData', 'CapacityChangeData', 'OptimizedMachineData',
       'ProcessData', 'EarlyDueDateBoard8', 'ChangeLineData', 'PairedSMTMachineData', 'CorrespondenceData', 'KeyBoardSpecialModel',
-      'DispensingBeforeAIMachine', 'InterfaceConfig', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData']
+      'DispensingBeforeAIMachine', 'InterfaceConfig', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData',
+      'ProcessSequenceMap', 'CustomerData']
   },
   children: [
     // {
@@ -193,6 +194,24 @@ const LongConfigRouter = {
       meta: {
         title: '染色线体及阈值表',
         roles: ['DyeLineData']
+      }
+    },
+    {
+      path: 'processsequencmap',
+      component: () => import('@/views/LongConfig/ProcessSequenceMap'),
+      name: 'ProcessSequenceMap',
+      meta: {
+        title: '先后加工顺序对照表',
+        roles: ['ProcessSequenceMap']
+      }
+    },
+    {
+      path: 'customerdata',
+      component: () => import('@/views/LongConfig/CustomerData'),
+      name: 'CustomerData',
+      meta: {
+        title: '客户识别表',
+        roles: ['CustomerData']
       }
     }
   ]

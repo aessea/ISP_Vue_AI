@@ -4,40 +4,41 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button type="primary" @click="addDataDialog">
+            <el-button v-if="buttons.includes('BlockTimeData/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <el-button type="primary" @click="addMultiDataDialog">
+            <el-button v-if="buttons.includes('BlockTimeData/addMultiDataDialog')" type="primary" @click="addMultiDataDialog">
               <i class="el-icon-plus" />添加多个维护
             </el-button>
-            <el-button type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('BlockTimeData/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button type="backupBtn" @click="backupData">
+            <el-button v-if="buttons.includes('BlockTimeData/backupData')" type="backupBtn" @click="backupData">
               <i class="el-icon-document-copy" />备份数据
             </el-button>
-            <el-button type="backupBtn" @click="recoverBackupData">
+            <el-button v-if="buttons.includes('BlockTimeData/recoverBackupData')" type="backupBtn" @click="recoverBackupData">
               <i class="el-icon-refresh-left" />恢复备份
             </el-button>
-            <el-button type="backupBtn" @click="manageBackupData">
+            <el-button v-if="buttons.includes('BlockTimeData/manageBackupData')" type="backupBtn" @click="manageBackupData">
               <i class="el-icon-edit-outline" />备份管理
             </el-button>
-            <el-button @click="importDataDialog">
+            <el-button v-if="buttons.includes('BlockTimeData/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
-            <el-button @click="exportDataDialog">
+            <el-button v-if="buttons.includes('BlockTimeData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="同步正式库维护时间表" placement="top">
+            <el-tooltip class="item" effect="dark" content="同步指定数据库的维护时间表" placement="top">
               <el-button
+                v-if="buttons.includes('BlockTimeData/sync')"
                 size="small"
                 icon="el-icon-download"
                 circle
-                @click="beforeSyncFormalData"
+                @click="beforeSyncDatabaseData"
               />
             </el-tooltip>
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
@@ -90,6 +91,7 @@
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
+                v-if="buttons.includes('BlockTimeData/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -97,6 +99,7 @@
                 @click="handleModify(scope.$index, scope.row)"
               />
               <el-button
+                v-if="buttons.includes('BlockTimeData/delete')"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -426,7 +429,7 @@
         <el-col :span="10">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
             <el-radio label="original">原方式导入</el-radio>
-            <el-radio label="add">追加数据</el-radio>
+            <el-radio label="append">追加数据</el-radio>
             <el-radio label="replace">替换数据</el-radio>
           </el-radio-group>
         </el-col>
@@ -489,7 +492,7 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, AddMultiData,
   ExportData, ImportData, GetBackupName, BackupData, RecoverBackupData, DeleteBackupData,
-  GetDefaultData, SyncFormalData } from '@/api/DayConfig/BlockTimeData'
+  GetDefaultData, SyncDatabaseData } from '@/api/DayConfig/BlockTimeData'
 // import { lineOptions, LineOptions } from '@/utils/items'
 export default {
   name: 'BlockTimeData',
@@ -630,7 +633,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'buttons'
     ])
   },
   created() {
@@ -1283,14 +1287,14 @@ export default {
       })
     },
     // 测试库同步正式库的维护时间表（提示）
-    beforeSyncFormalData() {
-      this.$confirm('确定要同步正式库的维护时间表？', '提示', {
+    beforeSyncDatabaseData() {
+      this.$confirm('确定要同步排程配置表中指定数据库的维护时间表？', '提示', {
         confirmButtonText: '确定同步',
         cancelButtonText: '取消',
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
-        this.syncFormalData()
+        this.syncDatabaseData()
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -1299,13 +1303,13 @@ export default {
       })
     },
     // 测试库同步正式库的维护时间表
-    syncFormalData() {
+    syncDatabaseData() {
       const syncLoading = {
         text: '拼命同步中...',
         background: 'rgba(0, 0, 0, 0.6)'
       }
       this.loadingInstance = Loading.service(syncLoading)
-      SyncFormalData().then(res => {
+      SyncDatabaseData().then(res => {
         if (res.code === 20000) {
           this.loadingInstance.close() // 清除动画
           this.$alert(res.message, '提示', {

@@ -4,16 +4,16 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button type="primary" @click="addDataDialog">
+            <el-button v-if="buttons.includes('ProductionReportData/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <el-button type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('ProductionReportData/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <el-button v-if="buttons.includes('ProductionReportData/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
-            <el-button @click="exportDataDialog">
+            <el-button v-if="buttons.includes('ProductionReportData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
@@ -22,6 +22,7 @@
           <div style="float: right;">
             <el-tooltip class="item" effect="dark" content="同步指定数据库的生产报表" placement="top">
               <el-button
+                v-if="buttons.includes('ProductionReportData/sync')"
                 size="small"
                 icon="el-icon-download"
                 circle
@@ -69,6 +70,7 @@
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
+                v-if="buttons.includes('ProductionReportData/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -76,6 +78,7 @@
                 @click="handleModify(scope.$index, scope.row)"
               />
               <el-button
+                v-if="buttons.includes('ProductionReportData/delete')"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -377,7 +380,7 @@
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="add">追加数据</el-radio>
+            <el-radio label="append">追加数据</el-radio>
             <el-radio label="replace">替换数据</el-radio>
           </el-radio-group>
         </el-col>
@@ -532,7 +535,7 @@ export default {
       uploadFileName: '', // 上传的文件名
       uploadFileList: [], // 上传的文件列表
       uploadFile: null, // 上传的文件
-      importMode: 'add', // 导入方式选择:追加或替换（方便以后扩展）
+      importMode: 'append', // 导入方式选择:追加或替换（方便以后扩展）
       exportRadio: 'xlsx', // 导出格式选择（方便以后扩展）
       isClick: false, // 是否点击了保存或者提交
       // 表单相关数据
@@ -773,7 +776,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'buttons'
     ])
   },
   created() {
@@ -948,6 +952,44 @@ export default {
             message: '提交失败，请按照要求填写数据！'
           })
         }
+      })
+    },
+    beforeSyncDatabaseData() {
+      this.$confirm('确定要同步排程配置表中指定数据库的生产报表？', '提示', {
+        confirmButtonText: '确定同步',
+        cancelButtonText: '取消',
+        confirmButtonClass: 'btnDanger',
+        type: 'warning'
+      }).then(() => {
+        this.syncDatabaseData()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消同步'
+        })
+      })
+    },
+    syncDatabaseData() {
+      const syncLoading = {
+        text: '拼命同步中...',
+        background: 'rgba(0, 0, 0, 0.6)'
+      }
+      this.loadingInstance = Loading.service(syncLoading)
+      SyncDatabaseData().then(res => {
+        if (res.code === 20000) {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(res.message, '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+          this.refreshTableData(true)
+        }
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
     },
     // 检测表单数据是否发生变化，用于提示
@@ -1137,44 +1179,6 @@ export default {
     // 帮助提示按钮
     helpTips() {
       this.helpDialogVisible = true
-    },
-    beforeSyncDatabaseData() {
-      this.$confirm('确定要同步排程配置表中指定数据库的生产报表？', '提示', {
-        confirmButtonText: '确定同步',
-        cancelButtonText: '取消',
-        confirmButtonClass: 'btnDanger',
-        type: 'warning'
-      }).then(() => {
-        this.syncDatabaseData()
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消同步'
-        })
-      })
-    },
-    syncDatabaseData() {
-      const syncLoading = {
-        text: '拼命同步中...',
-        background: 'rgba(0, 0, 0, 0.6)'
-      }
-      this.loadingInstance = Loading.service(syncLoading)
-      SyncDatabaseData().then(res => {
-        if (res.code === 20000) {
-          this.loadingInstance.close() // 清除动画
-          this.$alert(res.message, '提示', {
-            confirmButtonText: '确定',
-            type: 'success'
-          })
-          this.refreshTableData(true)
-        }
-      }).catch(err => {
-        this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
-          type: 'error'
-        })
-      })
     }
   }
 }

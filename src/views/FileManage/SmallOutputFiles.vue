@@ -4,13 +4,13 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button type="danger" @click="deleteFiles">
+            <el-button v-if="buttons.includes('SmallOutputFiles/delete')" type="danger" @click="deleteFiles">
               <i class="el-icon-delete" />删除文件
             </el-button>
-            <el-button type="danger" @click="deleteBeforeFiles">
+            <el-button v-if="buttons.includes('SmallOutputFiles/deleteOld')" type="danger" @click="deleteBeforeFiles">
               <i class="el-icon-delete" />删除三个月前的文件
             </el-button>
-            <el-button type="primary" @click="resetAllFileList">
+            <el-button v-if="buttons.includes('SmallOutputFiles/reset')" type="primary" @click="resetAllFileList">
               <i class="el-icon-refresh" />重置文件列表
             </el-button>
           </div>
@@ -53,6 +53,7 @@
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
+                v-if="buttons.includes('SmallOutputFiles/download')"
                 type="primary"
                 size="mini"
                 icon="el-icon-download"
@@ -115,7 +116,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'buttons'
     ])
   },
   created() {

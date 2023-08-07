@@ -116,13 +116,13 @@
                         </el-button>
                       </el-upload>
                       <div>
-                        <el-button type="primary" @click="checkData">
+                        <el-button v-if="buttons.includes('AnalysisControl/checkData')" type="primary" @click="checkData">
                           2.检查文件
                         </el-button>
-                        <el-button type="primary" @click="analysisSchedule">
+                        <el-button v-if="buttons.includes('AnalysisControl/analysisSchedule')" type="primary" @click="analysisSchedule">
                           3.分析排程
                         </el-button>
-                        <el-button type="apiBtn" @click="pushSchedule">
+                        <el-button v-if="buttons.includes('AnalysisControl/pushSchedule')" type="apiBtn" @click="pushSchedule">
                           4.分析后推送
                         </el-button>
                       </div>
@@ -134,13 +134,13 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-button type="success" @click="downloadAnaExcel">
+              <el-button v-if="buttons.includes('AnalysisControl/download')" type="success" @click="downloadAnaExcel">
                 下载最新分析结果文件
               </el-button>
-              <el-button type="apiBtn" @click="statisticsSchedule">
+              <el-button v-if="buttons.includes('AnalysisControl/statisticsSchedule')" type="apiBtn" @click="statisticsSchedule">
                 获取量化结果
               </el-button>
-              <el-button type="apiBtn" @click="pushImportSchedule">
+              <el-button v-if="buttons.includes('AnalysisControl/pushImportSchedule')" type="apiBtn" @click="pushImportSchedule">
                 导入后直接推送
               </el-button>
             </el-col>
@@ -373,7 +373,6 @@ import { SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled, DownloadA
   ImportPushSchedule, GetRunFlag, ClearAnaProgress, GetAnaProgress, StatisticsSchedule
 } from '@/api/Control/OnlineTable'
 import { DoImportPushSchedule } from '@/api/Control/AnalysisControl'
-// import { DownloadFile } from '@/api/common'
 import XLSX from 'xlsx'
 import FileSaver from 'file-saver'
 export default {

@@ -4,16 +4,16 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button type="primary" @click="addDataDialog">
+            <el-button v-if="buttons.includes('DyeLineData/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <el-button type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('DyeLineData/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <el-button v-if="buttons.includes('DyeLineData/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
-            <el-button @click="exportDataDialog">
+            <el-button v-if="buttons.includes('DyeLineData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
@@ -22,18 +22,20 @@
           <div style="float: right;">
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
               <el-button
-                size="small"
-                icon="el-icon-refresh"
+                v-if="buttons.includes('DyeLineData/modify')"
+                type="primary"
+                size="mini"
+                icon="el-icon-edit"
                 circle
-                @click="refreshTableData"
+                @click="handleModify(scope.$index, scope.row)"
               />
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
               <el-button
-                size="small"
-                icon="el-icon-warning-outline"
+                v-if="buttons.includes('DyeLineData/delete')"
+                type="danger"
+                size="mini"
+                icon="el-icon-delete"
                 circle
-                @click="helpTips"
+                @click="handleDelete(scope.$index, scope.row)"
               />
             </el-tooltip>
           </div>

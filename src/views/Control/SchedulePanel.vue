@@ -152,19 +152,19 @@
               <div class="box-button">
                 <el-row>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="computeDialogMain">
+                    <el-button v-if="buttons.includes('SchedulePanel/computeDialogMain')" type="primary" plain @click="computeDialogMain">
                       <i class="el-icon-monitor" />
                       计算AI排程
                     </el-button>
                   </el-col>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="computeDialogSmall">
+                    <el-button v-if="buttons.includes('SchedulePanel/computeDialogSmall')" type="primary" plain @click="computeDialogSmall">
                       <i class="el-icon-monitor" />
                       计算点胶排程
                     </el-button>
                   </el-col>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="computeDialogBoth">
+                    <el-button v-if="buttons.includes('SchedulePanel/computeDialogBoth')" type="primary" plain @click="computeDialogBoth">
                       <i class="el-icon-monitor" />
                       计算AI点胶
                     </el-button>
@@ -174,19 +174,19 @@
               <div class="box-button">
                 <el-row>
                   <el-col :span="8">
-                    <el-button type="stopBtn" plain @click="stopTabu">
+                    <el-button v-if="buttons.includes('SchedulePanel/stopTabu')" type="stopBtn" plain @click="stopTabu">
                       <i class="el-icon-warning-outline" />
                       终止深度搜索
                     </el-button>
                   </el-col>
                   <el-col :span="8">
-                    <el-button type="stopBtn" plain @click="stopSchedule">
+                    <el-button v-if="buttons.includes('SchedulePanel/stopSchedule')" type="stopBtn" plain @click="stopSchedule">
                       <i class="el-icon-warning-outline" />
                       终止计算排程
                     </el-button>
                   </el-col>
                   <el-col :span="8">
-                    <el-button type="pushBtn" plain @click="post_statistics">
+                    <el-button v-if="buttons.includes('SchedulePanel/post_statistics')" type="pushBtn" plain @click="post_statistics">
                       <i class="el-icon-upload2" />
                       推送量化结果
                     </el-button>
@@ -230,19 +230,19 @@
                   <div class="box-button">
                     <el-row>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadSchedule">
+                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadSchedule">
                           <i class="el-icon-download" />
                           下载最新排程
                         </el-button>
                       </el-col>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadIdleInfo">
+                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadIdleInfo">
                           <i class="el-icon-download" />
                           下载idle明细
                         </el-button>
                       </el-col>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadStatistics">
+                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadStatistics">
                           <i class="el-icon-download" />
                           下载量化结果
                         </el-button>
@@ -252,7 +252,7 @@
                   <div class="box-button">
                     <el-row>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadNoProgram">
+                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadNoProgram">
                           <i class="el-icon-download" />
                           下载无程序表
                         </el-button>
@@ -292,19 +292,19 @@
                   <div class="box-button">
                     <el-row>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadScheduleSmall">
+                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadScheduleSmall">
                           <i class="el-icon-download" />
                           下载最新排程
                         </el-button>
                       </el-col>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadIdleInfoSmall">
+                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadIdleInfoSmall">
                           <i class="el-icon-download" />
                           下载idle明细
                         </el-button>
                       </el-col>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadStatisticsSmall">
+                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadStatisticsSmall">
                           <i class="el-icon-download" />
                           下载量化结果
                         </el-button>
@@ -313,7 +313,7 @@
                     <div class="box-button">
                       <el-row>
                         <el-col :span="8">
-                          <el-button type="primary" plain @click="downloadNoProgramSmall">
+                          <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadNoProgramSmall">
                             <i class="el-icon-download" />
                             下载无程序表
                           </el-button>
@@ -354,7 +354,7 @@
                   <div class="box-button">
                     <el-row>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadLatestLog">
+                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadLatestLog">
                           <i class="el-icon-download" />
                           下载最新日志
                         </el-button>
@@ -381,7 +381,7 @@
             :style="{width: '70%'}"
             value-format="yyyy-MM-dd"
           />
-          <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="modifyHoliday">
+          <el-button v-if="buttons.includes('SchedulePanel/modifyHoliday')" type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="modifyHoliday">
             修改包装放假
           </el-button>
         </el-card>
@@ -851,7 +851,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'buttons'
     ])
   },
   created() {
