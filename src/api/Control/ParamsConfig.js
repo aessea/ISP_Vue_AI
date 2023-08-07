@@ -1,9 +1,10 @@
 import request from '../../utils/request'
 // 获取数据
-export function GetTableData() {
+export function GetTableData(data) {
   return request({
     url: '/Control/ParamsConfig/get_table_data/',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 // 修改数据
@@ -27,5 +28,12 @@ export function ExportData() {
   return request({
     url: '/Control/ParamsConfig/export_data/',
     method: 'get'
+  })
+}
+// 测试库指定数据库的数据
+export function SyncDatabaseData() {
+  return request({
+    method: 'get',
+    url: '/Control/ParamsConfig/sync_data/'
   })
 }

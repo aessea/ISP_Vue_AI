@@ -14,6 +14,9 @@ import DayConfigRouter from './modules/DayConfig'
 import LongConfigRouter from './modules/LongConfig'
 import PredictRouter from './modules/Predict'
 import FileManageRouter from './modules/FileManage'
+import LoggingRouter from './modules/Logging'
+import SchedulePanelRouter from './modules/SchedulePanel'
+import PermissionRouter from './modules/Permission'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -92,75 +95,7 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  {
-    path: '/control',
-    component: Layout,
-    redirect: '/control/schedulepanel',
-    alwaysShow: true,
-    name: 'Control',
-    meta: {
-      title: '控制面板',
-      icon: 'component',
-      roles: ['admin', 'common', 'senioradmin']
-    },
-    children: [
-      {
-        path: 'schedulepanel',
-        component: () => import('@/views/Control/SchedulePanel'),
-        name: 'SchedulePanel',
-        meta: {
-          title: 'AI点胶排程',
-          roles: ['admin', 'common', 'senioradmin']
-        }
-      },
-      // {
-      //   path: 'config',
-      //   component: () => import('@/views/Control/Config'),
-      //   name: 'Config',
-      //   meta: {
-      //     title: '排程配置',
-      //     roles: ['admin', 'common']
-      //   }
-      // },
-      {
-        path: 'paramsconfig',
-        component: () => import('@/views/Control/ParamsConfig'),
-        name: 'ParamsConfig',
-        meta: {
-          title: '排程配置表',
-          roles: ['admin', 'common', 'senioradmin']
-        }
-      },
-      {
-        path: 'analysiscontrol',
-        component: () => import('@/views/Control/AnalysisControl'),
-        name: 'AnalysisControl',
-        meta: {
-          title: '分析推送面板',
-          roles: ['AnalysisControl']
-        }
-      }
-      // {
-      //   path: 'onlinetable',
-      //   component: () => import('@/views/Control/OnlineTable'),
-      //   name: 'OnlineTable',
-      //   meta: {
-      //     title: '在线表格',
-      //     roles: ['admin', 'common', 'senioradmin']
-      //   }
-      // }
-      // {
-      //   path: 'outsourcecontrol',
-      //   component: () => import('@/views/Control/OutsourceControl'),
-      //   name: 'OutsourceControl',
-      //   meta: {
-      //     title: '外包控制面板',
-      //     roles: ['admin', 'common']
-      //   }
-      // }
-    ]
-  },
-
+  SchedulePanelRouter,
   DayConfigRouter,
   LongConfigRouter,
   PredictRouter,
@@ -168,74 +103,8 @@ export const asyncRoutes = [
   // OutsourceConstraintsRouter,
   // OutsourceBaseDataRouter,
   // OutsourceOtherDataRouter,
-
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: '权限管理',
-      icon: 'lock',
-      roles: ['admin']
-    },
-    children: [
-      {
-        path: 'role',
-        component: () => import('@/views/Permission/RolePermission'),
-        name: 'RolePermission',
-        meta: {
-          title: '用户权限',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
-  {
-    path: '/historylog',
-    component: Layout,
-    redirect: '/historylog/loggingdb',
-    alwaysShow: true,
-    name: 'Logging',
-    meta: {
-      title: '日志系统',
-      icon: 'documentation',
-      roles: ['admin', 'common', 'senioradmin']
-    },
-    children: [
-      {
-        path: 'historyrun',
-        component: () => import('@/views/HistoryLog/HistoryRun'),
-        name: 'HistoryRun',
-        meta: {
-          title: '运行日志',
-          roles: ['admin', 'common', 'senioradmin'],
-          noCache: true
-        }
-      },
-      {
-        path: 'historyopera',
-        component: () => import('@/views/HistoryLog/HistoryOpera'),
-        name: 'HistoryOpera',
-        meta: {
-          title: '历史操作',
-          roles: ['admin', 'common', 'senioradmin'],
-          noCache: true
-        }
-      },
-      {
-        path: 'scheduleresdata',
-        component: () => import('@/views/HistoryLog/ScheduleResData'),
-        name: 'ScheduleResData',
-        meta: {
-          title: '历史排程数据',
-          roles: ['ScheduleResData'],
-          noCache: true
-        }
-      }
-    ]
-  },
+  PermissionRouter,
+  LoggingRouter,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
