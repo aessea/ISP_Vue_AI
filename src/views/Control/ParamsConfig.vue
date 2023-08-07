@@ -44,12 +44,10 @@
               @selection-change="handleSelectionChange"
             >
               <el-table-column type="selection" width="55" />
-              <el-table-column prop="param_type" label="配置类别" width="130" sortable>
+              <el-table-column prop="param_classify" label="配置分类" width="200" sortable>
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_type === 'AI'" size="small" type="primary">AI配置</el-tag>
-                  <el-tag v-else-if="scope.row.param_type === 'DJ'" size="small" type="primary">点胶配置</el-tag>
-                  <el-tag v-else-if="scope.row.param_type === 'other'" size="small" type="primary">其它配置</el-tag>
-                  <el-tag v-else size="small" type="info">未知</el-tag>
+                  <el-tag v-if="scope.row.param_classify === '未知分类'" size="small" type="info">{{ scope.row.param_classify }}</el-tag>
+                  <el-tag v-else size="small" type="primary">{{ scope.row.param_classify }}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column prop="param_name_front" label="配置名" sortable>
@@ -101,12 +99,10 @@
               @selection-change="handleSelectionChange"
             >
               <el-table-column type="selection" width="55" />
-              <el-table-column prop="param_type" label="配置类别" width="130" sortable>
+              <el-table-column prop="param_classify" label="配置分类" width="200" sortable>
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_type === 'AI'" size="small" type="primary">AI配置</el-tag>
-                  <el-tag v-else-if="scope.row.param_type === 'DJ'" size="small" type="primary">点胶配置</el-tag>
-                  <el-tag v-else-if="scope.row.param_type === 'other'" size="small" type="primary">其它配置</el-tag>
-                  <el-tag v-else size="small" type="info">未知</el-tag>
+                  <el-tag v-if="scope.row.param_classify === '未知分类'" size="small" type="info">{{ scope.row.param_classify }}</el-tag>
+                  <el-tag v-else size="small" type="primary">{{ scope.row.param_classify }}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column prop="param_name_front" label="配置名" sortable>
@@ -158,12 +154,10 @@
               @selection-change="handleSelectionChange"
             >
               <el-table-column type="selection" width="55" />
-              <el-table-column prop="param_type" label="配置类别" width="130" sortable>
+              <el-table-column prop="param_classify" label="配置分类" width="200" sortable>
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_type === 'AI'" size="small" type="primary">AI配置</el-tag>
-                  <el-tag v-else-if="scope.row.param_type === 'DJ'" size="small" type="primary">点胶配置</el-tag>
-                  <el-tag v-else-if="scope.row.param_type === 'other'" size="small" type="primary">其它配置</el-tag>
-                  <el-tag v-else size="small" type="info">未知</el-tag>
+                  <el-tag v-if="scope.row.param_classify === '未知分类'" size="small" type="info">{{ scope.row.param_classify }}</el-tag>
+                  <el-tag v-else size="small" type="primary">{{ scope.row.param_classify }}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column prop="param_name_front" label="配置名" sortable>
@@ -240,7 +234,7 @@
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.param_name_front" prop="param_name_front" label="配置名">
-              <el-input v-model="model.param_name_front" placeholder="请输入" clearable />
+              <el-input v-model="model.param_name_front" placeholder="请输入" clearable disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
@@ -273,7 +267,7 @@
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.serial_number" prop="serial_number" label="序号（用于设置配置显示顺序）">
-              <el-input v-model="model.serial_number" placeholder="请输入" clearable />
+              <el-input v-model="model.serial_number" placeholder="请输入" disabled clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -389,6 +383,7 @@ export default {
       model: {
         id: '',
         param_type: '',
+        param_classify: '',
         param_name_backend: '',
         param_name_front: '',
         param_value: '',
@@ -407,6 +402,7 @@ export default {
       modelOriginal: {
         id: '',
         param_type: '',
+        param_classify: '',
         param_name_backend: '',
         param_name_front: '',
         param_value: '',
@@ -447,7 +443,8 @@ export default {
         { label: 'AI配置', value: 'AI' },
         { label: '点胶配置', value: 'DJ' },
         { label: '其它配置', value: 'other' }
-      ]
+      ],
+      all_role_list: []
     }
   },
   computed: {
@@ -489,6 +486,8 @@ export default {
           this.table_data_ai = res.table_data_ai
           this.table_data_dj = res.table_data_dj
           this.table_data_other = res.table_data_other
+          this.param_classify_options = res.param_classify_options
+          this.all_role_list = res.all_role_list
           this.total_num = res.total_num
           this.loading = false
         }
