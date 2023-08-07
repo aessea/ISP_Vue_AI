@@ -88,7 +88,7 @@
               <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">否</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="process_order" label="制程分配点数的优先顺序" sortable />
+          <el-table-column prop="process_order" label="制程分配点数的优先顺序" width="220" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
