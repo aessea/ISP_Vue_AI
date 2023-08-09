@@ -12,7 +12,7 @@ const LongConfigRouter = {
     icon: 'el-icon-setting',
     roles: ['MP1AddLineData', 'NotMP1AddLineData', 'ExchangeLineData', 'LineData', 'CapacityChangeData', 'OptimizedMachineData',
       'ProcessData', 'EarlyDueDateBoard8', 'ChangeLineData', 'PairedSMTMachineData', 'CorrespondenceData', 'KeyBoardSpecialModel',
-      'DispensingBeforeAIMachine', 'InterfaceConfig', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData',
+      'DispensingBeforeAIMachine', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData',
       'ProcessSequenceMap', 'CustomerData']
   },
   children: [
@@ -158,15 +158,6 @@ const LongConfigRouter = {
       meta: {
         title: '先点胶后AI特殊机种表',
         roles: ['DispensingBeforeAIMachine']
-      }
-    },
-    {
-      path: 'interfaceconfig',
-      component: () => import('@/views/LongConfig/InterfaceConfig'),
-      name: 'InterfaceConfig',
-      meta: {
-        title: '对接MES接口配置表',
-        roles: ['InterfaceConfig']
       }
     },
     {
