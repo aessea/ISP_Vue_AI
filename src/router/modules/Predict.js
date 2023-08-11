@@ -39,6 +39,15 @@ const PredictRouter = {
         title: '车间指定CT表',
         roles: ['admin', 'common', 'senioradmin']
       }
+    },
+    {
+      path: 'traindatamap',
+      component: () => import('@/views/Predict/TrainDataMap'),
+      name: 'TrainDataMap',
+      meta: {
+        title: '新线体预测参考表',
+        roles: ['TrainDataMap']
+      }
     }
   ]
 }
