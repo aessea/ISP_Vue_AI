@@ -10,7 +10,8 @@ const DayConfigRouter = {
   meta: {
     title: '每日配置',
     icon: 'el-icon-setting',
-    roles: ['BlockTimeData', 'PackHoliday', 'ProgramData', 'ProductionReportData', 'NoProgramData', 'NetworkBoard', 'TestProgramData', 'ProductProgramData']
+    roles: ['BlockTimeData', 'PackHoliday', 'ProgramData', 'ProductionReportData', 'NoProgramData',
+      'NetworkBoard', 'TestProgramData', 'ProductProgramData', 'PackagingLineHoliday']
   },
   children: [
     {
@@ -20,6 +21,15 @@ const DayConfigRouter = {
       meta: {
         title: '维护时间表',
         roles: ['BlockTimeData']
+      }
+    },
+    {
+      path: 'packaginglineHoliday',
+      component: () => import('@/views/DayConfig/PackagingLineHoliday'),
+      name: 'PackagingLineHoliday',
+      meta: {
+        title: '包装线提前天数表',
+        roles: ['PackagingLineHoliday']
       }
     },
     {
