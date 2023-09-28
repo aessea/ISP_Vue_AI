@@ -81,14 +81,15 @@
               <el-tag v-else-if="scope.row.first_second_combination_flag === 0" size="small" type="danger">否</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="buffer_time" label="上下板间隔时间" width="130" />
+          <el-table-column prop="buffer_time" label="上下板间隔时间(小时)" width="130" />
           <el-table-column prop="is_point" label="是否按点数" width="120">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.is_point === true" size="small" type="success">是</el-tag>
               <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">否</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="process_order" label="制程分配点数的优先顺序" width="220" sortable />
+          <el-table-column prop="upper_completed_buffer_time" label="上阶完工上下板间隔时间(小时)" width="220" />
+          <el-table-column prop="upper_in_production_buffer_time" label="上阶在产上下板间隔时间(小时)" width="220" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -192,7 +193,7 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.buffer_time" prop="buffer_time" label="上下板间隔时间">
+              <el-form-item :rules="rules.buffer_time" prop="buffer_time" label="上下板间隔时间(小时)">
                 <el-input-number v-model="model.buffer_time" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
@@ -204,6 +205,18 @@
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.process_order" prop="process_order" label="制程分配点数的优先顺序">
                 <el-input v-model="model.process_order" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.upper_completed_buffer_time" prop="upper_completed_buffer_time" label="上阶完工上下板间隔时间(小时)">
+                <el-input-number v-model="model.upper_completed_buffer_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.upper_in_production_buffer_time" prop="upper_in_production_buffer_time" label="上阶在产上下板间隔时间(小时)">
+                <el-input-number v-model="model.upper_in_production_buffer_time" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -387,6 +400,8 @@ export default {
         is_point: '',
         buffer_time: 0,
         onehot_code: '',
+        upper_completed_buffer_time: 0,
+        upper_in_production_buffer_time: 0,
         enable: false
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
@@ -404,6 +419,8 @@ export default {
         is_point: '',
         buffer_time: 0,
         onehot_code: '',
+        upper_completed_buffer_time: 0,
+        upper_in_production_buffer_time: 0,
         enable: false
       },
       rules: {
