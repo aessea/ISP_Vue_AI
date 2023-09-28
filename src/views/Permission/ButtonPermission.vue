@@ -269,7 +269,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/Permission/ButtonPermission.scss';
+  @import '../../assets/css/utils/TablePage';
 </style>
 <style>
 .btnDanger{

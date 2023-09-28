@@ -636,7 +636,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/LongConfig/CorrespondenceData.scss';
+  @import '../../assets/css/utils/TablePage';
 </style>
 <style>
 .btnDanger{

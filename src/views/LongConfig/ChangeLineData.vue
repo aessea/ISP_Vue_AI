@@ -683,7 +683,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/LongConfig/ChangeLineData.scss';
+  @import '../../assets/css/utils/TablePage';
 </style>
 <style>
 .btnDanger{
