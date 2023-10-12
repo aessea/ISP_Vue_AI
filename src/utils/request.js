@@ -50,11 +50,11 @@ service.interceptors.response.use(
     }
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
-      Message({
-        message: res.message || '请求出错',
-        type: 'error',
-        duration: 5 * 1000
-      })
+      // Message({
+      //   message: res.message || '请求出错',
+      //   type: 'error',
+      //   duration: 5 * 1000
+      // })
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
@@ -69,19 +69,37 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.message))
     } else {
       return res
     }
   },
   error => {
     console.log('err' + error) // for debug
+    console.log('status:', error.status)
+    let error_message = '请求出错'
+    // 网络超时异常处理
+    if (error.message.includes('timeout')) {
+      error_message = '请求超时，请稍后重试'
+    } else if (error.code === 'ECONNABORTED' || error.message === 'Network Error') {
+      error_message = '连接异常，请检查网络后重新操作'
+    } else if (error.message.includes('code 500')) {
+      error_message = '服务器后台错误，请联系技术人员 500'
+    } else if (error.message.includes('code 502')) {
+      error_message = '服务器网关错误，请联系技术人员 502'
+    } else if (error.message.includes('code 404')) {
+      error_message = '请求的资源不存在 404'
+    } else if (error.message.includes('code 403')) {
+      error_message = '服务器拒绝执行请求，请联系技术人员 403'
+    } else if (error.message.includes('code 400')) {
+      error_message = '客户端发送了一个不正确的请求，服务器无法理解或处理 400'
+    }
     Message({
-      message: error.message,
+      message: error_message,
       type: 'error',
       duration: 5 * 1000
     })
-    return Promise.reject(error)
+    return Promise.reject(new Error(error_message))
   }
 )
 
