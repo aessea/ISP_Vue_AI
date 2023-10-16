@@ -4,16 +4,16 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button v-if="buttons.includes('ProcessData/add')" type="primary" @click="addDataDialog">
+            <el-button v-if="buttons.includes('DelayPackingLine/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <!-- <el-button v-if="buttons.includes('ProcessData/delete')" type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('DelayPackingLine/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button v-if="buttons.includes('ProcessData/import')" @click="importDataDialog">
+            <el-button v-if="buttons.includes('DelayPackingLine/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
-            </el-button> -->
-            <el-button v-if="buttons.includes('ProcessData/export')" @click="exportDataDialog">
+            </el-button>
+            <el-button v-if="buttons.includes('DelayPackingLine/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
@@ -22,18 +22,20 @@
           <div style="float: right;">
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
               <el-button
-                size="small"
-                icon="el-icon-refresh"
+                v-if="buttons.includes('DelayPackingLine/modify')"
+                type="primary"
+                size="mini"
+                icon="el-icon-edit"
                 circle
-                @click="refreshTableData"
+                @click="handleModify(scope.$index, scope.row)"
               />
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
               <el-button
-                size="small"
-                icon="el-icon-warning-outline"
+                v-if="buttons.includes('DelayPackingLine/delete')"
+                type="danger"
+                size="mini"
+                icon="el-icon-delete"
                 circle
-                @click="helpTips"
+                @click="handleDelete(scope.$index, scope.row)"
               />
             </el-tooltip>
           </div>
@@ -51,49 +53,11 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="name" label="制程" width="90" sortable fixed />
-          <el-table-column prop="enable" label="是否启用该制程" width="130">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.enable === true" size="small" type="success">启用</el-tag>
-              <el-tag v-else size="small" type="danger">关闭</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="TB" label="面" width="50" />
-          <el-table-column prop="paired_process" label="配对制程名" width="100" />
-          <el-table-column prop="grouping_factor_day" label="第一块和第二块工单划分参数" width="240" />
-          <el-table-column prop="grouping_factor_overtime" label="第三块划分参数" width="160" />
-          <el-table-column prop="grouping_factor_hour" label="第二块工单控制大小" width="170" />
-          <el-table-column prop="grouping_combination_flag" label="第三块是否可并" width="130">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.grouping_combination_flag === 1" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.grouping_combination_flag === 0" size="small" type="danger">否</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="first_second_flag" label="第一块和第二块是否可并" width="180">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.first_second_flag === 1" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.first_second_flag === 0" size="small" type="danger">否</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="first_second_combination_flag" label="没有第三块时，前两块是否可以合并" width="260">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.first_second_combination_flag === 1" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.first_second_combination_flag === 0" size="small" type="danger">否</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="buffer_time" label="上下板间隔时间(小时)" width="130" />
-          <el-table-column prop="is_point" label="是否按点数" width="120">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_point === true" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">否</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="upper_completed_buffer_time" label="上阶完工上下板间隔时间(小时)" width="220" />
-          <el-table-column prop="upper_in_production_buffer_time" label="上阶在产上下板间隔时间(小时)" width="220" />
+          <el-table-column prop="packing_line_name" label="包装线" sortable />
+          <el-table-column prop="delay_value" label="延后时间(单位:天)" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
-                v-if="buttons.includes('ProcessData/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -101,7 +65,6 @@
                 @click="handleModify(scope.$index, scope.row)"
               />
               <el-button
-                v-if="buttons.includes('ProcessData/delete')"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -131,97 +94,20 @@
       :before-close="handleFormClose"
       @dragDialog="handleDrag"
     >
-      <el-card class="card-form" shadow="never">
-        <el-form ref="$form" :model="model" label-position="left" size="small">
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.name" prop="name" label="制程">
-                <el-input v-model="model.name" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.enable" prop="enable" label="是否启用该制程">
-                <el-switch v-model="model.enable" style="width: 100%;" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.TB" prop="TB" label="面">
-                <el-select v-model="model.TB" placeholder="Top面/Button面/Single面" :style="{width: '100%'}">
-                  <el-option v-for="(item) in TBOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.paired_process" prop="paired_process" label="配对制程名">
-                <el-input v-model="model.paired_process" placeholder="对应的另一面，如果是单面则为空" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_factor_day" prop="grouping_factor_day" label="第一块和第二块工单划分参数">
-                <el-input-number v-model="model.grouping_factor_day" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_factor_overtime" prop="grouping_factor_overtime" label="第三块划分参数">
-                <el-input-number v-model="model.grouping_factor_overtime" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_factor_hour" prop="grouping_factor_hour" label="第二块工单控制大小">
-                <el-input-number v-model="model.grouping_factor_hour" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.first_second_flag" prop="first_second_flag" label="第一块和第二块是否可并">
-                <el-input v-model="model.first_second_flag" placeholder="0否,1是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_combination_flag" prop="grouping_combination_flag" label="第三块是否可并">
-                <el-input v-model="model.grouping_combination_flag" placeholder="0否,1是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.first_second_combination_flag" prop="first_second_combination_flag" label="没有第三块时，前两块是否可以合并">
-                <el-input v-model="model.first_second_combination_flag" placeholder="0否,1是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.buffer_time" prop="buffer_time" label="上下板间隔时间(小时)">
-                <el-input-number v-model="model.buffer_time" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_point" prop="is_point" label="是否按点数">
-                <el-switch v-model="model.is_point" style="width: 100%;" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process_order" prop="process_order" label="制程分配点数的优先顺序">
-                <el-input v-model="model.process_order" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.upper_completed_buffer_time" prop="upper_completed_buffer_time" label="上阶完工上下板间隔时间(小时)">
-                <el-input-number v-model="model.upper_completed_buffer_time" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.upper_in_production_buffer_time" prop="upper_in_production_buffer_time" label="上阶在产上下板间隔时间(小时)">
-                <el-input-number v-model="model.upper_in_production_buffer_time" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </el-card>
+      <el-form ref="$form" :model="model" label-position="left" size="small">
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.packing_line_name" prop="packing_line_name" label="包装线">
+              <el-input v-model="model.packing_line_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.delay_value" prop="delay_value" label="延后时间(单位:天)">
+              <el-input v-model="model.delay_value" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
         <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
@@ -250,26 +136,6 @@
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="name" label="制程名" width="90" />
-        <el-table-column prop="TB" label="面" width="60" />
-        <el-table-column prop="paired_process" label="配对制程名" width="100" />
-        <el-table-column prop="grouping_factor_day" label="第一块和第二块工单划分参数(天)" width="240" />
-        <el-table-column prop="grouping_factor_hour" label="第二块工单控制大小(时)" width="190" />
-        <el-table-column prop="grouping_factor_overtime" label="第三块划分参数(天)" width="160" />
-        <el-table-column prop="grouping_combination_flag" label="第三块是否可并(0否,1是)" width="180" />
-        <el-table-column prop="first_second_combination_flag" label="没有第三块时，前两块是否可并(0否,1是)" width="280" />
-        <el-table-column prop="buffer_time" label="上下板间隔时间" width="130" />
-        <el-table-column prop="is_point" label="是否按点数" width="110" />
-      </el-table>
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
@@ -330,10 +196,9 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/ProcessData'
-import { LineOptions } from '@/utils/items'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/DelayPackingLine'
 export default {
-  name: 'ProcessData',
+  name: 'DelayPackingLine',
   directives: { elDragDialog },
   data() {
     return {
@@ -344,31 +209,6 @@ export default {
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExample: [
-        {
-          name: 'T',
-          TB: 'T',
-          paired_process: 'B',
-          grouping_factor_day: 2.0,
-          grouping_factor_hour: 0.0,
-          grouping_factor_overtime: 4.0,
-          grouping_combination_flag: 1,
-          first_second_combination_flag: 0,
-          is_point: 'TRUE',
-          buffer_time: 8.0
-        }, {
-          name: '(必填)',
-          TB: '(必填)',
-          paired_process: '(必填)',
-          grouping_factor_day: '(必填)',
-          grouping_factor_hour: '(必填)',
-          grouping_factor_overtime: '(必填)',
-          grouping_combination_flag: '(必填)',
-          first_second_combination_flag: '(必填)',
-          is_point: '(必填)',
-          buffer_time: '(必填)'
-        }
-      ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -388,111 +228,32 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        name: '',
-        TB: '',
-        paired_process: '',
-        grouping_factor_day: 0,
-        grouping_factor_hour: 0,
-        grouping_factor_overtime: 0,
-        grouping_combination_flag: '',
-        first_second_combination_flag: '',
-        process_order: '',
-        is_point: '',
-        buffer_time: 0,
-        onehot_code: '',
-        upper_completed_buffer_time: 0,
-        upper_in_production_buffer_time: 0,
-        enable: false
+        packing_line_name: '',
+        delay_value: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
         name: '',
-        TB: '',
-        paired_process: '',
-        grouping_factor_day: 0,
-        grouping_factor_hour: 0,
-        grouping_factor_overtime: 0,
-        grouping_combination_flag: '',
-        first_second_combination_flag: '',
-        process_order: '',
-        is_point: '',
-        buffer_time: 0,
-        onehot_code: '',
-        upper_completed_buffer_time: 0,
-        upper_in_production_buffer_time: 0,
-        enable: false
+        delay_value: ''
       },
       rules: {
-        name: [{
-          required: true,
-          message: '制程不能为空',
-          trigger: 'blur'
-        }],
-        TB: [{
-          required: true,
-          message: '面不能为空',
-          trigger: 'change'
-        }],
-        paired_process: [{
-        }],
-        grouping_factor_day: [{
-          required: true,
-          message: '第一块和第二块工单划分参数(天)不能为空',
-          trigger: 'blur'
-        }],
-        grouping_factor_hour: [{
-          required: true,
-          message: '第二块工单控制大小(时)不能为空',
-          trigger: 'blur'
-        }],
-        grouping_factor_overtime: [{
-          required: true,
-          message: '第三块划分参数(天)不能为空',
-          trigger: 'blur'
-        }],
-        grouping_combination_flag: [{
-          required: true,
-          message: '第三块是否可并不能为空',
-          trigger: 'blur'
-        }],
-        first_second_combination_flag: [{
-          required: true,
-          message: '没有第三块时，前两块是否可并不能为空',
-          trigger: 'blur'
-        }],
-        is_point: [{
-          required: true,
-          message: '是否按点数不能为空',
-          trigger: 'blur'
-        }],
-        buffer_time: [{
-          required: true,
-          message: '上下板间隔时间不能为空',
-          trigger: 'blur'
-        }],
-        enable: [{
+        packing_line_name: [{
           required: true,
           message: '不能为空',
           trigger: 'blur'
         }],
-        process_order: [{
+        delay_value: [{
           required: true,
           message: '不能为空',
           trigger: 'blur'
         }]
       },
-      line_name_data: LineOptions, // 维护线别
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
       pageSize: 20, // 每页多少条数据
-      dataTableSelections: [], // 表格选中的数据
-      TBOptions: [
-        { label: 'T', value: 'T' },
-        { label: 'B', value: 'B' },
-        { label: 'S', value: 'S' }
-      ]
+      dataTableSelections: [] // 表格选中的数据
     }
   },
   computed: {
@@ -511,15 +272,6 @@ export default {
     // dialog可拖拽
     handleDrag() {
       // this.$refs.select.blur()
-    },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 20) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 20) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
-      return ''
     },
     // 分页
     handlePageChange(val) {
@@ -570,7 +322,7 @@ export default {
               })
               setTimeout(() => {
                 this.closeFormDialog()
-              }, 2000)
+              }, 1000)
               this.refreshTableData(true)
             }
           })
@@ -631,7 +383,6 @@ export default {
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
-      // 显示表单数据
       // 显示表单数据
       for (const key in this.model) {
         this.model[key] = row[key]
@@ -707,14 +458,8 @@ export default {
     closeFormDialog() {
       this.dataDialogVisible = false
       for (const key in this.model) {
-        var isNum = /^[0-9]+.?[0-9]*/
-        if (isNum.test(this.model[key])) { // 数字要初始化为0
-          this.model[key] = 0
-          this.modelOriginal[key] = 0
-        } else {
-          this.model[key] = ''
-          this.modelOriginal[key] = ''
-        }
+        this.model[key] = ''
+        this.modelOriginal[key] = ''
       }
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
@@ -728,7 +473,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['name'] = row.name
+        data['param_description'] = row.param_description
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -789,7 +534,7 @@ export default {
           // 1秒后自动关闭窗口
           setTimeout(() => {
             this.handleImportClose()
-          }, 2000)
+          }, 1000)
           this.refreshTableData(true)
         }
       }).catch(err => {

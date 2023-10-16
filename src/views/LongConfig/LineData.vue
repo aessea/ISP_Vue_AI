@@ -51,7 +51,7 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="name" label="产线名字" width="110" sortable />
+          <el-table-column prop="name" label="产线名字" width="110" sortable fixed />
           <el-table-column prop="enable" label="是否启用该线体" width="130">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.enable === true" size="small" type="success">启用</el-tag>
