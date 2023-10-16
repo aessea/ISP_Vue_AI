@@ -10,7 +10,7 @@ const PredictRouter = {
   meta: {
     title: '预测数据',
     icon: 'el-icon-coin',
-    roles: ['admin', 'common', 'senioradmin']
+    roles: ['TrainLEDTData', 'TrainData', 'FixedCTData', 'TrainDataMap']
   },
   children: [
     {
@@ -19,7 +19,7 @@ const PredictRouter = {
       name: 'TrainLEDTData',
       meta: {
         title: 'LED训练数据',
-        roles: ['admin', 'common', 'senioradmin']
+        roles: ['TrainLEDTData']
       }
     },
     {
@@ -28,7 +28,7 @@ const PredictRouter = {
       name: 'TrainData',
       meta: {
         title: '训练数据',
-        roles: ['admin', 'common', 'senioradmin']
+        roles: ['TrainData']
       }
     },
     {
@@ -37,7 +37,7 @@ const PredictRouter = {
       name: 'FixedCTData',
       meta: {
         title: '车间指定CT表',
-        roles: ['admin', 'common', 'senioradmin']
+        roles: ['FixedCTData']
       }
     },
     {
