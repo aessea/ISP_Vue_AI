@@ -4,16 +4,16 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button v-if="buttons.includes('DJHoliday/add')" type="primary" @click="addDataDialog">
+            <el-button v-if="buttons.includes('CustomerData/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <el-button v-if="buttons.includes('DJHoliday/delete')" type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('CustomerData/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button v-if="buttons.includes('DJHoliday/import')" @click="importDataDialog">
+            <el-button v-if="buttons.includes('CustomerData/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
-            <el-button v-if="buttons.includes('DJHoliday/export')" @click="exportDataDialog">
+            <el-button v-if="buttons.includes('CustomerData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
@@ -51,13 +51,12 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="go_where" label="去向" sortable />
-          <el-table-column prop="holiday_begin" label="放假开始时间" sortable />
-          <el-table-column prop="holiday_end" label="放假结束时间" sortable />
+          <el-table-column prop="name" label="客户名称" sortable />
+          <el-table-column prop="identification" label="客户识别码" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
-                v-if="buttons.includes('DJHoliday/modify')"
+                v-if="buttons.includes('CustomerData/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -65,7 +64,7 @@
                 @click="handleModify(scope.$index, scope.row)"
               />
               <el-button
-                v-if="buttons.includes('DJHoliday/delete')"
+                v-if="buttons.includes('CustomerData/delete')"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -97,26 +96,20 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.go_where" prop="go_where" label="去向">
-              <el-input v-model="model.go_where" placeholder="请输入" clearable />
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.name" prop="name" label="客户名称">
+              <el-input v-model="model.name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.holiday_begin" prop="holiday_begin" label="放假开始时间">
-              <el-date-picker v-model="model.holiday_begin" type="datetime" placeholder="请选择" value-format="yyyy-MM-dd HH:00:00" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.holiday_end" prop="holiday_end" label="放假结束时间">
-              <el-date-picker v-model="model.holiday_end" type="datetime" placeholder="请选择" value-format="yyyy-MM-dd HH:00:00" :style="{width: '100%'}" />
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.identification" prop="identification" label="客户识别码">
+              <el-input v-model="model.identification" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="addDataAndContinue">添加并继续</el-button>
         <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
         <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">确认修改</el-button>
       </span>
@@ -143,19 +136,6 @@
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="go_where" label="去向" />
-        <el-table-column prop="holiday_begin" label="放假开始时间" />
-        <el-table-column prop="holiday_end" label="放假结束时间" />
-      </el-table>
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
@@ -216,10 +196,9 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/DayConfig/DJHoliday'
-import { LineOptions } from '@/utils/items'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/CustomerData'
 export default {
-  name: 'DJHoliday',
+  name: 'CustomerData',
   directives: { elDragDialog },
   data() {
     return {
@@ -230,17 +209,6 @@ export default {
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExample: [
-        {
-          go_where: 'CL01',
-          holiday_begin: '2022-10-01',
-          holiday_end: '2022-10-02'
-        }, {
-          go_where: '(必填)',
-          holiday_begin: '(必填)',
-          holiday_end: '(必填)'
-        }
-      ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -260,35 +228,27 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        go_where: '',
-        holiday_begin: '',
-        holiday_end: ''
+        name: '',
+        identification: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        go_where: '',
-        holiday_begin: '',
-        holiday_end: ''
+        name: '',
+        identification: ''
       },
       rules: {
-        go_where: [{
+        name: [{
           required: true,
-          message: '包装线不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
-        holiday_begin: [{
+        identification: [{
           required: true,
-          message: '放假开始时间不能为空',
-          trigger: 'blur'
-        }],
-        holiday_end: [{
-          required: true,
-          message: '放假结束时间不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }]
       },
-      line_name_data: LineOptions, // 维护线别
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
@@ -312,15 +272,6 @@ export default {
     // dialog可拖拽
     handleDrag() {
       // this.$refs.select.blur()
-    },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 2) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 2) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
-      return ''
     },
     // 分页
     handlePageChange(val) {
@@ -372,36 +323,6 @@ export default {
               setTimeout(() => {
                 this.closeFormDialog()
               }, 1000)
-              this.refreshTableData(true)
-            }
-          })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '提交失败，请按照要求填写数据！'
-          })
-        }
-      })
-    },
-    // 添加数据
-    addDataAndContinue() {
-      this.isClick = true
-      const data = this.model
-      data['user_name'] = this.name
-      this.$refs['$form'].validate((valid) => {
-        if (valid) {
-          AddData(data).then(res => {
-            if (res.code === 20000) {
-              this.$notify({
-                title: '添加成功',
-                message: '成功添加 1 条数据',
-                type: 'success'
-              })
-              for (const key in this.model) {
-                this.model[key] = ''
-                this.modelOriginal[key] = ''
-              }
-              this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
               this.refreshTableData(true)
             }
           })
@@ -552,7 +473,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['go_where'] = row.go_where
+        data['param_description'] = row.param_description
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
