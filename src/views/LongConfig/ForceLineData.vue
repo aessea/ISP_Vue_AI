@@ -4,6 +4,7 @@
       <el-row>
         <el-col :span="16">
           <div>
+
             <el-button v-if="buttons.includes('ForceLineData/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
@@ -60,6 +61,7 @@
             <template slot-scope="scope">
               <el-button
                 v-if="buttons.includes('ForceLineData/modify')"
+
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -152,21 +154,6 @@
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="go_where_name" label="去向列名称" width="120" />
-        <el-table-column prop="require_str_name" label="需求日列名称" width="120" />
-        <el-table-column prop="machine_name" label="组件名" width="120" />
-        <el-table-column prop="connecting_plates_num" label="联板数" width="120" />
-        <el-table-column prop="forced_line" label="强制线别" />
-      </el-table>
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
@@ -227,6 +214,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
+
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/ForceLineData'
 import { LineOptions } from '@/utils/items'
 export default {
@@ -256,6 +244,7 @@ export default {
           forced_line: '(必填)'
         }
       ], // 示例的表格数据
+
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -275,6 +264,7 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
+
         go_where_name: '',
         require_str_name: '',
         machine_name: '',
@@ -334,6 +324,7 @@ export default {
     handleDrag() {
       // this.$refs.select.blur()
     },
+
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 1 && columnIndex <= 4) {
@@ -343,6 +334,7 @@ export default {
       }
       return ''
     },
+
     // 分页
     handlePageChange(val) {
       this.currentPage = val
@@ -453,7 +445,6 @@ export default {
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
-      // 显示表单数据
       // 显示表单数据
       for (const key in this.model) {
         this.model[key] = row[key]

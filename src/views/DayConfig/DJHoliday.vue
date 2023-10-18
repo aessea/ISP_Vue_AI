@@ -104,12 +104,12 @@
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.holiday_begin" prop="holiday_begin" label="放假开始时间">
-              <el-date-picker v-model="model.holiday_begin" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.holiday_begin" type="datetime" placeholder="请选择" value-format="yyyy-MM-dd HH:00:00" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.holiday_end" prop="holiday_end" label="放假结束时间">
-              <el-date-picker v-model="model.holiday_end" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.holiday_end" type="datetime" placeholder="请选择" value-format="yyyy-MM-dd HH:00:00" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
