@@ -213,6 +213,23 @@ const LongConfigRouter = {
         title: '客户识别表',
         roles: ['CustomerData']
       }
+    },
+    {
+      path: 'forcelinedata',
+      component: () => import('@/views/LongConfig/ForceLineData'),
+      name: 'ForceLineData',
+      meta: {
+        title: '强制线别表',
+        roles: ['ForceLineData']
+      }
+    }, {
+      path: 'continuousdata',
+      component: () => import('@/views/LongConfig/ContinuousData'),
+      name: 'ContinuousData',
+      meta: {
+        title: '一条龙对照表',
+        roles: ['ContinuousData']
+      }
     }
   ]
 }
