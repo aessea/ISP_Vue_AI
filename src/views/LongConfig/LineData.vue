@@ -108,7 +108,7 @@
           <el-table-column prop="small_setup" label="小切换" />
           <el-table-column prop="setup_program" label="切软体" />
           <el-table-column prop="max_process_time" label="新增锁定加工时长上限" width="170" />
-          <el-table-column prop="max_points" label="新增锁定点(片)数上限" width="170" />output_order
+          <el-table-column prop="max_points" label="新增锁定点(片)数上限" width="170" />
           <el-table-column prop="output_order" label="线体输出顺序" width="120" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
