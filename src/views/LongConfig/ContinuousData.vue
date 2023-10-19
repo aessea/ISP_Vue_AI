@@ -139,7 +139,7 @@
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
+      <!-- <p style="font-size:16px;margin-bottom: 16px;">
         导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
       </p>
       <el-table
@@ -151,7 +151,7 @@
         <el-table-column prop="AI_continuous_name" label="AI线体" width="120" />
         <el-table-column prop="DJ_continuous_name" label="点胶线体" width="120" />
 
-      </el-table>
+      </el-table> -->
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">

@@ -101,30 +101,34 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.go_where_name" prop="go_where_name" label="去向列名称">
               <el-input v-model="model.go_where_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.require_str_name" prop="require_str_name" label="需求日列名称">
               <el-input v-model="model.require_str_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.machine_name" prop="machine_name" label="组件名">
               <el-input v-model="model.machine_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.connecting_plates_num" prop="connecting_plates_num" label="联板数">
-              <el-input v-model="model.connecting_plates_num" placeholder="请输入" clearable />
+              <el-input-number v-model="model.connecting_plates_num" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.forced_line" prop="forced_line" label="强制线别">
+              <el-input v-model="model.forced_line" placeholder="请输入" :rows="2" clearable />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item :rules="rules.forced_line" prop="forced_line" label="强制线别">
-          <el-input v-model="model.forced_line" placeholder="请输入" :rows="2" type="textarea" clearable />
-        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
@@ -268,7 +272,7 @@ export default {
         go_where_name: '',
         require_str_name: '',
         machine_name: '',
-        connecting_plates_num: '',
+        connecting_plates_num: 0,
         forced_line: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
@@ -277,22 +281,10 @@ export default {
         go_where_name: '',
         require_str_name: '',
         machine_name: '',
-        connecting_plates_num: '',
+        connecting_plates_num: 0,
         forced_line: ''
       },
       rules: {
-        go_where_name: [{
-
-        }],
-        require_str_name: [{
-
-        }],
-        machine_name: [{
-
-        }],
-        connecting_plates_num: [{
-
-        }],
         forced_line: [{
           required: true,
           message: '强制线别不能为空',
@@ -523,6 +515,8 @@ export default {
         this.model[key] = ''
         this.modelOriginal[key] = ''
       }
+      this.model['connecting_plates_num'] = 0
+      this.modelOriginal['connecting_plates_num'] = 0
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
