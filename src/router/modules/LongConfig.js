@@ -13,7 +13,7 @@ const LongConfigRouter = {
     roles: ['MP1AddLineData', 'NotMP1AddLineData', 'ExchangeLineData', 'LineData', 'CapacityChangeData', 'OptimizedMachineData',
       'ProcessData', 'EarlyDueDateBoard8', 'ChangeLineData', 'PairedSMTMachineData', 'CorrespondenceData', 'KeyBoardSpecialModel',
       'DispensingBeforeAIMachine', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData',
-      'ProcessSequenceMap', 'CustomerData', 'DelayPackingLine']
+      'ProcessSequenceMap', 'CustomerData', 'DelayPackingLine', 'ForceLineData', 'ContinuousData']
   },
   children: [
     // {

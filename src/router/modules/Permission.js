@@ -10,7 +10,7 @@ const PermissionRouter = {
   meta: {
     title: '系统管理',
     icon: 'lock',
-    roles: ['UserManage', 'RolePermission', 'ButtonPermission', 'InterfaceConfig']
+    roles: ['UserManage', 'RolePermission', 'ButtonPermission', 'InterfaceConfig', 'RunControlConfig']
   },
   children: [
     {
@@ -56,6 +56,15 @@ const PermissionRouter = {
       meta: {
         title: '对接MES接口配置管理',
         roles: ['InterfaceConfig']
+      }
+    },
+    {
+      path: 'runcontrolconfigmanage',
+      component: () => import('@/views/Permission/RunControlConfigManage'),
+      name: 'RunControlConfig',
+      meta: {
+        title: '排程运行管理',
+        roles: ['RunControlConfig']
       }
     }
   ]

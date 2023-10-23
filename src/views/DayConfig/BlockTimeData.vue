@@ -28,6 +28,9 @@
             <el-button v-if="buttons.includes('BlockTimeData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
+            <el-button v-if="buttons.includes('BlockTimeData/export')" @click="addHolidayLinesDialog">
+              <i class="el-icon-plus" />默认锁定时间的线体
+            </el-button>
           </div>
         </el-col>
         <el-col :span="8">
@@ -67,24 +70,30 @@
           :data="table_data"
           :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
-          stripe
+          :span-method="objectSpanMethod"
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="line_name" label="维护线体" width="110" sortable />
-          <el-table-column prop="start_time" label="开始时间" width="180" sortable />
-          <el-table-column prop="end_time" label="结束时间" width="180" sortable />
-          <!-- <el-table-column prop="lock_time" label="锁定时间节点" sortable /> -->
-          <el-table-column prop="lock_time" width="180" label="锁定时间节点">
+          <el-table-column prop="start_time" label="维护开始时间" width="180" sortable />
+          <el-table-column prop="end_time" label="维护结束时间" width="180" sortable />
+          <!-- <el-table-column prop="lock_time" label="手动输入锁定时间" sortable /> -->
+          <el-table-column prop="lock_time" width="180" label="手动输入锁定时间">
             <template slot-scope="scope">
-              <span v-if="scope.row.flag === true">{{ scope.row.lock_time }}</span>
-              <span v-else-if="scope.row.flag === false" size="small" type="info">未开启</span>
+              <el-tag v-if="scope.row.flag === true" size="small" type="primary">{{ scope.row.lock_time }}</el-tag>
+              <el-tag v-else-if="scope.row.flag === false" size="small" type="info">关闭</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="flag" label="手动修改锁定时间" width="160">
+          <el-table-column prop="flag" label="是否使用手动输入锁定时间（优先）" width="160">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.flag === true" size="small" type="success">开启</el-tag>
+              <el-tag v-if="scope.row.flag === true" size="small" type="primary">启用</el-tag>
               <el-tag v-else-if="scope.row.flag === false" size="small" type="info">关闭</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="default_lock_time_flag" width="180" label="是否按照默认锁定时间">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.default_lock_time_flag === true" size="small" type="primary">启用</el-tag>
+              <el-tag v-else-if="scope.row.default_lock_time_flag === false" size="small" type="info">关闭</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="remark" label="备注" />
@@ -205,8 +214,8 @@
             v-model="customHourTime"
             is-range
             range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
+            start-placeholder="维护开始时间"
+            end-placeholder="维护结束时间"
           />
         </el-col>
       </el-row>
@@ -266,28 +275,33 @@
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
+            <el-form-item :rules="rules.start_time" prop="start_time" label="维护开始时间">
               <el-date-picker v-model="model.start_time" value-format="yyyy-MM-dd HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
+            <el-form-item :rules="rules.end_time" prop="end_time" label="维护结束时间">
               <el-date-picker v-model="model.end_time" value-format="yyyy-MM-dd HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="model.lock_time ? rules.flag:[{required: false, trigger: 'blur'}]" prop="flag" label="手动修改锁定时间">
-              <el-switch v-model="model.flag" />
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="model.lock_time ? rules.flag:[{required: false, trigger: 'blur'}]" prop="flag" label="是否使用手动输入锁定时间（优先）">
+              <el-switch v-model="model.flag" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="model.flag===true ? rules.lock_time:[{required: false, trigger: 'blur'}]" prop="lock_time" label="锁定时间节点">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="model.flag===true ? rules.lock_time:[{required: false, trigger: 'blur'}]" prop="lock_time" label="手动输入锁定时间">
               <el-date-picker v-model="model.lock_time" type="datetime" placeholder="请选择" value-format="yyyy-MM-dd HH:00:00" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.default_lock_time_flag" prop="default_lock_time_flag" label="按照默认锁定时间">
+              <el-switch v-model="model.default_lock_time_flag" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.remark" prop="remark" label="备注">
               <el-input v-model="model.remark" />
             </el-form-item>
@@ -419,10 +433,10 @@
         border
       >
         <el-table-column prop="line_name" label="维护线体" width="110" />
-        <el-table-column prop="start_time" label="开始时间" />
-        <el-table-column prop="end_time" label="结束时间" />
+        <el-table-column prop="start_time" label="维护开始时间" />
+        <el-table-column prop="end_time" label="维护结束时间" />
         <el-table-column prop="lock_time" label="锁定时间" />
-        <el-table-column prop="flag" label="手动修改锁定时间" width="200" />
+        <el-table-column prop="flag" label="是否使用手动输入锁定时间（优先）" width="200" />
         <el-table-column prop="remark" label="备注" />
       </el-table>
       <el-row>
@@ -482,6 +496,26 @@
         <el-button type="primary" @click="exportData">确认导出</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      v-el-drag-dialog
+      title="添加按默认锁定时间的线体"
+      :visible.sync="holidayLinesDialogVisible"
+      :before-close="handleAddHolidyLinesClose"
+      width="70%"
+      @dragDialog="handleDrag"
+    >
+      <el-row>
+        <el-checkbox-group v-model="chosen_line_list">
+          <el-checkbox v-for="line in all_line_list" :key="line" :label="line" name="type" />
+        </el-checkbox-group>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleAddHolidyLinesClose">关闭</el-button>
+        <el-button type="primary" @click="addHolidayLines">确认</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 <script>
@@ -492,8 +526,9 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, AddMultiData,
   ExportData, ImportData, GetBackupName, BackupData, RecoverBackupData, DeleteBackupData,
-  GetDefaultData, SyncDatabaseData } from '@/api/DayConfig/BlockTimeData'
+  GetDefaultData, SyncDatabaseData, AddHolidayLines, GetHolidayLines } from '@/api/DayConfig/BlockTimeData'
 // import { lineOptions, LineOptions } from '@/utils/items'
+import { GetLineProcess } from '@/api/common'
 export default {
   name: 'BlockTimeData',
   directives: { elDragDialog },
@@ -532,6 +567,9 @@ export default {
       scopeRow: '', // 表格行数据
       importDialogVisible: false, // 导入数据dialog
       exportDialogVisible: false, // 导出dialog
+      holidayLinesDialogVisible: false, // 按默认锁定时间的线体dialog
+      all_line_list: [], // 所有线体
+      chosen_line_list: [], // 选中的线体
       importType: false, // false为替换数据 true为添加数据
       uploadFileName: '', // 上传的文件名
       uploadFileList: [], // 上传的文件列表
@@ -560,6 +598,7 @@ export default {
         start_time: '',
         end_time: '',
         flag: false,
+        default_lock_time_flag: false,
         lock_time: '',
         remark: '',
         CREATED_BY: '',
@@ -574,6 +613,7 @@ export default {
         start_time: '',
         end_time: '',
         flag: false,
+        default_lock_time_flag: false,
         lock_time: '',
         remark: '',
         CREATED_BY: '',
@@ -605,6 +645,11 @@ export default {
         lock_time: [{
           required: true,
           message: '请填写锁定时间节点',
+          trigger: 'blur'
+        }],
+        default_lock_time_flag: [{
+          required: true,
+          message: '不能为空',
           trigger: 'blur'
         }],
         remark: [],
@@ -641,12 +686,45 @@ export default {
     this.getTableData(this.currentPage, this.pageSize)
     this.getDefaultData()
     this.initializeDate()
+    this.getLineProcess()
+    this.getHolidayLines()
   },
   mounted() {
     // this.getTableData(this.currentPage, this.pageSize)
   },
   methods: {
-    // 全选维护时间
+    flitterData(arr) {
+      var spanOneArr = []
+      let concatOne = 0
+      arr.forEach((item, index) => {
+        if (index === 0) {
+          spanOneArr.push(1)
+        } else {
+          // cityName 修改
+          if (item.line_name === arr[index - 1].line_name) { // 第一列需合并相同内容的判断条件
+            spanOneArr[concatOne] += 1
+            spanOneArr.push(0)
+          } else {
+            spanOneArr.push(1)
+            concatOne = index
+          }
+        }
+      })
+      return {
+        one: spanOneArr
+      }
+    },
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 1) {
+        // this.tableData  修改
+        const _row = (this.flitterData(this.table_data).one)[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+    },
     renderHeaderDay() {
       return (
         <div>
@@ -1147,7 +1225,7 @@ export default {
     closeFormDialog() {
       this.dataDialogVisible = false
       for (const key in this.model) {
-        if (key === 'flag') {
+        if (key === 'flag' || key === 'default_lock_time_flag') {
           this.model[key] = false
           this.modelOriginal[key] = false
         } else {
@@ -1260,6 +1338,7 @@ export default {
     exportDataDialog() {
       this.exportDialogVisible = true
     },
+
     // 确认导出
     exportData() {
       ExportData().then(res => {
@@ -1330,9 +1409,51 @@ export default {
     handleExportClose() {
       this.exportDialogVisible = false
     },
+    // 默认锁定时间线体窗口关闭
+    handleAddHolidyLinesClose() {
+      this.holidayLinesDialogVisible = false
+    },
+    // 显示按默认锁定时间的线体窗口
+    addHolidayLinesDialog() {
+      this.holidayLinesDialogVisible = true
+    },
+    // 添加按默认锁定时间的线体
+    addHolidayLines() {
+      console.log('保存', this.chosen_line_list)
+      // 上传后端
+      const data = {
+        'holiday_lines': this.chosen_line_list
+      }
+      AddHolidayLines(data).then((res) => {
+        if (res.code === 20000) {
+          this.$notify({
+            title: res.message,
+            type: 'success'
+          })
+          setTimeout(() => {
+            this.holidayLinesDialogVisible = false
+          }, 1000)
+        }
+      }).catch(err => {
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+      })
+    },
     // 帮助提示按钮
     helpTips() {
       this.helpDialogVisible = true
+    },
+    getLineProcess() {
+      GetLineProcess().then(res => {
+        this.all_line_list = res.all_line_list
+      })
+    },
+    getHolidayLines() {
+      GetHolidayLines().then(res => {
+        this.chosen_line_list = res.holidayLines
+      })
     }
   }
 }

@@ -107,3 +107,21 @@ export function SyncDatabaseData() {
     url: '/DayConfig/BlockTimeData/sync_data/'
   })
 }
+
+// 添加按默认锁定时间的线体
+export function AddHolidayLines(data) {
+  return request({
+    method: 'post',
+    url: `/DayConfig/BlockTimeData/add_holidayLines_data/`,
+    data
+  })
+}
+
+// 获取按默认锁定时间的线体
+export function GetHolidayLines() {
+  return request({
+    method: 'get',
+    url: `/DayConfig/BlockTimeData/get_holidayLines_data/`
+  })
+}
+
