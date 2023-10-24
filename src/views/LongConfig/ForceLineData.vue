@@ -120,7 +120,7 @@
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.connecting_plates_num" prop="connecting_plates_num" label="联板数">
-              <el-input-number v-model="model.connecting_plates_num" placeholder="请输入" :style="{width: '100%'}" />
+              <el-input v-model="model.connecting_plates_num" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
@@ -267,22 +267,21 @@ export default {
       // 表单相关数据
       forms: ['$form'],
       model: {
-        id: '',
-
-        go_where_name: '',
-        require_str_name: '',
-        machine_name: '',
-        connecting_plates_num: 0,
-        forced_line: ''
+        id: null,
+        go_where_name: null,
+        require_str_name: null,
+        machine_name: null,
+        connecting_plates_num: null,
+        forced_line: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        go_where_name: '',
-        require_str_name: '',
-        machine_name: '',
-        connecting_plates_num: 0,
-        forced_line: ''
+        id: null,
+        go_where_name: null,
+        require_str_name: null,
+        machine_name: null,
+        connecting_plates_num: null,
+        forced_line: null
       },
       rules: {
         forced_line: [{
@@ -512,11 +511,9 @@ export default {
     closeFormDialog() {
       this.dataDialogVisible = false
       for (const key in this.model) {
-        this.model[key] = ''
-        this.modelOriginal[key] = ''
+        this.model[key] = null
+        this.modelOriginal[key] = null
       }
-      this.model['connecting_plates_num'] = 0
-      this.modelOriginal['connecting_plates_num'] = 0
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
