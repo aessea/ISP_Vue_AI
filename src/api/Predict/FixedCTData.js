@@ -54,3 +54,12 @@ export function ExportData() {
     method: 'get'
   })
 }
+
+// 获取表格数据 分页获取
+export function SearchData(data) {
+  return request({
+    url: `/Predict/FixedCTData/search_data/`,
+    method: 'post',
+    data
+  })
+}
