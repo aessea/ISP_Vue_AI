@@ -11,7 +11,7 @@ const DayConfigRouter = {
     title: '每日配置',
     icon: 'el-icon-setting',
     roles: ['BlockTimeData', 'PackHoliday', 'ProgramData', 'ProductionReportData', 'NoProgramData',
-      'NetworkBoard', 'TestProgramData', 'ProductProgramData', 'PackagingLineHoliday', 'DJHoliday']
+      'NetworkBoard', 'TestProgramData', 'ProductProgramData', 'PackagingLineHoliday', 'DJHoliday', 'GetSmtMoDataResData']
   },
   children: [
     {
@@ -21,6 +21,15 @@ const DayConfigRouter = {
       meta: {
         title: '维护时间表',
         roles: ['BlockTimeData']
+      }
+    },
+    {
+      path: 'getsmtmodataresdata',
+      component: () => import('@/views/DayConfig/GetSmtMoDataResData'),
+      name: 'GetSmtMoDataResData',
+      meta: {
+        title: 'AI参考SMT工单物料',
+        roles: ['GetSmtMoDataResData']
       }
     },
     {
