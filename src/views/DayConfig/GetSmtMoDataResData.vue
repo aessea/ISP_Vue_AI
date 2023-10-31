@@ -68,6 +68,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="xmAiGoFor" label="去向" width="100" />
+          <el-table-column prop="plCode" label="排线线别" width="100" />
           <el-table-column prop="pbdate" label="开始加工时间" width="170" />
           <el-table-column prop="pedate" label="加工完成时间" width="170" />
           <el-table-column prop="create_user" label="创建人" width="110" />
@@ -177,6 +178,11 @@
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.pedate" prop="pedate" label="加工完成时间">
               <el-date-picker v-model="model.pedate" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.plCode" prop="plCode" label="排线线别">
+              <el-input v-model="model.plCode" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
