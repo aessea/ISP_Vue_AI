@@ -52,7 +52,7 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="process" label="制程" sortable width="140" />
-          <el-table-column prop="under_single_points" label="单板点数[以下]" width="200" />
+          <el-table-column prop="under_single_points" label="单板点数(点)(以下)" width="200" />
           <!-- <el-table-column prop="add_feasible_line" label="补充的可排线别" /> -->
           <el-table-column prop="add_feasible_line" label="补充的可排线别">
             <template slot-scope="scope">
@@ -114,7 +114,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.under_single_points" prop="under_single_points" label="单板点数[以下]">
+            <el-form-item :rules="rules.under_single_points" prop="under_single_points" label="单板点数(点)(以下)">
               <el-input-number v-model="model.under_single_points" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
@@ -167,7 +167,7 @@
         border
       >
         <el-table-column prop="process" label="制程" />
-        <el-table-column prop="under_single_points" label="单板点数[以下]" />
+        <el-table-column prop="under_single_points" label="单板点数(点)(以下)" />
         <el-table-column prop="add_feasible_line" label="补充的可排线别" />
       </el-table>
       <el-row>
@@ -290,17 +290,17 @@ export default {
       rules: {
         process: [{
           required: true,
-          message: '制程不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         under_single_points: [{
           required: true,
-          message: '单板点数[以下]不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         add_feasible_line: [{
           required: true,
-          message: '补充的可排线别不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }]
       },

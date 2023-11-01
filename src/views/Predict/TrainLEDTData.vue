@@ -56,7 +56,7 @@
           <el-table-column prop="line_classify" label="线别类" width="95" sortable />
           <el-table-column prop="connecting_plates" label="联片数" width="95" sortable />
           <el-table-column prop="passing_plates" label="过板数" width="95" sortable />
-          <el-table-column prop="single_points" label="单板点数" width="110" sortable />
+          <el-table-column prop="single_points" label="单板点数(点)" width="110" sortable />
           <el-table-column prop="process" label="制程" width="80" sortable />
           <!-- <el-table-column prop="long" label="长" width="60" />
           <el-table-column prop="wide" label="宽" width="60" />
@@ -156,7 +156,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数">
+              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数(点)">
                 <el-input-number v-model="model.single_points" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
@@ -262,7 +262,7 @@
         <el-table-column prop="line_classify" label="线别类" width="95" />
         <el-table-column prop="connecting_plates" label="联片数" width="95" />
         <el-table-column prop="passing_plates" label="过板数" width="95" />
-        <el-table-column prop="single_points" label="单板点数" width="110" />
+        <el-table-column prop="single_points" label="单板点数(点)" width="110" />
         <el-table-column prop="process" label="制程" width="80" />
         <el-table-column prop="long" label="长" width="60" />
         <el-table-column prop="wide" label="宽" width="60" />

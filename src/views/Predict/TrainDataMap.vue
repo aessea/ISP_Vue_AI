@@ -192,7 +192,7 @@
         border
       >
         <el-table-column prop="process" label="制程" />
-        <el-table-column prop="under_single_points" label="单板点数[以下]" />
+        <el-table-column prop="under_single_points" label="单板点数(点)(以下)" />
         <el-table-column prop="add_feasible_line" label="补充的可排线别" />
       </el-table>
       <el-row>

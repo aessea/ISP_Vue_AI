@@ -190,7 +190,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数">
+              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数(点)">
                 <el-input-number v-model="model.single_points" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>

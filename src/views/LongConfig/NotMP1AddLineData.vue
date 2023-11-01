@@ -52,9 +52,9 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="process" label="制程" width="160" sortable />
-          <el-table-column prop="above_connecting_points" width="160" label="联板点数[以上]" />
-          <el-table-column prop="under_single_points" label="单板点数[以下]" width="160" />
-          <el-table-column prop="above_connecting_plates" label="联板数[以上]" width="160" />
+          <el-table-column prop="above_connecting_points" width="160" label="联板点数(以上)" />
+          <el-table-column prop="under_single_points" label="单板点数(点)(以下)" width="160" />
+          <el-table-column prop="above_connecting_plates" label="联板数(以上)" width="160" />
           <!-- <el-table-column prop="add_feasible_line" label="补充的可排线别" /> -->
           <el-table-column prop="add_feasible_line" label="补充的可排线别">
             <template slot-scope="scope">
@@ -118,17 +118,17 @@
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.above_connecting_points" prop="above_connecting_points" label="联板点数[以上]">
+            <el-form-item :rules="rules.above_connecting_points" prop="above_connecting_points" label="联板点数(以上)">
               <el-input-number v-model="model.above_connecting_points" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.under_single_points" prop="under_single_points" label="单板点数[以下]">
+            <el-form-item :rules="rules.under_single_points" prop="under_single_points" label="单板点数(点)(以下)">
               <el-input-number v-model="model.under_single_points" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.above_connecting_plates" prop="above_connecting_plates" label="联板数[以上]">
+            <el-form-item :rules="rules.above_connecting_plates" prop="above_connecting_plates" label="联板数(以上)">
               <el-input-number v-model="model.above_connecting_plates" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
@@ -181,9 +181,9 @@
         border
       >
         <el-table-column prop="process" label="制程" width="140" />
-        <el-table-column prop="above_connecting_points" label="联板点数[以上]" width="140" />
-        <el-table-column prop="under_single_points" label="单板点数[以下]" width="140" />
-        <el-table-column prop="above_connecting_plates" label="联板数[以上]" width="140" />
+        <el-table-column prop="above_connecting_points" label="联板点数(以上)" width="140" />
+        <el-table-column prop="under_single_points" label="单板点数(点)(以下)" width="140" />
+        <el-table-column prop="above_connecting_plates" label="联板数(以上)" width="140" />
         <!-- <el-table-column prop="add_feasible_line" label="补充的可排线别" /> -->
         <el-table-column prop="add_feasible_line" label="补充的可排线别">
           <template slot-scope="scope">
@@ -325,17 +325,17 @@ export default {
       rules: {
         process: [{
           required: true,
-          message: '制程不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         under_single_points: [{
           required: true,
-          message: '单板点数[以下]不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         add_feasible_line: [{
           required: true,
-          message: '补充的可排线别不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }]
       },
