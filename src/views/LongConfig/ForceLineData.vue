@@ -54,7 +54,7 @@
           <el-table-column type="selection" width="55" />
           <el-table-column prop="go_where_name" label="去向列名称" width="120" />
           <el-table-column prop="require_str_name" label="需求日列名称" width="120" />
-          <el-table-column prop="machine_name" label="组件名" width="120" />
+          <el-table-column prop="machine_name" label="客户" width="120" />
           <el-table-column prop="connecting_plates_num" label="联板数" width="120" />
           <el-table-column prop="forced_line" label="强制线别" />
           <el-table-column width="110" fixed="right" label="操作">
@@ -112,7 +112,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.machine_name" prop="machine_name" label="组件名">
+            <el-form-item :rules="rules.machine_name" prop="machine_name" label="客户">
               <el-input v-model="model.machine_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
