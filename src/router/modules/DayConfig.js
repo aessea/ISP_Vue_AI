@@ -28,7 +28,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/GetSmtMoDataResData'),
       name: 'GetSmtMoDataResData',
       meta: {
-        title: 'AI参考SMT工单物料',
+        title: '参照AI',
         roles: ['GetSmtMoDataResData']
       }
     },
