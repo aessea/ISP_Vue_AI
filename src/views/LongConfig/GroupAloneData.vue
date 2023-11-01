@@ -4,19 +4,16 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button v-if="buttons.includes('GetSmtMoDataResData/add')" type="primary" @click="addDataDialog">
+            <el-button v-if="buttons.includes('GroupAloneData/add')" type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
-            <el-button v-if="buttons.includes('GetSmtMoDataResData/delete')" type="danger" @click="deleteData">
+            <el-button v-if="buttons.includes('GroupAloneData/delete')" type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button v-if="buttons.includes('GetSmtMoDataResData/delete')" type="danger" @click="deleteAllData">
-              <i class="el-icon-delete" />清空所有数据
-            </el-button>
-            <el-button v-if="buttons.includes('GetSmtMoDataResData/import')" @click="importDataDialog">
+            <el-button v-if="buttons.includes('GroupAloneData/import')" @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
-            <el-button v-if="buttons.includes('GetSmtMoDataResData/export')" @click="exportDataDialog">
+            <el-button v-if="buttons.includes('GroupAloneData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
           </div>
@@ -47,37 +44,19 @@
           id="mytable"
           v-loading="loading"
           :data="table_data"
-          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '5px'}"
+          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
 
           stripe
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="apsId" label="apsId" width="100" fixed />
-          <el-table-column prop="packageName" label="机种名" width="180" />
-          <el-table-column prop="jonNo" label="订单号" width="100" />
-          <el-table-column prop="modelName" label="AISMT组件" width="180" />
-          <el-table-column prop="process" label="工序" width="100" />
-          <el-table-column prop="serialNo" label="序列号" width="140" />
-          <el-table-column prop="totalCount" label="工单量" width="100" />
-          <el-table-column prop="moStat" label="工单状态" width="100">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.moStat === '4'" size="small" type="success">完工</el-tag>
-              <el-tag v-else size="small">待产</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="xmAiGoFor" label="去向" width="100" />
-          <el-table-column prop="plCode" label="排线线别" width="100" />
-          <el-table-column prop="pbdate" label="开始加工时间" width="170" />
-          <el-table-column prop="pedate" label="加工完成时间" width="170" />
-          <el-table-column prop="create_user" label="创建人" width="110" />
-          <el-table-column prop="create_time" label="创建时间" width="180" />
-          <el-table-column prop="schedule_mode" label="数据源" width="180" />
+          <el-table-column prop="go_where_name" label="去向列" sortable />
+          <el-table-column prop="order_num" label="工单量" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
-                v-if="buttons.includes('GetSmtMoDataResData/modify')"
+                v-if="buttons.includes('GroupAloneData/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -85,7 +64,7 @@
                 @click="handleModify(scope.$index, scope.row)"
               />
               <el-button
-                v-if="buttons.includes('GetSmtMoDataResData/delete')"
+                v-if="buttons.includes('GroupAloneData/delete')"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -117,89 +96,14 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.apsId" prop="apsId" label="apsId">
-              <el-input v-model="model.apsId" placeholder="请输入" clearable />
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.go_where_name" prop="go_where_name" label="去向列">
+              <el-input v-model="model.go_where_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.jonNo" prop="jonNo" label="订单号">
-              <el-input v-model="model.jonNo" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.packageName" prop="packageName" label="机种名">
-              <el-input v-model="model.packageName" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.process" prop="process" label="工序">
-              <el-input v-model="model.process" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.serialNo" prop="serialNo" label="序列号">
-              <el-input v-model="model.serialNo" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.totalCount" prop="totalCount" label="工单量">
-              <el-input v-model="model.totalCount" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.modelName" prop="modelName" label="AISMT组件">
-              <el-input v-model="model.modelName" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.moStat" prop="moStat" label="工单状态">
-              <el-select v-model="model.moStat" placeholder="请选择" :style="{width: '100%'}">
-                <el-option v-for="(item) in moStatOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.xmAiGoFor" prop="xmAiGoFor" label="去向">
-              <el-input v-model="model.xmAiGoFor" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.pbdate" prop="pbdate" label="开始加工时间">
-              <el-date-picker v-model="model.pbdate" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.pedate" prop="pedate" label="加工完成时间">
-              <el-date-picker v-model="model.pedate" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.plCode" prop="plCode" label="排线线别">
-              <el-input v-model="model.plCode" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.create_user" prop="create_user" label="创建人">
-              <el-input v-model="model.create_user" placeholder="自动创建" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.create_time" prop="create_time" label="创建时间">
-              <el-input v-model="model.create_time" placeholder="自动创建" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.schedule_mode" prop="schedule_mode" label="数据源">
-              <el-input v-model="model.schedule_mode" placeholder="自动创建" disabled />
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.order_num" prop="order_num" label="工单量">
+              <el-input v-model="model.order_num" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -235,8 +139,8 @@
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="replace">替换数据</el-radio>
             <el-radio label="append">追加数据</el-radio>
+            <el-radio label="replace">替换数据</el-radio>
           </el-radio-group>
         </el-col>
         <el-col :span="16">
@@ -292,9 +196,9 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, DeleteAllData } from '@/api/DayConfig/GetSmtMoDataResData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/GroupAloneData'
 export default {
-  name: 'GetSmtMoDataResData',
+  name: 'GroupAloneData',
   directives: { elDragDialog },
   data() {
     return {
@@ -317,61 +221,39 @@ export default {
       uploadFileName: '', // 上传的文件名
       uploadFileList: [], // 上传的文件列表
       uploadFile: null, // 上传的文件
-      importMode: 'replace', // 导入方式选择:追加或替换（方便以后扩展）
+      importMode: 'append', // 导入方式选择:追加或替换（方便以后扩展）
       exportRadio: 'xlsx', // 导出格式选择（方便以后扩展）
       isClick: false, // 是否点击了保存或者提交
       // 表单相关数据
       forms: ['$form'],
       model: {
         id: null,
-        apsId: null,
-        jonNo: null,
-        packageName: null,
-        pbdate: null,
-        pedate: null,
-        plCode: null,
-        process: null,
-        serialNo: null,
-        totalCount: null,
-        backProcedure: null,
-        modelName: null,
-        moStat: null,
-        xmAiGoFor: null,
-        create_user: null,
-        create_time: null,
-        schedule_mode: null
+        go_where_name: null,
+        order_num: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: null,
-        apsId: null,
-        jonNo: null,
-        packageName: null,
-        pbdate: null,
-        pedate: null,
-        plCode: null,
-        process: null,
-        serialNo: null,
-        totalCount: null,
-        backProcedure: null,
-        modelName: null,
-        moStat: null,
-        xmAiGoFor: null,
-        create_user: null,
-        create_time: null,
-        schedule_mode: null
+        go_where_name: null,
+        order_num: null
       },
       rules: {
+        go_where_name: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        order_num: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }]
       },
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
-      pageSize: 50, // 每页多少条数据
-      dataTableSelections: [], // 表格选中的数据
-      moStatOptions: [
-        { value: '4', label: '完工' },
-        { value: '0', label: '待产' }
-      ]
+      pageSize: 20, // 每页多少条数据
+      dataTableSelections: [] // 表格选中的数据
     }
   },
   computed: {
@@ -416,29 +298,6 @@ export default {
       } else { // 否则只刷新当前页
         this.getTableData(this.currentPage, this.pageSize)
       }
-    },
-    deleteAllData() {
-      this.$confirm('确定要清空所有数据？', '警告', {
-        confirmButtonText: '确定清空',
-        cancelButtonText: '取消',
-        confirmButtonClass: 'btnDanger',
-        type: 'warning'
-      }).then(() => {
-        DeleteAllData().then(res => {
-          if (res.code === 20000) {
-            this.$alert(res.message, '提示', {
-              confirmButtonText: '确定',
-              type: 'success'
-            })
-            this.refreshTableData() // 刷新表格数据
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消删除'
-        })
-      })
     },
     // 添加数据
     addDataDialog() {
@@ -524,7 +383,6 @@ export default {
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
-      // 显示表单数据
       // 显示表单数据
       for (const key in this.model) {
         this.model[key] = row[key]
@@ -615,8 +473,6 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['pbdate'] = row.pbdate
-        data['pedate'] = row.pedate
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -698,17 +554,6 @@ export default {
     },
     // 获取上传文件
     handleChange(file, fileList) {
-      const fileName = file.name.replace(/\.xlsx$/, '')
-      const regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI|点胶)(正排|预排).*$/
-      if (!regex.test(fileName)) {
-        const tip = '文件命名格式错误，请修改后重新上传！' + `<br/>` + '（正确文件名示例：0901点胶预排）'
-        this.$alert(tip, '错误', {
-          confirmButtonText: '确定',
-          dangerouslyUseHTMLString: true,
-          type: 'error'
-        })
-        return
-      }
       if (fileList.length > 0) {
         this.uploadFileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
         this.uploadFileName = this.uploadFileList[0].name // 更新文件名

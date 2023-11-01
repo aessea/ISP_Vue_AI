@@ -13,7 +13,7 @@ const LongConfigRouter = {
     roles: ['MP1AddLineData', 'NotMP1AddLineData', 'ExchangeLineData', 'LineData', 'CapacityChangeData', 'OptimizedMachineData',
       'ProcessData', 'EarlyDueDateBoard8', 'ChangeLineData', 'PairedSMTMachineData', 'CorrespondenceData', 'KeyBoardSpecialModel',
       'DispensingBeforeAIMachine', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData',
-      'ProcessSequenceMap', 'CustomerData', 'DelayPackingLine', 'ForceLineData', 'ContinuousData']
+      'ProcessSequenceMap', 'CustomerData', 'DelayPackingLine', 'ForceLineData', 'ContinuousData', 'GroupAloneData']
   },
   children: [
     // {
@@ -222,13 +222,23 @@ const LongConfigRouter = {
         title: '强制线别表',
         roles: ['ForceLineData']
       }
-    }, {
+    },
+    {
       path: 'continuousdata',
       component: () => import('@/views/LongConfig/ContinuousData'),
       name: 'ContinuousData',
       meta: {
         title: '一条龙对照表',
         roles: ['ContinuousData']
+      }
+    },
+    {
+      path: 'groupalonedata',
+      component: () => import('@/views/LongConfig/GroupAloneData'),
+      name: 'GroupAloneData',
+      meta: {
+        title: '单独成组表',
+        roles: ['GroupAloneData']
       }
     }
   ]
