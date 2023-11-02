@@ -43,58 +43,120 @@
         </el-col>
       </el-row>
       <div class="table-box">
-        <el-table
-          id="mytable"
-          v-loading="loading"
-          :data="table_data"
-          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '5px'}"
-          :cell-style="{padding: '3px'}"
+        <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tab-pane label="AI" name="AI">
+            <el-table
+              id="mytable"
+              v-loading="loading"
+              :data="table_data_ai"
+              :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '5px'}"
+              :cell-style="{padding: '3px'}"
 
-          stripe
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column type="selection" width="55" />
-          <el-table-column prop="apsId" label="apsId" width="100" fixed />
-          <el-table-column prop="packageName" label="机种名" width="180" />
-          <el-table-column prop="jonNo" label="订单号" width="100" />
-          <el-table-column prop="modelName" label="AISMT组件" width="180" />
-          <el-table-column prop="process" label="工序" width="100" />
-          <el-table-column prop="serialNo" label="序列号" width="140" />
-          <el-table-column prop="totalCount" label="工单量" width="100" />
-          <el-table-column prop="moStat" label="工单状态" width="100">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.moStat === '4'" size="small" type="success">完工</el-tag>
-              <el-tag v-else size="small">待产</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="xmAiGoFor" label="去向" width="100" />
-          <el-table-column prop="plCode" label="排线线别" width="100" />
-          <el-table-column prop="pbdate" label="开始加工时间" width="170" />
-          <el-table-column prop="pedate" label="加工完成时间" width="170" />
-          <el-table-column prop="create_user" label="创建人" width="110" />
-          <el-table-column prop="create_time" label="创建时间" width="180" />
-          <el-table-column prop="schedule_mode" label="数据源" width="180" />
-          <el-table-column width="110" fixed="right" label="操作">
-            <template slot-scope="scope">
-              <el-button
-                v-if="buttons.includes('GetSmtMoDataResData/modify')"
-                type="primary"
-                size="mini"
-                icon="el-icon-edit"
-                circle
-                @click="handleModify(scope.$index, scope.row)"
-              />
-              <el-button
-                v-if="buttons.includes('GetSmtMoDataResData/delete')"
-                type="danger"
-                size="mini"
-                icon="el-icon-delete"
-                circle
-                @click="handleDelete(scope.$index, scope.row)"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
+              stripe
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="apsId" label="apsId" width="100" fixed />
+              <el-table-column prop="packageName" label="机种名" width="180" />
+              <el-table-column prop="jonNo" label="订单号" width="100" />
+              <el-table-column prop="modelName" label="AISMT组件" width="180" />
+              <el-table-column prop="process" label="工序" width="100" />
+              <el-table-column prop="serialNo" label="序列号" width="140" />
+              <el-table-column prop="totalCount" label="工单量" width="100" />
+              <el-table-column prop="moStat" label="工单状态" width="100">
+                <template slot-scope="scope">
+                  <el-tag v-if="scope.row.moStat === '4'" size="small" type="success">完工</el-tag>
+                  <el-tag v-else size="small">待产</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="xmAiGoFor" label="去向" width="100" />
+              <el-table-column prop="plCode" label="排线线别" width="100" />
+              <el-table-column prop="pbdate" label="开始加工时间" width="170" />
+              <el-table-column prop="pedate" label="加工完成时间" width="170" />
+              <el-table-column prop="create_user" label="创建人" width="110" />
+              <el-table-column prop="create_time" label="创建时间" width="180" />
+              <el-table-column prop="schedule_mode" label="数据源" width="180" />
+              <el-table-column prop="groupID" label="groupID" width="180" />
+
+              <el-table-column width="110" fixed="right" label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    v-if="buttons.includes('GetSmtMoDataResData/modify')"
+                    type="primary"
+                    size="mini"
+                    icon="el-icon-edit"
+                    circle
+                    @click="handleModify(scope.$index, scope.row)"
+                  />
+                  <el-button
+                    v-if="buttons.includes('GetSmtMoDataResData/delete')"
+                    type="danger"
+                    size="mini"
+                    icon="el-icon-delete"
+                    circle
+                    @click="handleDelete(scope.$index, scope.row)"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="锡膏" name="solderPaste">
+            <el-table
+              id="mytable"
+              v-loading="loading"
+              :data="table_data_xigao"
+              :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '5px'}"
+              :cell-style="{padding: '3px'}"
+
+              stripe
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="apsId" label="apsId" width="100" fixed />
+              <el-table-column prop="packageName" label="机种名" width="180" />
+              <el-table-column prop="jonNo" label="订单号" width="100" />
+              <el-table-column prop="modelName" label="AISMT组件" width="180" />
+              <el-table-column prop="process" label="工序" width="100" />
+              <el-table-column prop="serialNo" label="序列号" width="140" />
+              <el-table-column prop="totalCount" label="工单量" width="100" />
+              <el-table-column prop="moStat" label="工单状态" width="100">
+                <template slot-scope="scope">
+                  <el-tag v-if="scope.row.moStat === '4'" size="small" type="success">完工</el-tag>
+                  <el-tag v-else size="small">待产</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="xmAiGoFor" label="去向" width="100" />
+              <el-table-column prop="plCode" label="排线线别" width="100" />
+              <el-table-column prop="pbdate" label="开始加工时间" width="170" />
+              <el-table-column prop="pedate" label="加工完成时间" width="170" />
+              <el-table-column prop="create_user" label="创建人" width="110" />
+              <el-table-column prop="create_time" label="创建时间" width="180" />
+              <el-table-column prop="schedule_mode" label="数据源" width="180" />
+              <el-table-column prop="groupID" label="groupID" width="180" />
+              <el-table-column width="110" fixed="right" label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    v-if="buttons.includes('GetSmtMoDataResData/modify')"
+                    type="primary"
+                    size="mini"
+                    icon="el-icon-edit"
+                    circle
+                    @click="handleModify(scope.$index, scope.row)"
+                  />
+                  <el-button
+                    v-if="buttons.includes('GetSmtMoDataResData/delete')"
+                    type="danger"
+                    size="mini"
+                    icon="el-icon-delete"
+                    circle
+                    @click="handleDelete(scope.$index, scope.row)"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+        </el-tabs>
+
         <el-pagination
           background
           :hide-on-single-page="true"
@@ -203,6 +265,13 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.groupID" prop="groupID" label="groupID">
+              <el-input v-model="model.groupID" placeholder="自动创建" disabled />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
@@ -304,7 +373,9 @@ export default {
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       loadingInstance: null,
-      table_data: [], // 表格数据
+      activeName: 'AI',
+      table_data_ai: [], // 表格AI数据
+      table_data_xigao: [], // 表格锡膏数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -339,7 +410,8 @@ export default {
         xmAiGoFor: null,
         create_user: null,
         create_time: null,
-        schedule_mode: null
+        schedule_mode: null,
+        groupID: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
@@ -365,6 +437,8 @@ export default {
       },
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
+      total_num_ai: 0,
+      total_num_xigao: 0,
       currentPage: 1, // 当前在第几页
       pageSize: 50, // 每页多少条数据
       dataTableSelections: [], // 表格选中的数据
@@ -402,8 +476,12 @@ export default {
       const data = { 'current_page': currentPage, 'page_size': pageSize }
       GetTableData(data).then(res => {
         if (res.code === 20000) {
-          this.table_data = res.table_data
-          this.total_num = res.total_num
+          // this.table_data = res.table_data
+          this.table_data_ai = res.table_data_ai
+          this.table_data_xigao = res.table_data_xigao
+          this.total_num_ai = res.total_num_ai
+          this.total_num_xigao = res.total_num_xigao
+
           this.loading = false
         }
       })
