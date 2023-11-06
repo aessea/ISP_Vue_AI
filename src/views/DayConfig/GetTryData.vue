@@ -51,15 +51,17 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="plCode" label="去向" />
-          <el-table-column prop="plOrder" label="生产排序" />
-          <el-table-column prop="requireDate" label="包装点" />
-          <el-table-column prop="packageMachineName" label="包装机种名" />
-          <el-table-column prop="smtMachine" label="机种" />
-          <el-table-column prop="jonNo" label="工单号" />
-          <el-table-column prop="totalCount" label="工单量" />
-          <el-table-column prop="process" label="制程" />
-          <el-table-column prop="serialNo" label="打件备注" />
+          <el-table-column prop="plCode" label="去向" sortable width="90" />
+          <el-table-column prop="plOrder" label="生产排序" sortable width="110" />
+          <el-table-column prop="requireDate" label="包装点" sortable />
+          <el-table-column prop="packageMachineName" label="包装机种名" sortable />
+          <el-table-column prop="smtMachine" label="机种" sortable />
+          <el-table-column prop="jonNo" label="工单号" sortable width="100" />
+          <el-table-column prop="totalCount" label="工单量" sortable width="100" />
+          <el-table-column prop="process" label="制程" sortable width="110" />
+          <el-table-column prop="serialNo" label="打件备注" sortable />
+          <el-table-column prop="create_user" label="创建人" width="110" sortable />
+          <el-table-column prop="create_time" label="创建时间" width="180" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -150,6 +152,18 @@
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.serialNo" prop="serialNo" label="打件备注">
               <el-input v-model="model.serialNo" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.create_user" prop="create_user" label="创建人">
+              <el-input v-model="model.create_user" placeholder="自动创建" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.create_time" prop="create_time" label="创建时间">
+              <el-input v-model="model.create_time" placeholder="自动创建" disabled />
             </el-form-item>
           </el-col>
         </el-row>
@@ -284,7 +298,9 @@ export default {
         jonNo: null,
         totalCount: null,
         process: null,
-        serialNo: null
+        serialNo: null,
+        create_user: null,
+        create_time: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
@@ -297,7 +313,9 @@ export default {
         jonNo: null,
         totalCount: null,
         process: null,
-        serialNo: null
+        serialNo: null,
+        create_user: null,
+        create_time: null
       },
       rules: {
 
