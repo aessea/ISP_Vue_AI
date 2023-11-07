@@ -121,6 +121,15 @@ const DayConfigRouter = {
         title: '量产程序表',
         roles: ['ProductProgramData']
       }
+    },
+    {
+      path: 'aimatchjobrule',
+      component: () => import('@/views/DayConfig/AiMatchJobRule'),
+      name: 'AiMatchJobRule',
+      meta: {
+        title: '试跑工单匹配规则表',
+        roles: ['AiMatchJobRule']
+      }
     }
   ]
 }
