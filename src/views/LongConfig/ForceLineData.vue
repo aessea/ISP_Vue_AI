@@ -54,7 +54,7 @@
           <el-table-column type="selection" width="55" />
           <el-table-column prop="go_where_name" label="去向列名称" width="120" />
           <el-table-column prop="require_str_name" label="需求日列名称" width="120" />
-          <el-table-column prop="machine_name" label="客户" width="120" />
+          <el-table-column prop="customer_name" label="客户" width="120" />
           <el-table-column prop="connecting_plates_num" label="联板数" width="120" />
           <el-table-column prop="forced_line" label="强制线别" />
           <el-table-column width="110" fixed="right" label="操作">
@@ -112,8 +112,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.machine_name" prop="machine_name" label="客户">
-              <el-input v-model="model.machine_name" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.customer_name" prop="customer_name" label="客户">
+              <el-input v-model="model.customer_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -237,13 +237,13 @@ export default {
         {
           go_where_name: '',
           require_str_name: '',
-          machine_name: '',
+          customer_name: '',
           connecting_plates_num: '',
           forced_line: ''
         }, {
           go_where_name: '(必填)',
           require_str_name: '(必填)',
-          machine_name: '(必填)',
+          customer_name: '(必填)',
           connecting_plates_num: '(必填)',
           forced_line: '(必填)'
         }
@@ -270,7 +270,7 @@ export default {
         id: null,
         go_where_name: null,
         require_str_name: null,
-        machine_name: null,
+        customer_name: null,
         connecting_plates_num: null,
         forced_line: null
       },
@@ -279,7 +279,7 @@ export default {
         id: null,
         go_where_name: null,
         require_str_name: null,
-        machine_name: null,
+        customer_name: null,
         connecting_plates_num: null,
         forced_line: null
       },
