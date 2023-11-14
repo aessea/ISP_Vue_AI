@@ -127,7 +127,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/AiMatchJobRule'),
       name: 'AiMatchJobRule',
       meta: {
-        title: '试跑工单匹配规则表',
+        title: 'AI匹配上阶工单规则表',
         roles: ['AiMatchJobRule']
       }
     }
