@@ -61,3 +61,12 @@ export function DeleteAllData() {
     method: 'get'
   })
 }
+
+// 搜索数据
+export function SearchData(data) {
+  return request({
+    url: '/DayConfig/GetSmtMoDataResData/search_data/',
+    method: 'post',
+    data
+  })
+}

@@ -16,6 +16,21 @@
             <el-button v-if="buttons.includes('GetTryData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
+            <el-input
+              v-model="serialNo_value"
+              placeholder="按照打件备注搜索"
+              prefix-icon="el-icon-search"
+              style="width: 200px;margin-left: 10px;"
+              clearable
+            />
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              style="margin-left: 10px;"
+              @click="searchBy_serialNo"
+            >
+              搜索
+            </el-button>
           </div>
         </el-col>
         <el-col :span="8">
@@ -263,7 +278,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/DayConfig/GetTryData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, SearchData } from '@/api/DayConfig/GetTryData'
 import { LineOptions } from '@/utils/items'
 import { FormatDatabaseDatetime } from '@/utils/date'
 export default {
@@ -334,7 +349,9 @@ export default {
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
       pageSize: 50, // 每页多少条数据
-      dataTableSelections: [] // 表格选中的数据
+      dataTableSelections: [], // 表格选中的数据
+      // 搜索相关
+      serialNo_value: ''
     }
   },
   computed: {
@@ -726,6 +743,19 @@ export default {
     // 帮助提示按钮
     helpTips() {
       this.helpDialogVisible = true
+    },
+    // 按打件备注搜索
+    searchBy_serialNo() {
+      if (this.serialNo_value === '') {
+        this.$message({
+          type: 'warning',
+          message: '请至少输入一个关键词'
+        })
+        return
+      }
+      SearchData({ 'serialNo': this.serialNo_value }).then(res => {
+        this.table_data = res.table_data
+      })
     }
   }
 }

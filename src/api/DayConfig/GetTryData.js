@@ -54,3 +54,11 @@ export function ExportData() {
     method: 'get'
   })
 }
+// 搜索数据
+export function SearchData(data) {
+  return request({
+    url: '/DayConfig/GetTryData/search_data/',
+    method: 'post',
+    data
+  })
+}

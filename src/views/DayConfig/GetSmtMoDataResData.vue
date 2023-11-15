@@ -19,6 +19,21 @@
             <el-button v-if="buttons.includes('GetSmtMoDataResData/export')" @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
+            <el-input
+              v-model="serialNo_value"
+              placeholder="按照序列号搜索"
+              prefix-icon="el-icon-search"
+              style="width: 200px;margin-left: 10px;"
+              clearable
+            />
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              style="margin-left: 10px;"
+              @click="searchBy_serialNo"
+            >
+              搜索
+            </el-button>
           </div>
         </el-col>
         <el-col :span="8">
@@ -361,7 +376,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, DeleteAllData } from '@/api/DayConfig/GetSmtMoDataResData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, DeleteAllData, SearchData } from '@/api/DayConfig/GetSmtMoDataResData'
 export default {
   name: 'GetSmtMoDataResData',
   directives: { elDragDialog },
@@ -445,7 +460,9 @@ export default {
       moStatOptions: [
         { value: '4', label: '完工' },
         { value: '0', label: '待产' }
-      ]
+      ],
+      // 搜索相关
+      serialNo_value: ''
     }
   },
   computed: {
@@ -481,7 +498,6 @@ export default {
           this.table_data_xigao = res.table_data_xigao
           this.total_num_ai = res.total_num_ai
           this.total_num_xigao = res.total_num_xigao
-
           this.loading = false
         }
       })
@@ -830,6 +846,20 @@ export default {
     // 帮助提示按钮
     helpTips() {
       this.helpDialogVisible = true
+    },
+    // 按序列号搜索
+    searchBy_serialNo() {
+      if (this.serialNo_value === '') {
+        this.$message({
+          type: 'warning',
+          message: '请至少输入一个关键词'
+        })
+        return
+      }
+      SearchData({ 'serialNo': this.serialNo_value }).then(res => {
+        this.table_data_ai = res.table_data
+        this.table_data_xigao = res.table_data
+      })
     }
   }
 }

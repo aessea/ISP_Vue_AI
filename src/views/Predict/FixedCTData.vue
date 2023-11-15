@@ -386,9 +386,7 @@ export default {
       this.loading = true
       if (isSearch) {
         const data = {
-          'current_page': currentPage,
-          'page_size': pageSize,
-          'SMT_machine_value': this.SMT_machine_value
+          'SMT_machine_name': this.SMT_machine_value
         }
 
         SearchData(data).then(res => {
