@@ -10,7 +10,7 @@ const LoggingRouter = {
   meta: {
     title: '日志系统',
     icon: 'documentation',
-    roles: ['HistoryRun', 'HistoryOpera', 'ScheduleResData']
+    roles: ['HistoryRun', 'HistoryOpera', 'ScheduleResData', 'MesInterfaceLog']
   },
   children: [
     {
@@ -40,6 +40,16 @@ const LoggingRouter = {
       meta: {
         title: '历史排程数据',
         roles: ['ScheduleResData'],
+        noCache: true
+      }
+    },
+    {
+      path: 'mesinterfacelog',
+      component: () => import('@/views/HistoryLog/MesInterfaceLog'),
+      name: 'MesInterfaceLog',
+      meta: {
+        title: '接口日志表',
+        roles: ['MesInterfaceLog'],
         noCache: true
       }
     }
