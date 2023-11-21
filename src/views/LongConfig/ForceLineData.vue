@@ -53,6 +53,7 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="go_where_name" label="去向列名称" width="120" />
+          <el-table-column prop="board8" label="板号" width="120" />
           <el-table-column prop="require_str_name" label="需求日列名称" width="120" />
           <el-table-column prop="customer_name" label="客户" width="120" />
           <el-table-column prop="connecting_plates_num" label="联板数" width="120" />
@@ -104,6 +105,11 @@
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.go_where_name" prop="go_where_name" label="去向列名称">
               <el-input v-model="model.go_where_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.board8" prop="board8" label="板号">
+              <el-input v-model="model.board8" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
@@ -233,22 +239,6 @@ export default {
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExample: [
-        {
-          go_where_name: '',
-          require_str_name: '',
-          customer_name: '',
-          connecting_plates_num: '',
-          forced_line: ''
-        }, {
-          go_where_name: '(必填)',
-          require_str_name: '(必填)',
-          customer_name: '(必填)',
-          connecting_plates_num: '(必填)',
-          forced_line: '(必填)'
-        }
-      ], // 示例的表格数据
-
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -269,6 +259,7 @@ export default {
       model: {
         id: null,
         go_where_name: null,
+        board8: null,
         require_str_name: null,
         customer_name: null,
         connecting_plates_num: null,
@@ -277,6 +268,7 @@ export default {
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: null,
+        board8: null,
         go_where_name: null,
         require_str_name: null,
         customer_name: null,
@@ -527,6 +519,7 @@ export default {
         const data = {}
         data['id'] = row.id
         data['go_where_name'] = row.go_where_name
+        data['board8'] = row.board8
         data['require_str_name'] = row.require_str_name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
