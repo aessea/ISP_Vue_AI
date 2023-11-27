@@ -87,6 +87,8 @@
               <el-tag v-else-if="scope.row.is_CM_line === false" size="small" type="info">否</el-tag>
             </template>
           </el-table-column>
+          <el-table-column prop="type_of_big_small_line" label="大小穿插的类型" width="120" />
+          <el-table-column prop="default_threshould_of_big_small_line" label="大小穿插线体阈值的默认值(单位:点)" width="120" />
           <el-table-column prop="min_threshold" label="最低生产阈值(万点或片数)" width="120" />
           <el-table-column prop="max_threshold" label="最高生产阈值(万点或片数)" width="120" />
           <el-table-column prop="min_min_threshold" label="智能阈值下限(万点或片数)" width="120" />
@@ -217,6 +219,18 @@
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_CM_line" prop="is_CM_line" label="是否点胶松下绑定线体">
                 <el-switch v-model="model.is_CM_line" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.type_of_big_small_line" prop="type_of_big_small_line" label="大小穿插的类型">
+                <el-input-number v-model="model.type_of_big_small_line" :style="{width: '100%'}" placeholder="0指不进行大小穿插，相同数字互相大小穿插，唯一的就自己穿插" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.default_threshould_of_big_small_line" prop="default_threshould_of_big_small_line" label="大小穿插线体阈值的默认值(单位:点)">
+                <el-input-number v-model="model.default_threshould_of_big_small_line" :style="{width: '100%'}" placeholder="请输入数字" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -578,6 +592,8 @@ export default {
         enable: false,
         is_AX_line: false,
         is_CM_line: false,
+        type_of_big_small_line: undefined,
+        default_threshould_of_big_small_line: undefined,
         max_process_time: '',
         max_points: '',
         output_order: ''
@@ -610,6 +626,8 @@ export default {
         enable: false,
         is_AX_line: false,
         is_CM_line: false,
+        type_of_big_small_line: undefined,
+        default_threshould_of_big_small_line: undefined,
         min_min_threshold: 0,
         // T_unable: '',
         // B_unable: '',
@@ -693,6 +711,16 @@ export default {
           trigger: 'blur'
         }],
         is_CM_line: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        type_of_big_small_line: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        default_threshould_of_big_small_line: [{
           required: true,
           message: '不能为空',
           trigger: 'blur'
