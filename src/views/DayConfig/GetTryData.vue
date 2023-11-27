@@ -66,6 +66,7 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
+          <el-table-column prop="serial" label="排程码" width="130" sortable />
           <el-table-column prop="plCode" label="去向" sortable width="90" />
           <el-table-column prop="plOrder" label="生产排序" sortable width="110" />
           <el-table-column prop="requireDate" label="包装点" sortable />
@@ -121,17 +122,22 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.serial" prop="serial" label="排程码">
+              <el-input v-model="model.serial" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.plCode" prop="plCode" label="去向">
               <el-input v-model="model.plCode" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.plOrder" prop="plOrder" label="生产排序">
               <el-input v-model="model.plOrder" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.requireDate" prop="requireDate" label="包装点">
               <el-input v-model="model.requireDate" placeholder="请输入" clearable />
             </el-form-item>
@@ -312,6 +318,7 @@ export default {
       forms: ['$form'],
       model: {
         id: null,
+        serial: null,
         plCode: null,
         plOrder: null,
         requireDate: null,
@@ -328,6 +335,7 @@ export default {
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: null,
+        serial: null,
         plCode: null,
         plOrder: null,
         requireDate: null,
