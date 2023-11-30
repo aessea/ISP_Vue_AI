@@ -54,6 +54,13 @@
           <el-table-column prop="name" label="客户名称" sortable />
           <el-table-column prop="identification" label="客户识别码" />
           <el-table-column prop="days_in_advance" label="MD提前需求日天数" />
+          <el-table-column prop="wheather_alter_MD" label="MD是否根据需求日提前">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.wheather_alter_MD === true" size="small" type="success">是</el-tag>
+              <el-tag v-else-if="scope.row.wheather_alter_MD === false" size="small" type="info">否</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="more_setup_time" label="首片核对时间（分钟）" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -107,9 +114,21 @@
               <el-input v-model="model.identification" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.days_in_advance" prop="days_in_advance" label="MD提前需求日天数">
               <el-input-number v-model="model.days_in_advance" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.wheather_alter_MD" prop="wheather_alter_MD" label="MD是否根据需求日提前">
+              <el-switch v-model="model.wheather_alter_MD" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.more_setup_time" prop="more_setup_time" label="首片核对时间（分钟）">
+              <el-input-number v-model="model.more_setup_time" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -236,14 +255,18 @@ export default {
         id: '',
         name: '',
         identification: '',
-        days_in_advance: 0
+        days_in_advance: undefined,
+        wheather_alter_MD: false,
+        more_setup_time: undefined
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
         name: '',
         identification: '',
-        days_in_advance: 0
+        days_in_advance: undefined,
+        wheather_alter_MD: false,
+        more_setup_time: undefined
       },
       rules: {
         name: [{
@@ -257,6 +280,16 @@ export default {
           trigger: 'blur'
         }],
         days_in_advance: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        wheather_alter_MD: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        more_setup_time: [{
           required: true,
           message: '不能为空',
           trigger: 'blur'
