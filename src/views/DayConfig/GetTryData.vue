@@ -17,7 +17,7 @@
               <i class="el-icon-download" />导出
             </el-button>
             <el-input
-              v-model="serialNo_value"
+              v-model="remark_value"
               placeholder="按照打件备注搜索"
               prefix-icon="el-icon-search"
               style="width: 200px;margin-left: 10px;"
@@ -27,7 +27,22 @@
               type="primary"
               icon="el-icon-search"
               style="margin-left: 10px;"
-              @click="searchBy_serialNo"
+              @click="searchBy_remark"
+            >
+              搜索
+            </el-button>
+            <el-input
+              v-model="serial_value"
+              placeholder="按照排程码搜索"
+              prefix-icon="el-icon-search"
+              style="width: 200px;margin-left: 10px;"
+              clearable
+            />
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              style="margin-left: 10px;"
+              @click="searchBy_serial"
             >
               搜索
             </el-button>
@@ -69,13 +84,14 @@
           <el-table-column prop="serial" label="排程码" width="130" sortable />
           <el-table-column prop="plCode" label="去向" sortable width="90" />
           <el-table-column prop="plOrder" label="生产排序" sortable width="110" />
+          <el-table-column prop="lockState" label="锁定状态" sortable width="110" />
           <el-table-column prop="requireDate" label="包装点" sortable />
           <el-table-column prop="packageMachineName" label="包装机种名" sortable />
           <el-table-column prop="smtMachine" label="机种" sortable />
           <el-table-column prop="jonNo" label="工单号" sortable width="100" />
           <el-table-column prop="totalCount" label="工单量" sortable width="100" />
           <el-table-column prop="process" label="制程" sortable width="110" />
-          <el-table-column prop="serialNo" label="打件备注" sortable />
+          <el-table-column prop="remark" label="打件备注" sortable />
           <el-table-column prop="productionTime" label="生产日期" width="160" sortable />
           <el-table-column prop="create_user" label="创建人" width="110" sortable />
           <el-table-column prop="create_time" label="创建时间" width="180" sortable />
@@ -144,17 +160,23 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.lockState" prop="lockState" label="锁定状态">
+              <el-input v-model="model.lockState" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.packageMachineName" prop="packageMachineName" label="包装机种名">
               <el-input v-model="model.packageMachineName" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.smtMachine" prop="smtMachine" label="机种">
               <el-input v-model="model.smtMachine" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.jonNo" prop="jonNo" label="工单号">
               <el-input v-model="model.jonNo" placeholder="请输入" clearable />
             </el-form-item>
@@ -172,8 +194,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.serialNo" prop="serialNo" label="打件备注">
-              <el-input v-model="model.serialNo" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.remark" prop="remark" label="打件备注">
+              <el-input v-model="model.remark" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -322,12 +344,13 @@ export default {
         plCode: null,
         plOrder: null,
         requireDate: null,
+        lockState: null,
         packageMachineName: null,
         smtMachine: null,
         jonNo: null,
         totalCount: null,
         process: null,
-        serialNo: null,
+        remark: null,
         create_user: null,
         create_time: null,
         productionTime: null
@@ -339,12 +362,13 @@ export default {
         plCode: null,
         plOrder: null,
         requireDate: null,
+        lockState: null,
         packageMachineName: null,
         smtMachine: null,
         jonNo: null,
         totalCount: null,
         process: null,
-        serialNo: null,
+        remark: null,
         create_user: null,
         create_time: null,
         productionTime: null
@@ -359,7 +383,8 @@ export default {
       pageSize: 50, // 每页多少条数据
       dataTableSelections: [], // 表格选中的数据
       // 搜索相关
-      serialNo_value: ''
+      remark_value: '',
+      serial_value: ''
     }
   },
   computed: {
@@ -753,15 +778,28 @@ export default {
       this.helpDialogVisible = true
     },
     // 按打件备注搜索
-    searchBy_serialNo() {
-      if (this.serialNo_value === '') {
+    searchBy_remark() {
+      if (this.remark_value === '') {
         this.$message({
           type: 'warning',
           message: '请至少输入一个关键词'
         })
         return
       }
-      SearchData({ 'serialNo': this.serialNo_value }).then(res => {
+      SearchData({ 'remark': this.remark_value }).then(res => {
+        this.table_data = res.table_data
+      })
+    },
+    // 按排程码搜索
+    searchBy_serial() {
+      if (this.serial_value === '') {
+        this.$message({
+          type: 'warning',
+          message: '请至少输入一个关键词'
+        })
+        return
+      }
+      SearchData({ 'serial': this.serial_value }).then(res => {
         this.table_data = res.table_data
       })
     }
