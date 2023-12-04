@@ -114,6 +114,16 @@
                 </template>
               </el-table-column>
             </el-table>
+            <el-pagination
+              background
+              :hide-on-single-page="false"
+              :page-size="pageSize"
+              :current-page="currentPage"
+              layout="total, prev, pager, next, jumper"
+              :total="total_num_ai"
+              style="margin-top: 16px;"
+              @current-change="handlePageChange_AI"
+            />
           </el-tab-pane>
           <el-tab-pane label="锡膏" name="solderPaste">
             <el-table
@@ -169,19 +179,19 @@
                 </template>
               </el-table-column>
             </el-table>
+            <el-pagination
+              background
+              :hide-on-single-page="true"
+              :page-size="pageSize"
+              :current-page="currentPage"
+              layout="total, prev, pager, next, jumper"
+              :total="total_num_xigao"
+              style="margin-top: 16px;"
+              @current-change="handlePageChange_XiGao"
+            />
           </el-tab-pane>
         </el-tabs>
 
-        <el-pagination
-          background
-          :hide-on-single-page="true"
-          :page-size="pageSize"
-          :current-page="currentPage"
-          layout="total, prev, pager, next, jumper"
-          :total="total_num"
-          style="margin-top: 16px;"
-          @current-change="handlePageChange"
-        />
       </div>
     </el-card>
     <el-dialog
@@ -376,7 +386,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, DeleteAllData, SearchData } from '@/api/DayConfig/GetSmtMoDataResData'
+import { GetTableData, GetAIData, GetXiGaoData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, DeleteAllData, SearchData } from '@/api/DayConfig/GetSmtMoDataResData'
 export default {
   name: 'GetSmtMoDataResData',
   directives: { elDragDialog },
@@ -455,7 +465,9 @@ export default {
       total_num_ai: 0,
       total_num_xigao: 0,
       currentPage: 1, // 当前在第几页
-      pageSize: 50, // 每页多少条数据
+      currentPage_ai: 1,
+      currentPage_xigao: 1,
+      pageSize: 20, // 每页多少条数据
       dataTableSelections: [], // 表格选中的数据
       moStatOptions: [
         { value: '4', label: '完工' },
@@ -482,15 +494,39 @@ export default {
     handleDrag() {
       // this.$refs.select.blur()
     },
-    // 分页
-    handlePageChange(val) {
-      this.currentPage = val
-      this.getTableData(val, this.pageSize) // 翻页
+    // AI分页
+    handlePageChange_AI(val) {
+      this.currentPage_ai = val
+      const data = { 'current_page': this.currentPage_ai, 'page_size': this.pageSize }
+      this.currentPage_ai = val
+      GetAIData(data).then(res => {
+        if (res.code === 20000) {
+          // this.table_data = res.table_data
+          this.table_data_ai = res.table_data_ai
+          this.total_num_ai = res.total_num_ai
+          this.loading = false
+        }
+      })
+    },
+    // 锡膏分页
+    handlePageChange_XiGao(val) {
+      this.currentPage_xigao = val
+      const data = { 'current_page': this.currentPage_xigao, 'page_size': this.pageSize }
+      this.currentPage_xigao = val
+      GetAIData(data).then(res => {
+        if (res.code === 20000) {
+          // this.table_data = res.table_data
+          this.table_data_xigao = res.table_data_xigao
+          this.total_num_xigao = res.total_num_xigao
+          this.loading = false
+        }
+      })
     },
     // 分页展示表格数据
     getTableData(currentPage, pageSize) {
       this.loading = true
       const data = { 'current_page': currentPage, 'page_size': pageSize }
+      // 保留用于刷新界面和导出
       GetTableData(data).then(res => {
         if (res.code === 20000) {
           // this.table_data = res.table_data
@@ -499,6 +535,22 @@ export default {
           this.total_num_ai = res.total_num_ai
           this.total_num_xigao = res.total_num_xigao
           this.loading = false
+        }
+      })
+
+      GetAIData(data).then(res => {
+        if (res.code === 20000) {
+          // this.table_data = res.table_data
+          this.table_data_ai = res.table_data_ai
+          this.total_num_ai = res.total_num_ai
+          this.loading = false
+        }
+      })
+
+      GetXiGaoData(data).then(res => {
+        if (res.code === 20000) {
+          this.table_data_xigao = res.table_data_xigao
+          this.total_num_xigao = res.total_num_xigao
         }
       })
     },

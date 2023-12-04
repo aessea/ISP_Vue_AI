@@ -7,6 +7,23 @@ export function GetTableData(data) {
     data
   })
 }
+
+export function GetAIData(data) {
+  return request({
+    url: '/DayConfig/GetSmtMoDataResData/get_table_data_ai/',
+    method: 'post',
+    data
+  })
+}
+
+export function GetXiGaoData(data) {
+  return request({
+    url: '/DayConfig/GetSmtMoDataResData/get_table_data_xigao/',
+    method: 'post',
+    data
+  })
+}
+
 // 添加数据
 export function AddData(data) {
   return request({
