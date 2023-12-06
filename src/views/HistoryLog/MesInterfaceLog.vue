@@ -73,6 +73,8 @@
         </el-descriptions>
       </el-form>
       <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="exportPostData">导出发送数据</el-button>
+        <el-button type="primary" @click="exportReceiveData">导出接收数据</el-button>
         <el-button @click="handleFormClose">关闭</el-button>
       </span>
     </el-dialog>
@@ -102,7 +104,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { GetTableData, ExportData, SearchData } from '@/api/HistoryLog/MesInterfaceLog'
+import { GetTableData, ExportData, SearchData, GetPostData, GetReceiveData } from '@/api/HistoryLog/MesInterfaceLog'
 import { FormatDatabaseDatetime } from '@/utils/date'
 import XLSX from 'xlsx'
 export default {
@@ -151,6 +153,7 @@ export default {
     },
     // 查看数据详情
     handleDetail(index, row) {
+      this.scopeIndex = index
       // index是表格行数，row是行数据
       this.dialogTitle = '数据详情'
       this.dataDialogVisible = true
@@ -194,12 +197,78 @@ export default {
     exportDataDialog() {
       this.exportDialogVisible = true
     },
+    fixJSONString(string) {
+    // 匹配非双引号开头的键名，并在其键名上加上双引号
+      const fixedString = string.replace(/'/g, '"')
+      return fixedString
+    },
+    // 导出当前row的接收数据
+    exportReceiveData() {
+      this.loading = true
+      const data = { 'id': this.table_data[this.scopeIndex].id }
+      GetReceiveData(data).then(res => {
+        if (res.code === 20000) {
+          const tableName = `${this.table_data[this.scopeIndex].api_name}-接收数据`
+          const jsonString = this.fixJSONString(res.receive_data)
+          const post_data_array = JSON.parse(jsonString)
+          const dataCount = post_data_array.length
+          const fields = Object.keys(post_data_array[0])
+          const newData = [...post_data_array]
+          const sheet = XLSX.utils.json_to_sheet(newData, { header: fields })
+          const wb = XLSX.utils.book_new()
+          XLSX.utils.book_append_sheet(wb, sheet, tableName)
+          XLSX.writeFile(wb, tableName + '.xlsx')
+          this.loading = false
+          this.$notify({
+            title: '导出成功',
+            message: '本次共导出了 ' + dataCount + ' 条数据',
+            type: 'success'
+          })
+        }
+      })
+    },
+    // 导出发送数据
+    exportPostData() {
+      this.loading = true
+      const data = { 'id': this.table_data[this.scopeIndex].id }
+      GetPostData(data).then(res => {
+        if (res.code === 20000) {
+          const tableName = `${this.table_data[this.scopeIndex].api_name}-发送数据`
+          const jsonString = this.fixJSONString(res.post_data)
+          const post_data_array = JSON.parse(jsonString)
+          const dataCount = post_data_array.length
+          const fields = Object.keys(post_data_array[0])
+          const newData = [...post_data_array]
+          const sheet = XLSX.utils.json_to_sheet(newData, { header: fields })
+          const wb = XLSX.utils.book_new()
+          XLSX.utils.book_append_sheet(wb, sheet, tableName)
+          XLSX.writeFile(wb, tableName + '.xlsx')
+          this.loading = false
+          this.$notify({
+            title: '导出成功',
+            message: '本次共导出了 ' + dataCount + ' 条数据',
+            type: 'success'
+          })
+        }
+      })
+    },
     // 确认导出
     exportData() {
       ExportData().then(res => {
         if (res.code === 20000) {
           const dataCount = res.data_count
-          const sheetData = res.table_data
+          // 导出表格数据时不包括post_data和receive_data
+          const unwantedColumns = ['post_data', 'receive_data']
+          // const unwantedFields = ['接收数据', '发送数据']
+          const sheetData = res.table_data.map(item => {
+            const filteredItem = {}
+            for (const key in item) {
+              if (!unwantedColumns.includes(key)) {
+                filteredItem[key] = item[key]
+              }
+            }
+            return filteredItem
+          })
           const fields = res.fields
           const tableName = res.table_name
           const fields_display = res.fields_display
