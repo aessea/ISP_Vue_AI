@@ -53,6 +53,9 @@
           <el-table-column type="selection" width="55" />
           <el-table-column prop="packing_line_name" label="包装线" sortable />
           <el-table-column prop="delay_value" label="延后时间(单位:天)" />
+          <el-table-column prop="require_mark_name " label="需求日备注" />
+          <el-table-column prop="go_where" label="去向" />
+          <el-table-column prop="extra_delay_value" label="需求日备注工单延后时间(单位:天)" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -102,6 +105,23 @@
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.delay_value" prop="delay_value" label="延后时间(单位:天)">
               <el-input v-model="model.delay_value" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.require_mark_name" prop="require_mark_name" label="需求日备注">
+              <el-input v-model="model.require_mark_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.go_where" prop="go_where" label="去向">
+              <el-input v-model="model.go_where" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.extra_delay_value" prop="extra_delay_value" label="需求日备注工单延后时间(单位:天)">
+              <el-input-number v-model="model.extra_delay_value" placeholder="请输入" clearable :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -225,15 +245,21 @@ export default {
       // 表单相关数据
       forms: ['$form'],
       model: {
-        id: '',
-        packing_line_name: '',
-        delay_value: ''
+        id: null,
+        packing_line_name: null,
+        delay_value: null,
+        require_mark_name: null,
+        go_where: null,
+        extra_delay_value: undefined
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        name: '',
-        delay_value: ''
+        id: null,
+        packing_line_name: null,
+        delay_value: null,
+        require_mark_name: null,
+        go_where: null,
+        extra_delay_value: undefined
       },
       rules: {
         packing_line_name: [{
@@ -242,6 +268,21 @@ export default {
           trigger: 'blur'
         }],
         delay_value: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        require_mark_name: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        go_where: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        extra_delay_value: [{
           required: true,
           message: '不能为空',
           trigger: 'blur'
