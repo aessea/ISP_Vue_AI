@@ -36,3 +36,10 @@ export function GetReceiveData(data) {
   })
 }
 
+export function FilterTableData(data) {
+  return request({
+    url: '/HistoryLog/MesInterfaceLog/filter_tabledata/',
+    method: 'post',
+    data
+  })
+}

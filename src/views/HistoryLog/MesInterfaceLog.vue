@@ -2,7 +2,7 @@
   <div class="main-box">
     <el-card>
       <el-row>
-        <el-col :span="16">
+        <el-col :span="20">
           <div>
             <el-button @click="exportDataDialog">
               <i class="el-icon-download" />导出
@@ -21,6 +21,9 @@
         </el-col>
         <el-col :span="4">
           <div style="float: right;">
+            <el-button type="primary" icon="el-icon-date" style="margin-left: 10px;" @click="filterDataDialog">
+              过滤存储数据
+            </el-button>
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
               <el-button size="small" icon="el-icon-refresh" circle @click="refreshTableData" />
             </el-tooltip>
@@ -98,12 +101,40 @@
       </span>
     </el-dialog>
 
+    <el-dialog
+      v-el-drag-dialog
+      title="过滤数据"
+      :visible.sync="filterDialogVisible"
+      width="45%"
+      @dragDialog="handleDrag"
+    >
+      <el-row>
+        <el-form>
+          <el-form-item label="需要保留的数据日期范围：" :label-width="formLabelWidth">
+            <el-date-picker
+              v-model="dateRange"
+              type="daterange"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              align="right"
+            />
+          </el-form-item>
+        </el-form>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleFilterClose">关闭</el-button>
+        <el-button type="danger" plain @click="filterData">确认过滤</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { GetTableData, ExportData, SearchData, GetPostData, GetReceiveData } from '@/api/HistoryLog/MesInterfaceLog'
+import { GetTableData, ExportData, SearchData, GetPostData, GetReceiveData, FilterTableData } from '@/api/HistoryLog/MesInterfaceLog'
 import { FormatDatabaseDatetime } from '@/utils/date'
 import XLSX from 'xlsx'
 export default {
@@ -124,7 +155,45 @@ export default {
       dialogTitle: null,
       scopeIndex: '', // 表格行数index
       scopeRow: '', // 表格行数据
-      model: {}
+      model: {},
+      // 过滤数据相关
+      filterDialogVisible: false,
+      dateRange: '',
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近十五天',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 15)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      }
     }
   },
   computed: {
@@ -196,6 +265,43 @@ export default {
     exportDataDialog() {
       this.exportDialogVisible = true
     },
+    // 按日期过滤表格数据
+    filterDataDialog() {
+      this.filterDialogVisible = true
+    },
+    handleFilterClose() {
+      this.filterDialogVisible = false
+    },
+    filterData() {
+      if (this.dateRange === '') {
+        this.$message({
+          title: '过滤失败',
+          message: '请先选择需要保留的日期范围！',
+          type: 'error'
+        })
+        return
+      }
+      const start_date = new Date(this.dateRange[0]).getTime()
+      const end_date = new Date(this.dateRange[1]).getTime()
+      const data = {
+        start_date,
+        end_date
+      }
+      FilterTableData(data).then(res => {
+        console.log(res)
+        if (res.code === 20000) {
+          this.$notify({
+            title: '过滤成功',
+            message: res.message,
+            type: 'success'
+          })
+          this.refreshTableData()
+          setTimeout(() => {
+            this.filterDialogVisible = false
+          }, 1000)
+        }
+      })
+    },
     fixJSONString(string) {
     // 匹配非双引号开头的键名，并在其键名上加上双引号
       const fixedString = string.replace(/'/g, '"')
@@ -203,16 +309,23 @@ export default {
     },
     // 导出当前row的接收数据
     exportReceiveData() {
-      this.loading = true
       const data = { 'id': this.table_data[this.scopeIndex].id }
       GetReceiveData(data).then(res => {
         if (res.code === 20000) {
+          if (res.receive_data === '' || res.receive_data === null) {
+            this.$notify({
+              title: '导出失败',
+              message: '当前接口接收数据为空',
+              type: 'error'
+            })
+            return
+          }
           const tableName = `${this.table_data[this.scopeIndex].api_name}-接收数据`
           const jsonString = this.fixJSONString(res.receive_data)
-          const post_data_array = JSON.parse(jsonString)
-          const dataCount = post_data_array.length
-          const fields = Object.keys(post_data_array[0])
-          const newData = [...post_data_array]
+          const receive_data_array = JSON.parse(jsonString)
+          const dataCount = receive_data_array.length
+          const fields = Object.keys(receive_data_array[0])
+          const newData = [...receive_data_array]
           const sheet = XLSX.utils.json_to_sheet(newData, { header: fields })
           const wb = XLSX.utils.book_new()
           XLSX.utils.book_append_sheet(wb, sheet, tableName)
@@ -228,13 +341,21 @@ export default {
     },
     // 导出发送数据
     exportPostData() {
-      this.loading = true
       const data = { 'id': this.table_data[this.scopeIndex].id }
       GetPostData(data).then(res => {
         if (res.code === 20000) {
+          if (res.post_data === '' || res.post_data === null) {
+            this.$notify({
+              title: '导出失败',
+              message: '当前接发送数据为空',
+              type: 'error'
+            })
+            return
+          }
           const tableName = `${this.table_data[this.scopeIndex].api_name}-发送数据`
           const jsonString = this.fixJSONString(res.post_data)
           const post_data_array = JSON.parse(jsonString)
+          console.log(post_data_array)
           const dataCount = post_data_array.length
           const fields = Object.keys(post_data_array[0])
           const newData = [...post_data_array]
