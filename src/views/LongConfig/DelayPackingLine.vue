@@ -53,7 +53,7 @@
           <el-table-column type="selection" width="55" />
           <el-table-column prop="packing_line_name" label="包装线" sortable />
           <el-table-column prop="delay_value" label="延后时间(单位:天)" />
-          <el-table-column prop="require_mark_name " label="需求日备注" />
+          <el-table-column prop="require_mark_name" label="需求日备注" />
           <el-table-column prop="go_where" label="去向" />
           <el-table-column prop="extra_delay_value" label="需求日备注工单延后时间(单位:天)" />
           <el-table-column width="110" fixed="right" label="操作">
@@ -247,7 +247,7 @@ export default {
       model: {
         id: null,
         packing_line_name: null,
-        delay_value: null,
+        delay_value: undefined,
         require_mark_name: null,
         go_where: null,
         extra_delay_value: undefined
@@ -256,7 +256,7 @@ export default {
       modelOriginal: {
         id: null,
         packing_line_name: null,
-        delay_value: null,
+        delay_value: undefined,
         require_mark_name: null,
         go_where: null,
         extra_delay_value: undefined
@@ -272,16 +272,8 @@ export default {
           message: '不能为空',
           trigger: 'blur'
         }],
-        require_mark_name: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        go_where: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
+        require_mark_name: [],
+        go_where: [],
         extra_delay_value: [{
           required: true,
           message: '不能为空',
