@@ -263,20 +263,24 @@ export default {
       },
       rules: {
         packing_line_name: [{
-          required: true,
-          message: '不能为空',
+          required: false,
           trigger: 'blur'
         }],
         delay_value: [{
-          required: true,
-          message: '不能为空',
+          required: false,
           trigger: 'blur'
         }],
-        require_mark_name: [],
-        go_where: [],
+        require_mark_name: [{
+          required: false,
+          trigger: 'blur'
+        }],
+        go_where: [{
+          required: false,
+          trigger: 'blur'
+        }],
+
         extra_delay_value: [{
-          required: true,
-          message: '不能为空',
+          required: false,
           trigger: 'blur'
         }]
       },
