@@ -1,9 +1,9 @@
 import request from '../../utils/request'
 
 // 检查表格
-export function CheckData(data) {
+export function CheckScheduleFileAna(data) {
   return request({
-    url: '/Control/OnlineTable/check_excel_data/',
+    url: '/Control/OnlineTable/check_schedule_file_ana/',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -154,12 +154,12 @@ export function AiScheduled(data) {
     data
   })
 }
-// 导入排程表格接口
-export function ImportPushSchedule(data) {
+// 分析排程
+export function AnalysisSchedule(data) {
   return request({
-    url: '/Control/OnlineTable/import_push_schedule/',
+    url: '/Control/OnlineTable/do_analysis_schedule/',
     method: 'post',
-    timeout: 10 * 60 * 1000,
+    timeout: 15 * 60 * 1000,
     data
   })
 }

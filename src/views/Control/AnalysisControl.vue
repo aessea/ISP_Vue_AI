@@ -116,7 +116,7 @@
                         </el-button>
                       </el-upload>
                       <div>
-                        <el-button v-if="buttons.includes('AnalysisControl/checkData')" type="primary" @click="checkData">
+                        <el-button v-if="buttons.includes('AnalysisControl/checkScheduleFileAna')" type="primary" @click="checkScheduleFileAna">
                           2.检查文件
                         </el-button>
                         <el-button v-if="buttons.includes('AnalysisControl/analysisSchedule')" type="primary" :disabled="analysisBtnEnable" @click="analysisSchedule">
@@ -369,10 +369,10 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import {} from '@/api/Control/AnalysisControl'
 import { SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled, DownloadAnaExcel,
-  AiPrescheduled, AiScheduled, CheckData, GetHistoryAnaItem, GetHistoryAnaData,
-  ImportPushSchedule, GetRunFlag, ClearAnaProgress, GetAnaProgress, StatisticsSchedule
+  AiPrescheduled, AiScheduled, CheckScheduleFileAna, GetHistoryAnaItem, GetHistoryAnaData,
+  AnalysisSchedule, GetRunFlag, ClearAnaProgress, GetAnaProgress, StatisticsSchedule
 } from '@/api/Control/OnlineTable'
-import { DoImportPushSchedule } from '@/api/Control/AnalysisControl'
+import { DoImportSchedule } from '@/api/Control/AnalysisControl'
 import XLSX from 'xlsx'
 import FileSaver from 'file-saver'
 export default {
@@ -510,7 +510,7 @@ export default {
         background: 'rgba(0, 0, 0, 0.5)'
       }
       this.loadingInstance = Loading.service(importLoading)
-      await DoImportPushSchedule(form).then(res => {
+      await DoImportSchedule(form).then(res => {
         this.loadingInstance.close()
         this.pushDialogVisible = true
         this.$alert(res.message, '提示', {
@@ -613,7 +613,7 @@ export default {
       this.analysisMessage = '分析排程提示信息：未完成分析排程'
     },
     // 后端数据检查
-    async checkData() {
+    async checkScheduleFileAna() {
       if (this.uploadFileName === '') {
         this.$message({
           type: 'warning',
@@ -629,7 +629,7 @@ export default {
       const form = new FormData()
       form.append('file', this.uploadFile)
       this.stepNow = 2
-      await CheckData(form).then(res => {
+      await CheckScheduleFileAna(form).then(res => {
         if (res.message_type === 'success') {
           this.$alert(res.message, '检查结果', {
             confirmButtonText: '确定',
@@ -831,7 +831,7 @@ export default {
       this.resetShowAnaData()
       this.resetAnalysisAlertMessage()
       this.listenProgress()
-      await ImportPushSchedule(form).then(res => {
+      await AnalysisSchedule(form).then(res => {
         this.isAnalysis = true // 分析完成
         this.$alert(res.message, '提示', {
           confirmButtonText: '确定',

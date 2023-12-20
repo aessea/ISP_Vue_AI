@@ -9,18 +9,9 @@ export function TrainModel(data) {
   })
 }
 // 数据检查
-export function CheckData(data) {
+export function CheckScheduleFile(data) {
   return request({
-    url: '/Control/SchedulePanel/check_input_excel_upload/',
-    method: 'post',
-    timeout: 60 * 60 * 1000,
-    data
-  })
-}
-// 新版数据检查
-export function CheckDataNew(data) {
-  return request({
-    url: '/Control/SchedulePanel/check_input_excel_new/',
+    url: '/Control/SchedulePanel/check_schedule_file/',
     method: 'post',
     timeout: 60 * 60 * 1000,
     data

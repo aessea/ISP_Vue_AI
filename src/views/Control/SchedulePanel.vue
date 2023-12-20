@@ -762,11 +762,11 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfoMain, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportMainScheduleData, GetApsProgram, DownloadStatisticsMain,
+  GeScheduleRes, StopSchedule, GetApsMtool, ExportMainScheduleData, GetApsProgram, DownloadStatisticsMain,
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
   GetApsMoBaseData, GetApsMoProgData, DownloadUploadFileMain, DownloadUploadFileSmall, ModifyHoliday,
   GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount,
-  DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckDataNew, DownloadNoProgramSmall, DoBucklePoints } from '@/api/Control/SchedulePanel'
+  DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckScheduleFile, DownloadNoProgramSmall, DoBucklePoints } from '@/api/Control/SchedulePanel'
 export default {
   name: 'SchedulePanel',
   directives: { elDragDialog },
@@ -1014,7 +1014,7 @@ export default {
           this.uploadFileNameMain = this.uploadFileListMain[0].name // 更新文件名
           this.uploadFileMain = this.uploadFileListMain[0].raw // 更新文件
         }
-        this.checkDataBackend(this.uploadFileMain, this.uploadFileNameMain)
+        this.checkScheduleFile(this.uploadFileMain, this.uploadFileNameMain)
       }
     },
     // 点胶文件上传钩子
@@ -1037,52 +1037,16 @@ export default {
           this.uploadFileNameSmall = this.uploadFileListSmall[0].name // 更新文件名
           this.uploadFileSmall = this.uploadFileListSmall[0].raw // 更新文件
         }
-        this.checkDataBackend(this.uploadFileSmall, this.uploadFileNameSmall)
+        this.checkScheduleFile(this.uploadFileSmall, this.uploadFileNameSmall)
       }
     },
-    // 检查
-    async checkData(uploadFile, uploadFileName) {
+    // 数据检查
+    async checkScheduleFile(uploadFile, uploadFileName) {
       this.loadingInstance = Loading.service(this.checkLoading)
       const form = new FormData()
       form.append('file', uploadFile)
       form.append('file_name', uploadFileName)
-      await CheckData(form).then(res => {
-        if (res.type === 'success') {
-          this.$alert(res.message, '检查结果', {
-            confirmButtonText: '确定',
-            type: 'success'
-          })
-        } else {
-          this.$alert(res.message, '检查结果', {
-            customClass: 'checkAlertBox',
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: '确定',
-            type: 'warning'
-          })
-        }
-        if (this.uploadFileNameMain !== '') {
-          this.stepNowMain = 1
-        } else if (this.uploadFileListSmall !== '') {
-          this.stepNowSmall = 1
-        } else if (this.uploadFileNameMain !== '' && this.uploadFileNameSmall !== '') {
-          this.stepNowBoth = 1
-        }
-        this.loadingInstance.close()
-      }).catch(err => {
-        this.loadingInstance.close() // 清除动画
-        this.$alert('检查出现异常：' + err, '错误', {
-          confirmButtonText: '确定',
-          type: 'error'
-        })
-      })
-    },
-    // 新版检查
-    async checkDataBackend(uploadFile, uploadFileName) {
-      this.loadingInstance = Loading.service(this.checkLoading)
-      const form = new FormData()
-      form.append('file', uploadFile)
-      form.append('file_name', uploadFileName)
-      await CheckDataNew(form).then(res => {
+      await CheckScheduleFile(form).then(res => {
         if (res.message_type === 'success') {
           this.$alert(res.message, '检查结果', {
             confirmButtonText: '确定',

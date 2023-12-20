@@ -41,7 +41,7 @@
               </el-button>
             </el-upload>
             <div>
-              <el-button type="primary" @click="checkDataBackend">
+              <el-button type="primary" @click="checkScheduleFile">
                 <i class="el-icon-circle-check" />检查
               </el-button>
               <el-button type="primary" @click="analysisDialog">
@@ -407,7 +407,7 @@ import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, Ge
   GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData,
   StatisticsSchedule, SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled,
   AiPrescheduled, AiScheduled, GetRunFlag, ImportPushSchedule, SaveApiCustweekSelfcreate,
-  CheckData
+  CheckScheduleFileAna
 } from '@/api/Control/OnlineTable'
 import { lineOptions, lockedList, unLockedList } from '@/utils/items'
 export default {
@@ -546,7 +546,7 @@ export default {
       this.loadingInstance = Loading.service(checkLoading)
       const form = new FormData()
       form.append('file', this.uploadFile)
-      await CheckData(form).then(res => {
+      await CheckScheduleFileAna(form).then(res => {
         this.showAlertMessage(res.data_list, res.message_type)
         this.$confirm(res.message, '检查结果', {
           customClass: 'checkAlertBox',
@@ -1441,7 +1441,7 @@ export default {
       alert_div.appendChild(div_text) // 将标签插入到指定标签中
     },
     // 后端数据检查
-    async checkDataBackend() {
+    async checkScheduleFile() {
       this.checkCount += 1 // 检查次数+1
       window.luckysheet.exitEditMode() // 退出编辑模式
       // 表格为空
@@ -1472,7 +1472,7 @@ export default {
       const form = new FormData()
       form.append('file_name', this.uploadFileName)
       form.append('file', blob)
-      await CheckData(form).then(res => {
+      await CheckScheduleFileAna(form).then(res => {
         if (res.message_type === 'success') {
           this.$alert(res.message, '检查结果', {
             confirmButtonText: '确定',
