@@ -170,7 +170,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="其它配置" name="other">
+          <el-tab-pane label="其他配置" name="other">
             <el-table
               id="mytable"
               v-loading="loading"
@@ -399,7 +399,7 @@ export default {
       loadingInstance: null,
       table_data_ai: [], // 主板配置
       table_data_dj: [], // 小板配置
-      table_data_other: [], // 其它配置
+      table_data_other: [], // 其他配置
       activeName: 'main',
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
@@ -481,7 +481,7 @@ export default {
       lineTypeOptions: [
         { label: '主板配置', value: 'main' },
         { label: '小板配置', value: 'small' },
-        { label: '其它配置', value: 'other' }
+        { label: '其他配置', value: 'other' }
       ],
       param_classify_options: [], // 参数分类选项
       all_role_list: []

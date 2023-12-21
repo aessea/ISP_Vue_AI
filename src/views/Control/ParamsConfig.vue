@@ -142,7 +142,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <!-- <el-tab-pane label="其它配置" name="otherconfig">
+          <!-- <el-tab-pane label="其他配置" name="otherconfig">
             <el-table
               id="mytable"
               v-loading="loading"
@@ -361,7 +361,7 @@ export default {
       loadingInstance: null,
       table_data_ai: [], // AI配置
       table_data_dj: [], // 点胶配置
-      table_data_other: [], // 其它配置
+      table_data_other: [], // 其他配置
       activeName: 'aiconfig',
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
@@ -442,7 +442,7 @@ export default {
       lineTypeOptions: [
         { label: 'AI配置', value: 'AI' },
         { label: '点胶配置', value: 'DJ' },
-        { label: '其它配置', value: 'other' }
+        { label: '其他配置', value: 'other' }
       ],
       all_role_list: []
     }
