@@ -24,11 +24,12 @@ export function DeleteFiles(data) {
     data
   })
 }
-// 删除三个月前的数据
-export function DeleteBeforeFiles() {
+// 删除n个月前的数据
+export function DeleteBeforeFiles(data) {
   return request({
     url: '/FileManage/InputFiles/delete_range_files/',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 // 查找文件重置文件表
