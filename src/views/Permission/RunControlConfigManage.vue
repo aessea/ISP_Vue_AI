@@ -2,10 +2,7 @@
   <div id="main-box">
     <el-card>
       <el-row>
-        <el-col :span="16">
-          <div />
-        </el-col>
-        <el-col :span="8">
+        <el-col :span="24">
           <div style="float: right;">
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
               <el-button
@@ -37,11 +34,13 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="func_des" label="功能描述" sortable />
+          <el-table-column prop="func_module" label="功能所属模块" sortable />
+          <el-table-column prop="func_des" label="功能名称" sortable />
+          <el-table-column prop="remark" label="备注说明" sortable />
           <el-table-column prop="is_run" label="是否开启改功能">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.enable === true" size="small" type="success">是</el-tag>
-              <el-tag v-else size="small" type="danger">否</el-tag>
+              <el-tag v-if="scope.row.is_run === true" size="small" type="success">开启</el-tag>
+              <el-tag v-else size="small" type="danger">关闭</el-tag>
             </template>
           </el-table-column>
 
@@ -79,14 +78,31 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.func_des" prop="func_des" label="功能描述">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.func_index" prop="func_index" label="显示顺序(数字升序)">
+              <el-input v-model="model.func_index" placeholder="请输入数字" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.func_module" prop="func_module" label="功能所属模块">
+              <el-input v-model="model.func_module" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.func_des" prop="func_des" label="功能名称">
               <el-input v-model="model.func_des" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.is_run" prop="is_run" label="是否开启">
               <el-switch v-model="model.is_run" style="width: 100%;" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.remark" prop="remark" label="备注说明">
+              <el-input v-model="model.remark" placeholder="请输入" :rows="1" type="textarea" clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -147,15 +163,20 @@ export default {
       // 表单相关数据
       forms: ['$form'],
       model: {
-        id: '',
-        func_des: '',
-        is_run: false
+        id: null,
+        func_index: null,
+        func_des: null,
+        is_run: null,
+        func_name: null,
+        remark: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        func_des: '',
-        is_run: false
+        id: null,
+        func_des: null,
+        is_run: null,
+        func_name: null,
+        remark: null
       },
       rules: {
         func_des: [{
@@ -288,27 +309,21 @@ export default {
     },
     // 表单dialog关闭前提示
     handleFormClose() {
-      if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.closeFormDialog()
-        }).catch(() => {
-
-        })
-      } else {
-        this.closeFormDialog()
-      }
+      this.closeFormDialog()
     },
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      this.model['func_des'] = ''
-      this.modelOriginal['func_des'] = ''
-      this.model['is_run'] = false
-      this.modelOriginal['is_run'] = false
+      this.model['func_des'] = null
+      this.modelOriginal['func_des'] = null
+      this.model['is_run'] = null
+      this.modelOriginal['is_run'] = null
+      this.model['remark'] = null
+      this.modelOriginal['remark'] = null
+      this.model['func_index'] = null
+      this.modelOriginal['func_index'] = null
+      this.model['func_module'] = null
+      this.modelOriginal['func_module'] = null
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 获取上传文件

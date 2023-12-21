@@ -45,7 +45,7 @@ const PermissionRouter = {
       component: () => import('@/views/Permission/ParamConfigManage'),
       name: 'ParamsConfigManage',
       meta: {
-        title: '排程配置管理',
+        title: '配置管理',
         roles: ['ParamsConfig']
       }
     },
@@ -63,7 +63,7 @@ const PermissionRouter = {
       component: () => import('@/views/Permission/RunControlConfigManage'),
       name: 'RunControlConfig',
       meta: {
-        title: '排程运行管理',
+        title: '排程功能管理',
         roles: ['RunControlConfig']
       }
     }
