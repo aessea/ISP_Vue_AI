@@ -8,24 +8,10 @@
       <div class="form-box">
         <div class="login-container">
           <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-
             <div class="title-container">
-              <h3 class="title">AI排程系统</h3>
+              <h3 class="title">{{ title }}</h3>
             </div>
-
             <el-form-item prop="username">
-              <!-- <span class="svg-container">
-                <svg-icon icon-class="user" />
-              </span>
-              <el-input
-                ref="username"
-                v-model="loginForm.username"
-                placeholder="请输入用户名"
-                name="username"
-                type="text"
-                tabindex="1"
-                autocomplete="on"
-              /> -->
               <el-input
                 ref="username"
                 v-model="loginForm.username"
@@ -48,30 +34,6 @@
                 size="big"
               />
             </el-form-item>
-            <!-- <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-              <el-form-item prop="password">
-                <span class="svg-container">
-                  <svg-icon icon-class="password" />
-                </span>
-                <el-input
-                  :key="passwordType"
-                  ref="password"
-                  v-model="loginForm.password"
-                  :type="passwordType"
-                  placeholder="请输入密码"
-                  name="password"
-                  tabindex="2"
-                  autocomplete="on"
-                  @keyup.native="checkCapslock"
-                  @blur="capsTooltip = false"
-                  @keyup.enter.native="handleLogin"
-                />
-                <span class="show-pwd" @click="showPwd">
-                  <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-                </span>
-              </el-form-item>
-            </el-tooltip> -->
-
             <el-button
               :loading="loading"
               type="primary"
@@ -79,19 +41,12 @@
               round
               size="big"
               class="gradientBtn"
-              @click.native.prevent="handleLogin"
+              @click="toLogin"
+              @keyup.enter="keyDown"
             >
               登录
             </el-button>
           </el-form>
-
-          <!-- <el-dialog title="Or connect with" :visible.sync="showDialog">
-            Can not be simulated on local, so please combine you own business simulation! ! !
-            <br>
-            <br>
-            <br>
-            <social-sign />
-          </el-dialog> -->
         </div>
       </div>
     </el-card>
@@ -102,11 +57,12 @@
 </template>
 
 <script>
-
+import { title } from '@/settings'
 export default {
   name: 'Login',
   data() {
     return {
+      title: title,
       loginForm: {
         username: '',
         password: ''
@@ -139,6 +95,7 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
+    window.addEventListener('keydown', this.keyDown) // 绑定监听事件
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
     } else if (this.loginForm.password === '') {
@@ -147,6 +104,7 @@ export default {
   },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
+    window.removeEventListener('keydown', this.keyDown, false) // 绑定监听事件
   },
   methods: {
     checkCapslock(e) {
@@ -163,7 +121,7 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    toLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -180,6 +138,13 @@ export default {
           return false
         }
       })
+    },
+    // 点击回车键登录
+    keyDown(e) {
+      // 回车则执行登录方法 enter键的ASCII是13
+      if (e.keyCode === 13 || e.keyCode === 100) {
+        this.toLogin() // 定义的登录方法
+      }
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
