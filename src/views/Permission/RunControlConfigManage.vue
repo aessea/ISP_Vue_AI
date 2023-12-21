@@ -3,12 +3,7 @@
     <el-card>
       <el-row>
         <el-col :span="16">
-          <div>
-
-            <el-button v-if="buttons.includes('PackagingLineHoliday/export')" @click="exportDataDialog">
-              <i class="el-icon-download">导出</i>
-            </el-button>
-          </div>
+          <div />
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
@@ -43,7 +38,7 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="func_des" label="功能描述" sortable />
-          <el-table-column prop="is_run" label="是否开启">
+          <el-table-column prop="is_run" label="是否开启改功能">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.enable === true" size="small" type="success">是</el-tag>
               <el-tag v-else size="small" type="danger">否</el-tag>
@@ -53,20 +48,11 @@
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
-                v-if="buttons.includes('PackagingLineHoliday/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
                 circle
                 @click="handleModify(scope.$index, scope.row)"
-              />
-              <el-button
-                v-if="buttons.includes('PackagingLineHoliday/delete')"
-                type="danger"
-                size="mini"
-                icon="el-icon-delete"
-                circle
-                @click="handleDelete(scope.$index, scope.row)"
               />
             </template>
           </el-table-column>
@@ -107,8 +93,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
-        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">确认修改</el-button>
+        <el-button type="primary" @click="modifyData">确认修改</el-button>
       </span>
     </el-dialog>
 
@@ -125,90 +110,16 @@
       </span>
     </el-dialog>
 
-    <el-dialog
-      v-el-drag-dialog
-      title="导入数据"
-      :visible.sync="importDialogVisible"
-      width="60%"
-      :before-close="handleImportClose"
-      @dragDialog="handleDrag"
-    >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="func_des" label="功能描述" />
-        <el-table-column prop="is_run" label="是否开启" />
-      </el-table>
-      <el-row>
-        <el-col :span="8">
-          <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="append">追加数据</el-radio>
-            <el-radio label="replace">替换数据</el-radio>
-          </el-radio-group>
-        </el-col>
-        <el-col :span="16">
-          <div style="display: flex;margin-top: 16px;margin-bottom: 16px;">
-            <el-upload
-              ref="upload"
-              name="file"
-              class="upload-demo"
-              accept=".xlsx"
-              action=""
-              :on-change="handleChange"
-              :auto-upload="false"
-              :show-file-list="true"
-              :file-list="uploadFileList"
-            >
-              <el-button slot="trigger" type="primary" style="margin-left: 10px;">
-                <i class="el-icon-upload" />
-                上传文件
-              </el-button>
-            </el-upload>
-          </div>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleImportClose">关闭</el-button>
-        <el-button type="primary" @click="confirmImport">确认导入</el-button>
-      </span>
-    </el-dialog>
-
-    <el-dialog
-      v-el-drag-dialog
-      title="导出数据"
-      :visible.sync="exportDialogVisible"
-      :before-close="handleExportClose"
-      width="45%"
-      @dragDialog="handleDrag"
-    >
-      <el-row>
-        <span>导出文件格式：</span>
-        <el-radio-group v-model="exportRadio">
-          <el-radio label="xlsx">.xlsx</el-radio>
-        </el-radio-group>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleExportClose">关闭</el-button>
-        <el-button type="primary" @click="exportData">确认导出</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
-import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/DayConfig/PackagingLineHoliday'
+import { GetTableData, ModifyData } from '@/api/Permission/RunControlConfig'
 import { LineOptions } from '@/utils/items'
 export default {
-  name: 'PackagingLineHoliday',
+  name: 'RunControlConfig',
   directives: { elDragDialog },
   data() {
     return {
@@ -219,18 +130,8 @@ export default {
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExample: [
-        {
-          func_des: 'default func_des',
-          is_run: false
-        }, {
-          func_des: '(必填)',
-          is_run: '(必填)'
-        }
-      ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
-      dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
       helpDialogVisible: false, // 帮助提示dialog
       scopeIndex: '', // 表格行数index
       scopeRow: '', // 表格行数据
@@ -293,15 +194,6 @@ export default {
     handleDrag() {
       // this.$refs.select.blur()
     },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 3) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 3) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
-      return ''
-    },
     // 分页
     handlePageChange(val) {
       this.currentPage = val
@@ -328,88 +220,14 @@ export default {
         this.getTableData(this.currentPage, this.pageSize)
       }
     },
-    // 添加数据
-    addDataDialog() {
-      this.dialogTitle = '添加数据'
-      this.dialogBtnType = true
-      this.dataDialogVisible = true
-      this.isClick = false
-    },
-    // 添加数据
-    addData() {
-      this.isClick = true
-      const data = this.model
-      data['user_name'] = this.name
-      this.$refs['$form'].validate((valid) => {
-        if (valid) {
-          AddData(data).then(res => {
-            if (res.code === 20000) {
-              this.$notify({
-                title: '添加成功',
-                message: '成功添加 1 条数据',
-                type: 'success'
-              })
-              setTimeout(() => {
-                this.closeFormDialog()
-              }, 1000)
-              this.refreshTableData(true)
-            }
-          })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '提交失败，请按照要求填写数据！'
-          })
-        }
-      })
-    },
     // 获取表格勾选数据
     handleSelectionChange(val) {
       this.dataTableSelections = val
-    },
-    // 删除所有表格勾选的数据
-    deleteData() {
-      const dataLength = this.dataTableSelections.length
-      if (dataLength === 0) {
-        this.$message({
-          type: 'warning',
-          message: '请至少选中一条数据'
-        })
-        return
-      }
-      const idList = []
-      for (let i = 0; i < dataLength; i++) {
-        idList.push(this.dataTableSelections[i].id)
-      }
-      this.$confirm('确定要删除选中的 ' + dataLength + ' 条数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
-        confirmButtonClass: 'btnDanger',
-        type: 'warning'
-      }).then(() => {
-        const data = { 'id_list': idList, 'user_name': this.name }
-        DeleteData(data).then(res => {
-          if (res.code === 20000) {
-            this.$notify({
-              title: '删除成功',
-              message: '成功删除选中的 ' + dataLength + ' 条数据',
-              type: 'success'
-            })
-            this.refreshTableData() // 刷新表格数据
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消删除'
-        })
-      })
     },
     // 修改数据
     handleModify(index, row) {
       // 修改dialog
       this.dialogTitle = '修改数据'
-      this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
       // 显示表单数据
@@ -493,96 +311,6 @@ export default {
       this.modelOriginal['is_run'] = false
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
-    // 表格中删除数据
-    handleDelete(index, row) {
-      this.$confirm('确定要删除该数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
-        confirmButtonClass: 'btnDanger',
-        type: 'warning'
-      }).then(() => {
-        const data = {}
-        data['id'] = row.id
-        data['func_des'] = row.func_des
-        data['user_name'] = this.name
-        HandleDelete(data).then(res => {
-          if (res.code === 20000) {
-            this.$notify({
-              title: '删除成功',
-              message: '该数据已删除',
-              type: 'success'
-            })
-            this.refreshTableData()
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消删除'
-        })
-      })
-    },
-    // Excel导入到数据库
-    importDataDialog() {
-      this.importDialogVisible = true
-    },
-    // 确认导入
-    confirmImport() {
-      if (this.importMode === 'replace') {
-        this.$confirm('此操作将会清空所有原有内容, 确定要进行替换操作？', '提示', {
-          confirmButtonText: '确定替换',
-          cancelButtonText: '取消',
-          confirmButtonClass: 'btnDanger',
-          type: 'warning'
-        }).then(() => {
-          this.importData()
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消导入'
-          })
-        })
-      } else {
-        this.importData()
-      }
-    },
-    // 导入数据
-    importData() {
-      // this.loadingInstance = Loading.service(this.importLoading)
-      const form = new FormData()
-      form.append('file', this.uploadFile)
-      form.append('file_name', this.uploadFileName)
-      form.append('user_name', this.name)
-      form.append('import_mode', this.importMode)
-      ImportData(form).then(res => {
-        if (res.code === 20000) {
-          this.$alert('本次共导入了 ' + res.data_count + ' 条数据', res.message, {
-            confirmButtonText: '确定',
-            type: 'success'
-          })
-          // this.loadingInstance.close() // 清除动画
-          // 1秒后自动关闭窗口
-          setTimeout(() => {
-            this.handleImportClose()
-          }, 1000)
-          this.refreshTableData(true)
-        }
-      }).catch(err => {
-        this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
-          type: 'error'
-        })
-      })
-    },
-    // 导入数据窗口关闭
-    handleImportClose() {
-      this.importDialogVisible = false
-      // 清理已上传文件
-      this.$refs.upload.clearFiles()
-      this.uploadFileName = ''
-      this.uploadFile = null
-    },
     // 获取上传文件
     handleChange(file, fileList) {
       if (fileList.length > 0) {
@@ -590,40 +318,6 @@ export default {
         this.uploadFileName = this.uploadFileList[0].name // 更新文件名
         this.uploadFile = this.uploadFileList[0].raw // 更新文件
       }
-    },
-    // 数据库导出到Excel
-    exportDataDialog() {
-      this.exportDialogVisible = true
-    },
-    // 确认导出
-    exportData() {
-      ExportData().then(res => {
-        if (res.code === 20000) {
-          const dataCount = res.data_count
-          const sheetData = res.table_data
-          const fields = res.fields
-          const tableName = res.table_name
-          const fields_display = res.fields_display
-          const newData = [fields_display, ...sheetData]
-          const sheet = XLSX.utils.json_to_sheet(newData, { header: fields, skipHeader: true })
-          const wb = XLSX.utils.book_new()
-          XLSX.utils.book_append_sheet(wb, sheet, tableName)
-          XLSX.writeFile(wb, tableName + '.xlsx')
-          this.$notify({
-            title: '导出成功',
-            message: '本次共导出了 ' + dataCount + ' 条数据',
-            type: 'success'
-          })
-          // 1秒后自动关闭窗口
-          setTimeout(() => {
-            this.handleExportClose() // 导出后自动关闭窗口
-          }, 1000)
-        }
-      })
-    },
-    // 导入数据窗口关闭
-    handleExportClose() {
-      this.exportDialogVisible = false
     },
     // 帮助提示按钮
     helpTips() {

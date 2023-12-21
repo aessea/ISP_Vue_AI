@@ -1,4 +1,3 @@
-// 每日配置
 import Layout from '@/layout'
 
 const FileManageRouter = {
