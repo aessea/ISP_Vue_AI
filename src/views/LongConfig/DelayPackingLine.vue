@@ -104,7 +104,7 @@
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.delay_value" prop="delay_value" label="延后时间(单位:天)">
-              <el-input v-model="model.delay_value" placeholder="请输入" clearable />
+              <el-input-number v-model="model.delay_value" placeholder="请输入" clearable :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
