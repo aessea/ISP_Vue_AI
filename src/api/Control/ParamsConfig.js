@@ -37,3 +37,9 @@ export function SyncDatabaseData() {
     url: '/Control/ParamsConfig/sync_data/'
   })
 }
+export function DeleteAllJobdataBackup() {
+  return request({
+    method: 'get',
+    url: `/Control/ParamsConfig/delete_all_jobdata_backup/`
+  })
+}

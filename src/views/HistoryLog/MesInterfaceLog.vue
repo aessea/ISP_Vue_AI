@@ -17,13 +17,13 @@
             <el-button type="primary" icon="el-icon-search" style="margin-left: 10px;" @click="searchBy_name">
               搜索
             </el-button>
+            <el-button type="danger" icon="el-icon-delete" style="margin-left: 10px;" @click="filterDataDialog">
+              删除历史数据
+            </el-button>
           </div>
         </el-col>
         <el-col :span="4">
           <div style="float: right;">
-            <el-button type="danger" icon="el-icon-delete" style="margin-left: 10px;" @click="filterDataDialog">
-              过滤存储数据
-            </el-button>
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
               <el-button size="small" icon="el-icon-refresh" circle @click="refreshTableData" />
             </el-tooltip>
@@ -113,7 +113,7 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="过滤数据"
+      title="删除历史数据"
       :visible.sync="filterDialogVisible"
       width="45%"
       @dragDialog="handleDrag"
@@ -122,7 +122,7 @@
         <el-form>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item label="保留数据的月份数：" :label-width="formLabelWidth">
+              <el-form-item label="删除几个月前的数据：" :label-width="formLabelWidth">
                 <el-input-number v-model="save_months" placeholder="请输入月份数" clearable />
               </el-form-item>
             </el-col>

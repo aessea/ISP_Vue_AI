@@ -15,3 +15,10 @@ export function SearchData(data) {
     data
   })
 }
+export function DeleteHistoryLog(data) {
+  return request({
+    url: '/HistoryLog/HistoryOpera/delete_history_data/',
+    method: 'post',
+    data
+  })
+}
