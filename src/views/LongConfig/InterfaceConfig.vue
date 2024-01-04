@@ -68,7 +68,6 @@
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
-                v-if="buttons.includes('InterfaceConfig/modify')"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
