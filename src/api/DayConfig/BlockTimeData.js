@@ -101,10 +101,11 @@ export function AddMultiData(data) {
   })
 }
 // 测试库同步正式库的维护时间表
-export function SyncDatabaseData() {
+export function SyncDatabaseData(data) {
   return request({
-    method: 'get',
-    url: '/DayConfig/BlockTimeData/sync_data/'
+    method: 'post',
+    url: '/DayConfig/BlockTimeData/sync_data/',
+    data
   })
 }
 

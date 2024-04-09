@@ -31,10 +31,11 @@ export function ExportData() {
   })
 }
 // 测试库指定数据库的数据
-export function SyncDatabaseData() {
+export function SyncDatabaseData(data) {
   return request({
-    method: 'get',
-    url: '/Control/ParamsConfig/sync_data/'
+    method: 'post',
+    url: '/Control/ParamsConfig/sync_data/',
+    data
   })
 }
 export function DeleteAllJobdataBackup() {
