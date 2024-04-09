@@ -48,10 +48,11 @@ export function ImportData(data) {
   })
 }
 // 确认导出数据
-export function ExportData() {
+export function ExportData(data) {
   return request({
     url: '/DayConfig/ProductionReportData/export_data/',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 export function SyncDatabaseData() {
