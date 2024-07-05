@@ -453,7 +453,7 @@ export default {
     listenProgress() {
       this.ana_progress_refresh = setInterval(() => { // 每隔2秒监听进度条
         setTimeout(this.getAnaProgress(), 0)
-      }, 2000)
+      }, 5 * 1000)
     },
     pushImportSchedule() {
       if (this.checkAlertType !== 'success') {

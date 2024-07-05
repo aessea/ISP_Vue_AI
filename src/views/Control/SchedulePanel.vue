@@ -873,7 +873,7 @@ export default {
     listenProgress() {
       this.progress_refresh = setInterval(() => { // 每隔2秒监听进度条
         setTimeout(this.getProgress(), 0)
-      }, 2000)
+      }, 1000 * 10)
     },
     // 取消监听进度条
     clearListenProgress() {
