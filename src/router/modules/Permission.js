@@ -10,7 +10,7 @@ const PermissionRouter = {
   meta: {
     title: '系统管理',
     icon: 'lock',
-    roles: ['UserManage', 'RolePermission', 'ButtonPermission', 'InterfaceConfig', 'RunControlConfig']
+    roles: ['UserManage', 'RolePermission', 'ButtonPermission', 'InterfaceConfig', 'RunControlConfig', 'ParamsConfig']
   },
   children: [
     {
@@ -45,7 +45,7 @@ const PermissionRouter = {
       component: () => import('@/views/Permission/ParamConfigManage'),
       name: 'ParamsConfigManage',
       meta: {
-        title: '排程及其他配置管理',
+        title: '配置管理',
         roles: ['ParamsConfig']
       }
     },
@@ -54,7 +54,7 @@ const PermissionRouter = {
       component: () => import('@/views/LongConfig/InterfaceConfig'),
       name: 'InterfaceConfig',
       meta: {
-        title: 'MES接口交互配置管理',
+        title: 'MES接口配置管理',
         roles: ['InterfaceConfig']
       }
     },
