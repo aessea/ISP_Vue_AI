@@ -60,8 +60,8 @@
           </el-table-column>
           <el-table-column prop="TB" label="面" width="50" />
           <el-table-column prop="paired_process" label="配对制程名" width="100" />
-          <el-table-column prop="grouping_factor_day" label="第一块工单划分参数(天)" width="240" />
-          <el-table-column prop="grouping_factor_overtime" label="第二块划分参数(天)" width="160" />
+          <el-table-column prop="grouping_factor_day" label="第一块工单划分参数" width="240" />
+          <el-table-column prop="grouping_factor_overtime" label="第二块划分参数" width="160" />
           <el-table-column prop="grouping_factor_hour" label="第二块工单控制大小" width="170" />
           <el-table-column prop="grouping_combination_flag" label="第三块是否可并" width="130">
             <template slot-scope="scope">
@@ -159,12 +159,12 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_factor_day" prop="grouping_factor_day" label="第一块和第二块工单划分参数">
+              <el-form-item :rules="rules.grouping_factor_day" prop="grouping_factor_day" label="第一块工单划分参数">
                 <el-input-number v-model="model.grouping_factor_day" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_factor_overtime" prop="grouping_factor_overtime" label="第三块划分参数">
+              <el-form-item :rules="rules.grouping_factor_overtime" prop="grouping_factor_overtime" label="第二块工单划分参数">
                 <el-input-number v-model="model.grouping_factor_overtime" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
@@ -426,49 +426,49 @@ export default {
       rules: {
         name: [{
           required: true,
-          message: '制程不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         TB: [{
           required: true,
-          message: '面不能为空',
+          message: '不能为空',
           trigger: 'change'
         }],
         paired_process: [{
         }],
         grouping_factor_day: [{
           required: true,
-          message: '第一块和第二块工单划分参数(天)不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         grouping_factor_hour: [{
           required: true,
-          message: '第二块工单控制大小(时)不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         grouping_factor_overtime: [{
           required: true,
-          message: '第三块划分参数(天)不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         grouping_combination_flag: [{
           required: true,
-          message: '第三块是否可并不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         first_second_combination_flag: [{
           required: true,
-          message: '没有第三块时，前两块是否可并不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         is_point: [{
           required: true,
-          message: '是否按点数不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         buffer_time: [{
           required: true,
-          message: '上下板间隔时间不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         enable: [{

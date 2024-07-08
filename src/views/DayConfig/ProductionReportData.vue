@@ -337,46 +337,6 @@
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="date" label="日期" width="110" />
-        <el-table-column prop="line" label="线别" width="110" />
-        <el-table-column prop="package_line" label="包装线" width="110" />
-        <el-table-column prop="product_type" label="产品类型" width="110" />
-        <el-table-column prop="machine_name" label="机种名" width="160" />
-        <el-table-column prop="board" label="板号" width="180" />
-        <el-table-column prop="job_ix" label="工单号" width="110" />
-        <el-table-column prop="job_quantity" label="工单量" width="110" />
-        <el-table-column prop="completed_quantity" label="产出片数" width="110" />
-        <el-table-column prop="connecting_plates" label="联片数" width="110" />
-        <el-table-column prop="CT" label="CT" width="110" />
-        <el-table-column prop="production_time" label="生产时间" width="110" />
-        <el-table-column prop="first_plate_time" label="首片时间" width="110" />
-        <el-table-column prop="setup_time" label="切换时间" width="110" />
-        <el-table-column prop="wait_material_time" label="物料等待时间" width="110" />
-        <el-table-column prop="small_stop_time" label="小停止时间" width="110" />
-        <el-table-column prop="downtime" label="设备故障时间" width="110" />
-        <el-table-column prop="program_adjustment_time" label="程序调整时间" width="110" />
-        <el-table-column prop="process_adjustment_time" label="工艺调整时间" width="110" />
-        <el-table-column prop="power_failed_time" label="停气停电" width="110" />
-        <el-table-column prop="clear_mantissa_time" label="清尾数" width="110" />
-        <el-table-column prop="wait_spares_time" label="待备件时间" width="110" />
-        <el-table-column prop="substitute_material_time" label="代用料时间" width="110" />
-        <el-table-column prop="total_points" label="总点数" width="110" />
-        <el-table-column prop="process" label="制程面" width="110" />
-        <el-table-column prop="factory" label="工厂别" width="110" />
-        <el-table-column prop="package_product_type" label="包装产品类型" width="110" />
-        <el-table-column prop="SMT_product_type" label="SMT产品类型" width="110" />
-        <el-table-column prop="setup_type" label="切换类型" width="110" />
-        <el-table-column prop="single_hand_insert_points" label="单板手插点数" width="110" />
-      </el-table>
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
@@ -410,7 +370,6 @@
         <el-button type="primary" @click="confirmImport">确认导入</el-button>
       </span>
     </el-dialog>
-
     <el-dialog
       v-el-drag-dialog
       title="导出数据"
