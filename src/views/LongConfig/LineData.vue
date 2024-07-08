@@ -101,7 +101,6 @@
           <el-table-column prop="max_process_time" label="新增锁定加工时长上限" width="120" />
           <el-table-column prop="max_points" label="新增锁定上限(万点或片数)" width="120" />
           <el-table-column prop="fixed_ct" label="指定CT默认值(单位:秒)" width="120" />
-          <el-table-column prop="is_open_program" label="是否开放程序" width="100" />
           <el-table-column prop="is_open_program" label="是否开放程序" width="120">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.is_open_program === true" size="small" type="success">是</el-tag>
