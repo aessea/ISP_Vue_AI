@@ -100,6 +100,14 @@
           <el-table-column prop="setup_program" label="切软体" />
           <el-table-column prop="max_process_time" label="新增锁定加工时长上限" width="120" />
           <el-table-column prop="max_points" label="新增锁定上限(万点或片数)" width="120" />
+          <el-table-column prop="fixed_ct" label="指定CT默认值(单位:秒)" width="120" />
+          <el-table-column prop="is_open_program" label="是否开放程序" width="100" />
+          <el-table-column prop="is_open_program" label="是否开放程序" width="120">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_open_program === true" size="small" type="success">是</el-tag>
+              <el-tag v-else-if="scope.row.is_open_program === false" size="small" type="info">否</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column prop="output_order" label="线体输出顺序" width="120" />
           <el-table-column prop="enable_process_list" label="可生产制程" width="300">
             <template slot-scope="scope">
@@ -296,19 +304,24 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.big_setup" prop="big_setup" label="大切换">
                 <el-input-number v-model="model.big_setup" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.small_setup" prop="small_setup" label="小切换">
                 <el-input-number v-model="model.small_setup" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.setup_program" prop="setup_program" label="切软体">
                 <el-input-number v-model="model.setup_program" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_open_program" prop="is_open_program" label="是否开放程序">
+                <el-switch v-model="model.is_open_program" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -328,29 +341,12 @@
                 <el-input v-model="model.output_order" placeholder="请输入" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.fixed_ct" prop="fixed_ct" label="指定CT默认值(单位:秒)">
+                <el-input v-model="model.fixed_ct" placeholder="请输入" :style="{width: '100%'}" clearable />
+              </el-form-item>
+            </el-col>
           </el-row>
-          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
-                <el-input v-model="model.CREATED_BY" disabled />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
-                <el-input v-model="model.CREATED_TIME" disabled />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
-                <el-input v-model="model.UPDATED_BY" disabled />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
-                <el-input v-model="model.UPDATED_TIME" disabled />
-              </el-form-item>
-            </el-col>
-          </el-row> -->
         </el-form>
       </el-card>
       <span slot="footer" class="dialog-footer">
@@ -574,14 +570,6 @@ export default {
         max_threshold: 0,
         offset_threshold: 0,
         min_min_threshold: 0,
-        // T_unable: '',
-        // B_unable: '',
-        // T_BPR_unable: '',
-        // B_BPR_unable: '',
-        // S_BPR_unable: '',
-        // S_BPR_M_unable: '',
-        // S_unable: '',
-        // S_THR_unable: '',
         line_type: 1,
         big_setup: 0,
         small_setup: 0,
@@ -596,9 +584,9 @@ export default {
         default_threshould_of_big_small_line: undefined,
         max_process_time: '',
         max_points: '',
-        output_order: ''
-        // P_S_unable: '',
-        // B_AD_unable: '',
+        output_order: '',
+        fixed_ct: '',
+        is_open_program: ''
 
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
@@ -629,75 +617,67 @@ export default {
         type_of_big_small_line: undefined,
         default_threshould_of_big_small_line: undefined,
         min_min_threshold: 0,
-        // T_unable: '',
-        // B_unable: '',
-        // T_BPR_unable: '',
-        // B_BPR_unable: '',
-        // S_BPR_unable: '',
-        // S_BPR_M_unable: '',
-        // S_unable: '',
-        // S_THR_unable: '',
         is_burn_in: '',
         max_process_time: '',
         max_points: '',
-        output_order: ''
-        // P_S_unable: '',
-        // B_AD_unable: '',
+        output_order: '',
+        fixed_ct: '',
+        is_open_program: ''
       },
       rules: {
         name: [{
           required: true,
-          message: '产线名字不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         is_points: [{
           required: true,
-          message: '是否按点分大中小工单不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         capacity: [{
           required: true,
-          message: '日产能不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         config_class: [{
           required: true,
-          message: '配置类型不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         program_class: [{
           required: true,
-          message: '程序类型不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         balance_class: [{
           required: true,
-          message: '线平衡类型不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         big_able: [{
           required: true,
-          message: '可否大工单不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         middle_able: [{
           required: true,
-          message: '可否中工单不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         small_able: [{
           required: true,
-          message: '可否小工单不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         min_threshold: [{
           required: true,
-          message: '最低生产阈值不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         max_threshold: [{
           required: true,
-          message: '最高生产阈值不能为空',
+          message: '不能为空',
           trigger: 'blur'
         }],
         offset_threshold: [{
@@ -725,36 +705,6 @@ export default {
           message: '不能为空',
           trigger: 'blur'
         }],
-        // T_unable: [{
-        //   required: true,
-        //   message: '可否制程T不能为空',
-        //   trigger: 'blur'
-        // }],
-        // B_unable: [{
-        //   required: true,
-        //   message: '可否制程B不能为空',
-        //   trigger: 'blur'
-        // }],
-        // T_BPR_unable: [{
-        //   required: true,
-        //   message: '可否制程T-BPR不能为空',
-        //   trigger: 'blur'
-        // }],
-        // B_BPR_unable: [{
-        //   required: true,
-        //   message: '可否制程B-BPR不能为空',
-        //   trigger: 'blur'
-        // }],
-        // S_BPR_unable: [{
-        //   required: true,
-        //   message: '可否制程S-BPR不能为空',
-        //   trigger: 'blur'
-        // }],
-        // S_BPR_M_unable: [{
-        //   required: true,
-        //   message: '可否制程S-BPR-M不能为空',
-        //   trigger: 'blur'
-        // }],
         big_setup: [{
           required: true,
           message: '不能为空',
@@ -780,26 +730,6 @@ export default {
           message: '不能为空',
           trigger: 'blur'
         }],
-        // S_unable: [{
-        //   required: true,
-        //   message: '可否制程S不能为空',
-        //   trigger: 'blur'
-        // }],
-        // P_S_unable: [{
-        //   required: true,
-        //   message: '不能为空',
-        //   trigger: 'blur'
-        // }],
-        // B_AD_unable: [{
-        //   required: true,
-        //   message: '不能为空',
-        //   trigger: 'blur'
-        // }],
-        // S_THR_unable: [{
-        //   required: true,
-        //   message: '可否制程S-THR不能为空',
-        //   trigger: 'blur'
-        // }],
         is_burn_in: [{
           required: true,
           message: '是否烧录不能为空',
@@ -826,6 +756,16 @@ export default {
           trigger: 'blur'
         }],
         output_order: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        fixed_ct: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        is_open_program: [{
           required: true,
           message: '不能为空',
           trigger: 'blur'
