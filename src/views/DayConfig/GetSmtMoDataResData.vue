@@ -815,16 +815,21 @@ export default {
       form.append('import_mode', this.importMode)
       ImportData(form).then(res => {
         if (res.code === 20000) {
-          this.$alert('本次共导入了 ' + res.data_count + ' 条数据', res.message, {
-            confirmButtonText: '确定',
-            type: 'success'
-          })
-          // this.loadingInstance.close() // 清除动画
-          // 1秒后自动关闭窗口
-          setTimeout(() => {
-            this.handleImportClose()
-          }, 1000)
-          this.refreshTableData(true)
+          if (res.data_count >= 0) {
+            this.$alert('本次共导入了 ' + res.data_count + ' 条数据', res.message, {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            setTimeout(() => {
+              this.handleImportClose()
+            }, 1000)
+            this.refreshTableData(true)
+          } else {
+            this.$alert(res.message, '错误', {
+              confirmButtonText: '确定',
+              type: 'error'
+            })
+          }
         }
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
