@@ -7,7 +7,6 @@ export function GetTableData(data) {
     data
   })
 }
-// 获取表格数据 分页获取
 export function SearchData(data) {
   return request({
     url: '/HistoryLog/HistoryOpera/search_data/',

@@ -5,22 +5,22 @@
         <el-col :span="16">
           <div>
             <el-button v-if="buttons.includes('LineData/add')" type="primary" @click="addDataDialog">
-              <i class="el-icon-plus" />添加
+              <i class="el-icon-plus" />{{ $t('TablePage.BtnAppend') }}
             </el-button>
             <!-- <el-button v-if="buttons.includes('LineData/delete')" type="danger" @click="deleteData">
-              <i class="el-icon-delete" />删除
+              <i class="el-icon-delete" />{{ $t('TablePage.BtnDelete') }}
             </el-button>
             <el-button v-if="buttons.includes('LineData/import')" @click="importDataDialog">
-              <i class="el-icon-upload2" />导入
+              <i class="el-icon-upload2" />{{ $t('TablePage.BtnImport') }}
             </el-button> -->
             <el-button v-if="buttons.includes('LineData/export')" @click="exportDataDialog">
-              <i class="el-icon-download" />导出
+              <i class="el-icon-download" />{{ $t('TablePage.BtnExport') }}
             </el-button>
           </div>
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -28,7 +28,7 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnViewInstruction')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
@@ -51,75 +51,106 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="name" label="产线名字" width="110" sortable fixed />
-          <el-table-column prop="enable" label="是否启用该线体" width="130">
+          <el-table-column prop="name" :label="lang_dict.name" width="110" sortable fixed />
+          <el-table-column prop="enable" :label="lang_dict.enable" width="130">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.enable === true" size="small" type="success">启用</el-tag>
-              <el-tag v-else size="small" type="danger">关闭</el-tag>
+              <el-tag v-if="scope.row.enable === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.enable === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="line_type" label="线体类型" width="110">
+          <el-table-column prop="line_type" :label="lang_dict.line_type" width="110">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.line_type === 1" size="small" type="primary">AI线</el-tag>
-              <el-tag v-else-if="scope.row.line_type === 2" size="small" type="primary">点胶线</el-tag>
-              <el-tag v-else size="small" type="info">未知</el-tag>
+              <el-tag v-if="scope.row.line_type === 1" size="small" type="primary">{{ $t('LineDataPage.NotBPRLine') }}</el-tag>
+              <el-tag v-else-if="scope.row.line_type === 2" size="small" type="primary">{{ $t('LineDataPage.IsBPRLine') }}</el-tag>
+              <el-tag v-else-if="scope.row.line_type === 3" size="small" type="primary">{{ $t('LineDataPage.SmallBoardLine') }}</el-tag>
+              <el-tag v-else size="small" type="info">{{ $t('LineDataPage.UnkonwnLine') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="line_size_type" label="智能阈值线体类型" width="150">
+          <el-table-column prop="line_size_type" :label="lang_dict.line_size_type" width="110">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.line_size_type === 1" size="small" type="primary">小工单线</el-tag>
-              <el-tag v-else-if="scope.row.line_size_type === 2" size="small" type="primary">中小工单线</el-tag>
-              <el-tag v-else-if="scope.row.line_size_type === 3" size="small" type="primary">中工单线</el-tag>
-              <el-tag v-else-if="scope.row.line_size_type === 4" size="small" type="primary">中大工单线</el-tag>
-              <el-tag v-else-if="scope.row.line_size_type === 5" size="small" type="primary">大工单线</el-tag>
-              <el-tag v-else size="small" type="info">未知</el-tag>
+              <el-tag v-if="scope.row.line_size_type === 1" size="small" type="primary">{{ $t('LineDataPage.SmallLine') }}</el-tag>
+              <el-tag v-else-if="scope.row.line_size_type === 2" size="small" type="primary">{{ $t('LineDataPage.SmallMiddleLine') }}</el-tag>
+              <el-tag v-else-if="scope.row.line_size_type === 3" size="small" type="primary">{{ $t('LineDataPage.MiddleLine') }}</el-tag>
+              <el-tag v-else-if="scope.row.line_size_type === 4" size="small" type="primary">{{ $t('LineDataPage.MiddleBigLine') }}</el-tag>
+              <el-tag v-else-if="scope.row.line_size_type === 5" size="small" type="primary">{{ $t('LineDataPage.BigLine') }}</el-tag>
+              <el-tag v-else size="small" type="info">{{ $t('LineDataPage.UnkonwnLine') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="is_AX_line" label="是否点胶安必昂绑定线体" width="120">
+          <el-table-column prop="enable_process_list" :label="lang_dict.enable_process_list" width="400">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_AX_line === true" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.is_AX_line === false" size="small" type="info">否</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="is_CM_line" label="是否为点胶松下线体" width="120">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_CM_line === true" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.is_CM_line === false" size="small" type="info">否</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="type_of_big_small_line" label="大小穿插的类型" width="120" />
-          <el-table-column prop="default_threshould_of_big_small_line" label="大小穿插线体阈值的默认值(单位:点)" width="120" />
-          <el-table-column prop="min_threshold" label="最低生产阈值(万点或片数)" width="120" />
-          <el-table-column prop="max_threshold" label="最高生产阈值(万点或片数)" width="120" />
-          <el-table-column prop="min_min_threshold" label="智能阈值下限(万点或片数)" width="120" />
-          <el-table-column prop="config_class" label="配置类型" width="85" />
-          <el-table-column prop="program_class" label="程序类型" width="85" />
-          <el-table-column prop="balance_class" label="线平衡类型" width="100" />
-          <el-table-column prop="big_setup" label="大切换" />
-          <el-table-column prop="small_setup" label="小切换" />
-          <el-table-column prop="setup_program" label="切软体" />
-          <el-table-column prop="max_process_time" label="新增锁定加工时长上限" width="120" />
-          <el-table-column prop="max_points" label="新增锁定上限(万点或片数)" width="120" />
-          <el-table-column prop="fixed_ct" label="指定CT默认值(单位:秒)" width="120" />
-          <el-table-column prop="is_open_program" label="是否开放程序" width="120">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_open_program === true" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.is_open_program === false" size="small" type="info">否</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="output_order" label="线体输出顺序" width="120" />
-          <el-table-column prop="enable_process_list" label="可生产制程" width="300">
-            <template slot-scope="scope">
-              <el-tag
-                v-for="(val, key) in scope.row.enable_process_list"
-                :key="key"
-                style="margin-right: 5px;"
-              >
+              <el-tag v-for="(val, key) in scope.row.enable_process_list" :key="key" style="margin-right: 5px;">
                 {{ val }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column width="110" fixed="right" label="操作">
+          <el-table-column prop="is_AX_line" :label="lang_dict.is_AX_line" width="160">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_AX_line === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.is_AX_line === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="is_Big_line_remove22" :label="lang_dict.is_Big_line_remove22" width="160">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_Big_line_remove22 === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.is_Big_line_remove22 === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="is_Non_big_line" :label="lang_dict.is_Non_big_line" width="160">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_Non_big_line === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.is_Non_big_line === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="is_special_line" :label="lang_dict.is_special_line" width="160">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_special_line === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.is_special_line === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="is_cannot_binding_line" :label="lang_dict.is_cannot_binding_line" width="160">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_cannot_binding_line === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.is_cannot_binding_line === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="min_min_threshold" :label="lang_dict.min_min_threshold" width="110" />
+          <el-table-column prop="min_threshold" :label="lang_dict.min_threshold" width="110" />
+          <el-table-column prop="max_threshold" :label="lang_dict.max_threshold" width="110" />
+          <el-table-column prop="big_able" :label="lang_dict.big_able" width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.big_able === 1" size="small" type="success">✔</el-tag>
+              <el-tag v-else-if="scope.row.big_able === 0" size="small" type="info">×</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="middle_able" :label="lang_dict.middle_able" width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.middle_able === 1" size="small" type="success">✔</el-tag>
+              <el-tag v-else-if="scope.row.middle_able === 0" size="small" type="info">×</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="small_able" :label="lang_dict.small_able" width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.small_able === 1" size="small" type="success">✔</el-tag>
+              <el-tag v-else-if="scope.row.small_able === 0" size="small" type="info">×</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="balance_class" :label="lang_dict.balance_class" width="100" />
+          <el-table-column prop="big_setup" :label="lang_dict.big_setup" />
+          <el-table-column prop="small_setup" :label="lang_dict.small_setup" />
+          <el-table-column prop="setup_program" :label="lang_dict.setup_program" />
+          <el-table-column prop="output_order" :label="lang_dict.output_order" sortable width="170" />
+          <el-table-column prop="max_process_time" :label="lang_dict.max_process_time" width="170" />
+          <el-table-column prop="max_points" :label="lang_dict.max_points" width="170" />
+          <el-table-column prop="default_threshould_of_big_small_line" :label="lang_dict.default_threshould_of_big_small_line" width="170" />
+          <el-table-column prop="type_of_big_small_line" :label="lang_dict.type_of_big_small_line" width="160" />
+          <el-table-column prop="fixed_ct" :label="lang_dict.fixed_ct" width="160" />
+          <el-table-column prop="is_open_program" :label="lang_dict.is_open_program" width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_open_program === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.is_open_program === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
               <el-button
                 v-if="buttons.includes('LineData/modify')"
@@ -164,18 +195,18 @@
         <el-form ref="$form" :model="model" label-position="left" size="small">
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.name" prop="name" label="产线名字">
-                <el-input v-model="model.name" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.name" prop="name" :label="lang_dict.name">
+                <el-input v-model="model.name" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.enable" prop="enable" label="是否启用该线体">
-                <el-switch v-model="model.enable" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.enable" prop="enable" :label="lang_dict.enable">
+                <el-switch v-model="model.enable" style="width: 100%" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line_type" prop="line_type" label="线体类型">
-                <el-select v-model="model.line_type" placeholder="请选择" :style="{width: '100%'}">
+              <el-form-item :rules="rules.line_type" prop="line_type" :label="lang_dict.line_type">
+                <el-select v-model="model.line_type" :placeholder="$t('Placeholder.Select')">
                   <el-option
                     v-for="item in lineTypeOptions"
                     :key="item.value"
@@ -186,8 +217,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line_size_type" prop="line_size_type" label="智能阈值线体类型">
-                <el-select v-model="model.line_size_type" placeholder="请选择" :style="{width: '100%'}">
+              <el-form-item :rules="rules.line_size_type" prop="line_size_type" :label="lang_dict.line_size_type">
+                <el-select v-model="model.line_size_type" :placeholder="$t('Placeholder.Select')">
                   <el-option
                     v-for="item in lineSizeTypeOptions"
                     :key="item.value"
@@ -199,7 +230,102 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-form-item :rules="rules.enable_process_list" prop="enable_process_list" label="可生产制程">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.config_class" prop="config_class" :label="lang_dict.config_class">
+                <el-input v-model="model.config_class" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.program_class" prop="program_class" :label="lang_dict.program_class">
+                <el-input v-model="model.program_class" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_points" prop="is_points" :label="lang_dict.is_points">
+                <el-input v-model="model.is_points" :placeholder="$t('Placeholder.Enter')" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.balance_class" prop="balance_class" :label="lang_dict.balance_class">
+                <el-input v-model="model.balance_class" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.capacity" prop="capacity" :label="lang_dict.capacity">
+                <el-input-number v-model="model.capacity" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.big_able" prop="big_able" :label="lang_dict.big_able">
+                <el-input v-model="model.big_able" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.middle_able" prop="middle_able" :label="lang_dict.middle_able">
+                <el-input v-model="model.middle_able" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.small_able" prop="small_able" :label="lang_dict.small_able">
+                <el-input v-model="model.small_able" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.min_min_threshold" prop="min_min_threshold" :label="lang_dict.min_min_threshold">
+                <el-input-number v-model="model.min_min_threshold" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.min_threshold" prop="min_threshold" :label="lang_dict.min_threshold">
+                <el-input-number v-model="model.min_threshold" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.max_threshold" prop="max_threshold" :label="lang_dict.max_threshold">
+                <el-input-number v-model="model.max_threshold" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.offset_threshold" prop="offset_threshold" :label="lang_dict.offset_threshold">
+                <el-input-number v-model="model.offset_threshold" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_Big_line_remove22" prop="is_Big_line_remove22" :label="lang_dict.is_Big_line_remove22">
+                <el-switch v-model="model.is_Big_line_remove22" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_Non_big_line" prop="is_Non_big_line" :label="lang_dict.is_Non_big_line">
+                <el-switch v-model="model.is_Non_big_line" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_special_line" prop="is_special_line" :label="lang_dict.is_special_line">
+                <el-switch v-model="model.is_special_line" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_AX_line" prop="is_AX_line" :label="lang_dict.is_AX_line">
+                <el-switch v-model="model.is_AX_line" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_cannot_binding_line" prop="is_cannot_binding_line" :label="lang_dict.is_cannot_binding_line">
+                <el-switch v-model="model.is_cannot_binding_line" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-form-item :rules="rules.enable_process_list" prop="enable_process_list" :label="lang_dict.enable_process_list">
               <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
                 <el-checkbox-group v-model="model.enable_process_list">
                   <el-checkbox v-for="process in all_process_list" :key="process.index" :label="process" />
@@ -209,211 +335,95 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_points" prop="is_points" label="是否按点分大中小工单">
-                <el-input v-model="model.is_points" placeholder="1按点数，0按工单量区分大中小工单" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              <el-form-item :rules="rules.big_setup" prop="big_setup" :label="lang_dict.big_setup">
+                <el-input-number v-model="model.big_setup" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.capacity" prop="capacity" label="日产能">
-                <el-input-number v-model="model.capacity" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.small_setup" prop="small_setup" :label="lang_dict.small_setup">
+                <el-input-number v-model="model.small_setup" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_AX_line" prop="is_AX_line" label="是否点胶安必昂绑定线体">
-                <el-switch v-model="model.is_AX_line" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.setup_program" prop="setup_program" :label="lang_dict.setup_program">
+                <el-input-number v-model="model.setup_program" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_CM_line" prop="is_CM_line" label="是否点胶松下绑定线体">
-                <el-switch v-model="model.is_CM_line" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.type_of_big_small_line" prop="type_of_big_small_line" label="大小穿插的类型">
-                <el-input-number v-model="model.type_of_big_small_line" :style="{width: '100%'}" placeholder="0指不进行大小穿插，相同数字互相大小穿插，唯一的就自己穿插" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.default_threshould_of_big_small_line" prop="default_threshould_of_big_small_line" label="大小穿插线体阈值的默认值(单位:点)">
-                <el-input-number v-model="model.default_threshould_of_big_small_line" :style="{width: '100%'}" placeholder="请输入数字" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.config_class" prop="config_class" label="配置类型">
-                <el-input v-model="model.config_class" placeholder="请输入数字" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.program_class" prop="program_class" label="程序类型">
-                <el-input v-model="model.program_class" placeholder="请输入数字" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.balance_class" prop="balance_class" label="线平衡类型">
-                <el-input v-model="model.balance_class" placeholder="请输入数字" clearable />
+              <el-form-item :rules="rules.output_order" prop="output_order" :label="lang_dict.output_order">
+                <el-input v-model="model.output_order" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.big_able" prop="big_able" label="可否大工单">
-                <el-input v-model="model.big_able" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              <el-form-item :rules="rules.max_process_time" prop="max_process_time" :label="lang_dict.max_process_time">
+                <el-input-number v-model="model.max_process_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.middle_able" prop="middle_able" label="可否中工单">
-                <el-input v-model="model.middle_able" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              <el-form-item :rules="rules.max_points" prop="max_points" :label="lang_dict.max_points">
+                <el-input-number v-model="model.max_points" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.small_able" prop="small_able" label="可否小工单">
-                <el-input v-model="model.small_able" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              <el-form-item :rules="rules.default_threshould_of_big_small_line" prop="default_threshould_of_big_small_line" :label="lang_dict.default_threshould_of_big_small_line">
+                <el-input-number v-model="model.default_threshould_of_big_small_line" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.min_min_threshold" prop="min_min_threshold" label="智能阈值下限(万点或片数)">
-                <el-input-number v-model="model.min_min_threshold" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.min_threshold" prop="min_threshold" label="最低生产阈值(万点或片数)">
-                <el-input-number v-model="model.min_threshold" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.max_threshold" prop="max_threshold" label="最高生产阈值(万点或片数)">
-                <el-input-number v-model="model.max_threshold" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.offset_threshold" prop="offset_threshold" label="阈值偏差">
-                <el-input-number v-model="model.offset_threshold" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_burn_in" prop="is_burn_in" label="是否烧录">
-                <el-input v-model="model.is_burn_in" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              <el-form-item :rules="rules.type_of_big_small_line" prop="type_of_big_small_line" :label="lang_dict.type_of_big_small_line">
+                <el-input v-model="model.type_of_big_small_line" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.big_setup" prop="big_setup" label="大切换">
-                <el-input-number v-model="model.big_setup" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.fixed_ct" prop="fixed_ct" :label="lang_dict.fixed_ct">
+                <el-input-number v-model="model.fixed_ct" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.small_setup" prop="small_setup" label="小切换">
-                <el-input-number v-model="model.small_setup" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.setup_program" prop="setup_program" label="切软体">
-                <el-input-number v-model="model.setup_program" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_open_program" prop="is_open_program" label="是否开放程序">
-                <el-switch v-model="model.is_open_program" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.max_process_time" prop="max_process_time" label="新增锁定加工时长上限">
-                <el-input-number v-model="model.max_process_time" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.max_points" prop="max_points" label="新增锁定上限(万点或片数)">
-                <el-input-number v-model="model.max_points" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.output_order" prop="output_order" label="线体输出顺序">
-                <el-input v-model="model.output_order" placeholder="请输入" :style="{width: '100%'}" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.fixed_ct" prop="fixed_ct" label="指定CT默认值(单位:秒)">
-                <el-input v-model="model.fixed_ct" placeholder="请输入" :style="{width: '100%'}" clearable />
+              <el-form-item :rules="rules.is_open_program" prop="is_open_program" :label="lang_dict.is_open_program">
+                <el-switch v-model="model.is_open_program" style="width: 100%" />
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-card>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
-        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">确认修改</el-button>
+        <el-button @click="handleFormClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">{{ $t('TablePage.BtnAppend') }}</el-button>
+        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">{{ $t('TablePage.BtnModify') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="表格说明"
+      :title="$t('TablePage.TitleFormDescription')"
       :visible.sync="helpDialogVisible"
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>关于表格的各种说明可以写在这</span>
+      <span>{{ $t('TablePage.MsgIllustrate') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="helpDialogVisible = false">关闭</el-button>
+        <el-button @click="helpDialogVisible = false">{{ $t('PublicBtn.Close') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导入数据"
+      :title="$t('TablePage.TitleImportData')"
       :visible.sync="importDialogVisible"
       width="60%"
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="name" label="产线名字" width="110" />
-        <el-table-column prop="is_points" label="是否按点分大中小工单" width="170" />
-        <el-table-column prop="config_class" label="配置类型" width="85" />
-        <el-table-column prop="program_class" label="程序类型" width="85" />
-        <el-table-column prop="balance_class" label="线平衡类型" width="100" />
-        <el-table-column prop="big_able" label="可否大工单" width="100" />
-        <el-table-column prop="middle_able" label="可否中工单" width="100" />
-        <el-table-column prop="small_able" label="可否小工单" width="100" />
-        <el-table-column prop="min_threshold" label="最低生产阈值(万点或片数)" width="110" />
-        <el-table-column prop="max_threshold" label="最高生产阈值(万点或片数)" width="110" />
-        <el-table-column prop="offset_threshold" label="阈值偏差" width="85" />
-        <!-- <el-table-column prop="T_unable" label="可否制程T" width="95" />
-        <el-table-column prop="B_unable" label="可否制程B" width="95" />
-        <el-table-column prop="T_BPR_unable" label="可否制程T-BPR" width="125" />
-        <el-table-column prop="B_BPR_unable" label="可否制程B-BPR" width="130" />
-        <el-table-column prop="S_BPR_unable" label="可否制程S-BPR" width="130" />
-        <el-table-column prop="S_BPR_M_unable" label="可否制程S-BPR-M" width="145" /> -->
-        <el-table-column prop="S_unable" label="可否制程S" width="95" />
-        <el-table-column prop="P_S_unable" label="可否制程P-S" width="95" />
-        <el-table-column prop="B_AD_unable" label="可否制程T-AD" width="95" />
-        <!-- <el-table-column prop="S_THR_unable" label="可否制程S-THR" width="130" /> -->
-        <el-table-column prop="is_burn_in" label="是否烧录" width="85" />
-        <el-table-column prop="capacity" label="日产能" width="80" />
-      </el-table>
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="append">追加数据</el-radio>
-            <el-radio label="replace">替换数据</el-radio>
+            <el-radio label="append">{{ $t('TablePage.BtnAppendData') }}</el-radio>
+            <el-radio label="replace">{{ $t('TablePage.BtnReplaceData') }}</el-radio>
           </el-radio-group>
         </el-col>
         <el-col :span="16">
@@ -431,35 +441,35 @@
             >
               <el-button slot="trigger" type="primary" style="margin-left: 10px;">
                 <i class="el-icon-upload" />
-                上传文件
+                {{ $t('TablePage.BtnUploadFile') }}
               </el-button>
             </el-upload>
           </div>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleImportClose">关闭</el-button>
-        <el-button type="primary" @click="confirmImport">确认导入</el-button>
+        <el-button @click="handleImportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="confirmImport">{{ $t('TablePage.BtnConfirmImport') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导出数据"
+      :title="$t('TablePage.TitleExportData')"
       :visible.sync="exportDialogVisible"
       :before-close="handleExportClose"
       width="45%"
       @dragDialog="handleDrag"
     >
       <el-row>
-        <span>导出文件格式：</span>
+        <span>{{ $t('PublicBtn.ConfirmModify') }}</span>
         <el-radio-group v-model="exportRadio">
           <el-radio label="xlsx">.xlsx</el-radio>
         </el-radio-group>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleExportClose">关闭</el-button>
-        <el-button type="primary" @click="exportData">确认导出</el-button>
+        <el-button @click="handleExportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="exportData">{{ $t('TablePage.BtnConfirmExport') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -469,72 +479,23 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/LineData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, GetLangDict } from '@/api/LongConfig/LineData'
 import { GetLineProcess } from '@/api/common'
-import { lineTypeOptions, lineSizeTypeOptions } from '@/utils/items'
+import { isEqual } from '@/utils/common'
+import { deepClone } from '@/utils'
 export default {
   name: 'LineData',
   directives: { elDragDialog },
   data() {
     return {
+      lang_dict: {}, // 从后端获取表格列名
       loading: true, // 表格加载动画
       importLoading: {
-        text: '拼命导入中...',
+        text: this.$t('PublicText.ImportLoadiing'),
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExample: [
-        {
-          name: 'SR09',
-          is_points: 1,
-          capacity: 0,
-          config_class: 1,
-          program_class: 1,
-          balance_class: 1,
-          big_able: 1,
-          middle_able: 1,
-          small_able: 0,
-          min_threshold: 0,
-          max_threshold: 0,
-          offset_threshold: 0,
-          T_unable: 0,
-          B_unable: 1,
-          T_BPR_unable: 0,
-          B_BPR_unable: 1,
-          S_BPR_unable: 0,
-          S_BPR_M_unable: 1,
-          S_unable: 0,
-          S_THR_unable: 1,
-          is_burn_in: 0,
-          P_S_unable: 1,
-          B_AD_unable: 1
-        }, {
-          name: '(必填)',
-          is_points: '(必填)',
-          capacity: '(必填)',
-          config_class: '(必填)',
-          program_class: '(必填)',
-          balance_class: '(必填)',
-          big_able: '(必填)',
-          middle_able: '(必填)',
-          small_able: '(必填)',
-          min_threshold: '(必填)',
-          max_threshold: '(必填)',
-          offset_threshold: '(必填)',
-          T_unable: '(必填)',
-          B_unable: '(必填)',
-          T_BPR_unable: '(必填)',
-          B_BPR_unable: '(必填)',
-          S_BPR_unable: '(必填)',
-          S_BPR_M_unable: '(必填)',
-          S_unable: '(必填)',
-          S_THR_unable: '(必填)',
-          is_burn_in: '(必填)',
-          P_S_unable: '(必填)',
-          B_AD_unable: '(必填)'
-        }
-      ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -550,233 +511,256 @@ export default {
       importMode: 'append', // 导入方式选择:追加或替换（方便以后扩展）
       exportRadio: 'xlsx', // 导出格式选择（方便以后扩展）
       isClick: false, // 是否点击了保存或者提交
-      all_process_list: [],
+      all_process_list: ['B', 'T', 'S'],
       // 表单相关数据
       forms: ['$form'],
       model: {
-        id: '',
-        name: '',
-        is_points: '',
-        capacity: 0,
-        config_class: '',
-        program_class: '',
-        balance_class: '',
-        big_able: '',
-        middle_able: '',
-        small_able: '',
-        line_size_type: '',
-        min_threshold: 0,
-        max_threshold: 0,
-        offset_threshold: 0,
-        min_min_threshold: 0,
-        line_type: 1,
-        big_setup: 0,
-        small_setup: 0,
-        setup_program: 0,
+        id: null,
+        name: null,
+        is_points: null,
+        capacity: undefined,
+        config_class: null,
+        program_class: null,
+        balance_class: null,
+        big_able: null,
+        middle_able: null,
+        small_able: null,
+        min_threshold: undefined,
+        max_threshold: undefined,
+        offset_threshold: undefined,
+        is_burn_in: undefined,
         enable_process_list: [],
-        onehot_code: '',
-        is_burn_in: '',
-        enable: false,
+        line_type: undefined,
         is_AX_line: false,
-        is_CM_line: false,
-        type_of_big_small_line: undefined,
+        is_Big_line_remove22: false,
+        is_Non_big_line: false,
+        is_special_line: false,
+        is_cannot_binding_line: false,
+        big_setup: undefined,
+        small_setup: undefined,
+        setup_program: undefined,
+        output_order: null,
+        onehot_code: null,
+        max_process_time: undefined,
+        max_points: undefined,
+        line_size_type: undefined,
+        enable: false,
+        min_min_threshold: undefined,
+        type_of_big_small_line: null,
         default_threshould_of_big_small_line: undefined,
-        max_process_time: '',
-        max_points: '',
-        output_order: '',
-        fixed_ct: '',
-        is_open_program: ''
-
+        fixed_ct: undefined,
+        is_open_program: false
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        name: '',
-        is_points: '',
-        capacity: 0,
-        config_class: '',
-        program_class: '',
-        balance_class: '',
-        big_able: '',
-        middle_able: '',
-        small_able: '',
-        line_size_type: '',
-        min_threshold: 0,
-        max_threshold: 0,
-        offset_threshold: 0,
-        line_type: 1,
-        big_setup: 0,
-        small_setup: 0,
-        setup_program: 0,
-        onehot_code: '',
-        enable_process_list: [],
+        id: null,
+        name: null,
+        is_points: null,
+        capacity: undefined,
+        config_class: null,
+        program_class: null,
+        balance_class: null,
+        big_able: null,
+        middle_able: null,
+        small_able: null,
+        min_threshold: undefined,
+        max_threshold: undefined,
+        offset_threshold: undefined,
+        is_burn_in: undefined,
         enable: false,
+        enable_process_list: [],
+        line_type: undefined,
         is_AX_line: false,
-        is_CM_line: false,
-        type_of_big_small_line: undefined,
+        is_Big_line_remove22: false,
+        is_Non_big_line: false,
+        is_special_line: false,
+        is_cannot_binding_line: false,
+        big_setup: undefined,
+        small_setup: undefined,
+        setup_program: undefined,
+        output_order: null,
+        onehot_code: null,
+        max_process_time: undefined,
+        max_points: undefined,
+        line_size_type: undefined,
+        min_min_threshold: undefined,
+        type_of_big_small_line: null,
         default_threshould_of_big_small_line: undefined,
-        min_min_threshold: 0,
-        is_burn_in: '',
-        max_process_time: '',
-        max_points: '',
-        output_order: '',
-        fixed_ct: '',
-        is_open_program: ''
+        fixed_ct: undefined,
+        is_open_program: false
       },
+      modelBackup: {},
       rules: {
         name: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         is_points: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         capacity: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         config_class: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         program_class: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         balance_class: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         big_able: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         middle_able: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         small_able: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         min_threshold: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         max_threshold: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         offset_threshold: [{
           required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        is_AX_line: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        is_CM_line: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        type_of_big_small_line: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        default_threshould_of_big_small_line: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        big_setup: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        small_setup: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        setup_program: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        enable_process_list: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
-        line_type: [{
-          required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         is_burn_in: [{
           required: true,
-          message: '是否烧录不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        enable: [{
+        enable_process_list: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        min_min_threshold: [{
+        line_type: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        max_points: [{
+        is_AX_line: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        max_process_time: [{
+        is_Big_line_remove22: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        is_Non_big_line: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        is_special_line: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        is_cannot_binding_line: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        is_big_small_line: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        big_setup: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        small_setup: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        setup_program: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         output_order: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        fixed_ct: [{
+        max_points: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        is_open_program: [{
+        max_process_time: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        line_size_type: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        enable: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        min_min_threshold: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }]
       },
-      lineTypeOptions: lineTypeOptions,
-      lineSizeTypeOptions: lineSizeTypeOptions,
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
-      pageSize: 20, // 每页多少条数据
-      dataTableSelections: [] // 表格选中的数据
+      pageSize: 30, // 每页多少条数据
+      dataTableSelections: [], // 表格选中的数据
+      lineTypeOptions: [
+        { label: this.$t('LineDataPage.NotBPRLine'), value: 1 },
+        { label: this.$t('LineDataPage.IsBPRLine'), value: 2 },
+        { label: this.$t('LineDataPage.SmallBoardLine'), value: 3 },
+        { label: this.$t('LineDataPage.UnkonwnLine'), value: 0 }
+      ],
+      lineSizeTypeOptions: [
+        { label: this.$t('LineDataPage.SmallLine'), value: 1 },
+        { label: this.$t('LineDataPage.SmallMiddleLine'), value: 2 },
+        { label: this.$t('LineDataPage.MiddleLine'), value: 3 },
+        { label: this.$t('LineDataPage.MiddleBigLine'), value: 4 },
+        { label: this.$t('LineDataPage.BigLine'), value: 5 },
+        { label: this.$t('LineDataPage.UnkonwnLine'), value: 0 }
+      ]
     }
   },
   computed: {
@@ -786,30 +770,30 @@ export default {
     ])
   },
   created() {
+    GetLangDict().then(res => {
+      this.lang_dict = res.lang_dict
+    })
     this.getLineProcess()
     this.getTableData(this.currentPage, this.pageSize)
   },
   mounted() {
     // this.getTableData(this.currentPage, this.pageSize)
+    this.modelBackup = deepClone(this.model)
   },
   methods: {
     // dialog可拖拽
     handleDrag() {
       // this.$refs.select.blur()
     },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 20) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 20) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
-      return ''
-    },
     // 分页
     handlePageChange(val) {
       this.currentPage = val
       this.getTableData(val, this.pageSize) // 翻页
+    },
+    getLineProcess() {
+      GetLineProcess().then(res => {
+        this.all_process_list = res.all_process_list
+      })
     },
     // 分页展示表格数据
     getTableData(currentPage, pageSize) {
@@ -823,11 +807,6 @@ export default {
         }
       })
     },
-    getLineProcess() {
-      GetLineProcess().then(res => {
-        this.all_process_list = res.all_process_list
-      })
-    },
     // 刷新表格数据
     refreshTableData(isAddData = false) {
       if (isAddData) { // 如果是导入/添加/点击刷新按钮，刷新时返回第一页
@@ -839,7 +818,7 @@ export default {
     },
     // 添加数据
     addDataDialog() {
-      this.dialogTitle = '添加数据'
+      this.dialogTitle = this.$t('TablePage.TitleAppendData')
       this.dialogBtnType = true
       this.dataDialogVisible = true
       this.isClick = false
@@ -854,20 +833,23 @@ export default {
           AddData(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
-                title: '添加成功',
-                message: '成功添加 1 条数据',
+                title: this.$t('PublicText.TitleTip'),
+                message: this.$t('TablePage.MsgAppendSuccess'),
                 type: 'success'
               })
-              setTimeout(() => {
-                this.closeFormDialog()
-              }, 1000)
+              this.$alert(this.$t('LineDataPage.MsgAppendData'), this.$t('PublicText.TitleTip'), {
+                confirmButtonText: this.$t('PublicBtn.Confirm'),
+                type: 'success'
+              })
+              this.model = deepClone(this.modelBackup)
+              this.modelOriginal = deepClone(this.modelBackup)
               this.refreshTableData(true)
             }
           })
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
@@ -882,7 +864,7 @@ export default {
       if (dataLength === 0) {
         this.$message({
           type: 'warning',
-          message: '请至少选中一条数据'
+          message: this.$t('TablePage.MsgSelectWarn')
         })
         return
       }
@@ -890,9 +872,9 @@ export default {
       for (let i = 0; i < dataLength; i++) {
         idList.push(this.dataTableSelections[i].id)
       }
-      this.$confirm('确定要删除选中的 ' + dataLength + ' 条数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('TablePage.MsgDeleteMultiDataWarn1') + dataLength + this.$t('TablePage.MsgDeleteMultiDataWarn2'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -900,8 +882,8 @@ export default {
         DeleteData(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '成功删除选中的 ' + dataLength + ' 条数据',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('TablePage.MsgDeleteMultiDataWarn3') + dataLength + this.$t('TablePage.MsgDeleteMultiDataWarn4'),
               type: 'success'
             })
             this.refreshTableData() // 刷新表格数据
@@ -910,14 +892,14 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 修改数据
     handleModify(index, row) {
       // 修改dialog
-      this.dialogTitle = '修改数据'
+      this.dialogTitle = this.$t('TablePage.TitleModifyData')
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
@@ -939,7 +921,7 @@ export default {
       if (!this.checkFormChange()) {
         this.$message({
           type: 'info',
-          message: '数据未修改，无需提交'
+          message: this.$t('TablePage.MsgModifyInfo')
         })
         return
       }
@@ -952,7 +934,7 @@ export default {
             if (res.code === 20000) {
               this.$notify({
                 title: res.message,
-                message: '数据已修改',
+                message: this.$t('TablePage.MsgModifySuccess'),
                 type: 'success'
               })
               this.refreshTableData()
@@ -961,28 +943,21 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
     },
     // 检测表单数据是否发生变化，用于提示
     checkFormChange() {
-      let isChange = false
-      for (const key in this.model) {
-        if (this.model[key] !== this.modelOriginal[key]) {
-          isChange = true
-          break
-        }
-      }
-      return isChange
+      return !isEqual(this.model, this.modelOriginal)
     },
     // 表单dialog关闭前提示
     handleFormClose() {
       if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgModifyCloseWarn'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           type: 'warning'
         }).then(() => {
           this.closeFormDialog()
@@ -996,25 +971,15 @@ export default {
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      for (const key in this.model) {
-        var isNum = /^[0-9]+.?[0-9]*/
-        if (isNum.test(this.model[key])) { // 数字要初始化为0
-          this.model[key] = 0
-          this.modelOriginal[key] = 0
-        } else {
-          this.model[key] = ''
-          this.modelOriginal[key] = ''
-        }
-      }
-      this.model['enable_process_list'] = []
-      this.modelOriginal['enable_process_list'] = []
+      this.model = deepClone(this.modelBackup)
+      this.modelOriginal = deepClone(this.modelBackup)
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
     handleDelete(index, row) {
-      this.$confirm('确定要删除该数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('TablePage.MsgDeleteWarn'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -1025,8 +990,8 @@ export default {
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '该数据已删除',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('TablePage.MsgDeleteSuccess'),
               type: 'success'
             })
             this.refreshTableData()
@@ -1035,7 +1000,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -1046,9 +1011,9 @@ export default {
     // 确认导入
     confirmImport() {
       if (this.importMode === 'replace') {
-        this.$confirm('此操作将会清空所有原有内容, 确定要进行替换操作？', '提示', {
-          confirmButtonText: '确定替换',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgImportReplace'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           confirmButtonClass: 'btnDanger',
           type: 'warning'
         }).then(() => {
@@ -1056,7 +1021,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '取消导入'
+            message: this.$t('PublicBtn.MsgUnimport')
           })
         })
       } else {
@@ -1073,8 +1038,8 @@ export default {
       form.append('import_mode', this.importMode)
       ImportData(form).then(res => {
         if (res.code === 20000) {
-          this.$alert('本次共导入了 ' + res.data_count + ' 条数据', res.message, {
-            confirmButtonText: '确定',
+          this.$alert(this.$t('TablePage.MsgExportData1') + res.data_count + this.$t('TablePage.MsgExportData2'), res.message, {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
           // this.loadingInstance.close() // 清除动画
@@ -1086,8 +1051,8 @@ export default {
         }
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })
@@ -1127,8 +1092,8 @@ export default {
           XLSX.utils.book_append_sheet(wb, sheet, tableName)
           XLSX.writeFile(wb, tableName + '.xlsx')
           this.$notify({
-            title: '导出成功',
-            message: '本次共导出了 ' + dataCount + ' 条数据',
+            title: this.$t('TablePage.MsgExportSuccess'),
+            message: this.$t('TablePage.MsgExportData1') + dataCount + this.$t('TablePage.MsgExportData2'),
             type: 'success'
           })
           // 1秒后自动关闭窗口

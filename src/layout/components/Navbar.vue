@@ -5,6 +5,9 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
+      <template>
+        <lang-select class="right-menu-item hover-effect" />
+      </template>
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
 
@@ -12,7 +15,7 @@
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip content="调整大小" effect="dark" placement="bottom">
+        <el-tooltip :content="$t('title.Resize')" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
@@ -29,10 +32,10 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
-            <el-dropdown-item>首页</el-dropdown-item>
+            <el-dropdown-item>{{ $t('route.Dashboard') }}</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">退出登录</span>
+            <span style="display:block;">{{ $t('title.SignOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -48,6 +51,7 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import LangSelect from '@/components/LangSelect'
 
 export default {
   components: {
@@ -56,7 +60,8 @@ export default {
     ErrorLog,
     Screenfull,
     SizeSelect,
-    Search
+    Search,
+    LangSelect
   },
   computed: {
     ...mapGetters([

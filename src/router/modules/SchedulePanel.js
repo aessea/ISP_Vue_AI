@@ -8,9 +8,9 @@ const SchedulePanelRouter = {
   alwaysShow: true,
   name: 'Control',
   meta: {
-    title: '控制面板',
+    title: 'Control',
     icon: 'component',
-    roles: ['SchedulePanel', 'ParamsConfig', 'AnalysisControl']
+    roles: ['SchedulePanel', 'ParamsConfig', 'AnalysisControl', 'OutsourceControl']
   },
   children: [
     {
@@ -18,16 +18,34 @@ const SchedulePanelRouter = {
       component: () => import('@/views/Control/SchedulePanel'),
       name: 'SchedulePanel',
       meta: {
-        title: 'AI点胶排程',
+        title: 'SchedulePanel',
         roles: ['SchedulePanel']
       }
     },
+    // {
+    //   path: 'configmain',
+    //   component: () => import('@/views/Control/ConfigMain'),
+    //   name: 'ConfigMain',
+    //   meta: {
+    //     title: 'AI排程配置',
+    //     roles: ['admin', 'common']
+    //   }
+    // },
+    // {
+    //   path: 'configsmall',
+    //   component: () => import('@/views/Control/ConfigSmall'),
+    //   name: 'ConfigSmall',
+    //   meta: {
+    //     title: '点胶排程配置',
+    //     roles: ['admin', 'common']
+    //   }
+    // },
     {
       path: 'paramsconfig',
       component: () => import('@/views/Control/ParamsConfig'),
       name: 'ParamsConfig',
       meta: {
-        title: '排程配置表',
+        title: 'ParamsConfig',
         roles: ['ParamsConfig']
       }
     },
@@ -36,7 +54,7 @@ const SchedulePanelRouter = {
       component: () => import('@/views/Control/AnalysisControl'),
       name: 'AnalysisControl',
       meta: {
-        title: '分析推送面板',
+        title: 'AnalysisControl',
         roles: ['AnalysisControl']
       }
     }
@@ -47,6 +65,15 @@ const SchedulePanelRouter = {
     //   meta: {
     //     title: '在线表格',
     //     roles: ['admin', 'common', 'senioradmin']
+    //   }
+    // },
+    // {
+    //   path: 'outsourcecontrol',
+    //   component: () => import('@/views/Control/OutsourceControl'),
+    //   name: 'OutsourceControl',
+    //   meta: {
+    //     title: '外包控制面板',
+    //     roles: ['OutsourceControl']
     //   }
     // }
   ]

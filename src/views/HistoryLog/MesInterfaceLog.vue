@@ -5,26 +5,26 @@
         <el-col :span="20">
           <div>
             <el-button @click="exportDataDialog">
-              <i class="el-icon-download" />导出
+              <i class="el-icon-download" />{{ $t('TablePage.BtnExport') }}
             </el-button>
             <el-input
               v-model="api_name"
-              placeholder="按照接口函数名或接口名称搜索"
+              :placeholder="$t('MesInterfaceLogPage.TextSearchData')"
               prefix-icon="el-icon-search"
               style="width: 300px;margin-left: 10px;"
               clearable
             />
             <el-button type="primary" icon="el-icon-search" style="margin-left: 10px;" @click="searchBy_name">
-              搜索
+              {{ $t('PublicBtn.Search') }}
             </el-button>
             <el-button type="danger" icon="el-icon-delete" style="margin-left: 10px;" @click="filterDataDialog">
-              删除历史数据
+              {{ $t('PublicText.BtnDeleteHisLog') }}
             </el-button>
           </div>
         </el-col>
         <el-col :span="4">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button size="small" icon="el-icon-refresh" circle @click="refreshTableData" />
             </el-tooltip>
           </div>
@@ -38,12 +38,12 @@
         :header-cell-style="{ background: '#eef1f6', color: '#606266', padding: '3px' }"
         max-height="1000px"
       >
-        <el-table-column prop="name" label="接口函数名" sortable />
-        <el-table-column prop="api_name" label="接口名称" sortable />
-        <el-table-column prop="require_time" label="发送请求的时间" sortable />
-        <el-table-column prop="require_type" label="请求类型" sortable />
-        <el-table-column prop="time_consumed" label="耗时（单位：秒）" sortable />
-        <el-table-column width="110" fixed="right" label="操作">
+        <el-table-column prop="name" :label="$t('MesInterfaceLogPage.name')" sortable />
+        <el-table-column prop="api_name" :label="$t('MesInterfaceLogPage.api_name')" sortable />
+        <el-table-column prop="require_time" :label="$t('MesInterfaceLogPage.require_time')" sortable />
+        <el-table-column prop="require_type" :label="$t('MesInterfaceLogPage.require_type')" sortable />
+        <el-table-column prop="time_consumed" :label="$t('MesInterfaceLogPage.time_consumed')" sortable />
+        <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -75,45 +75,45 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-descriptions class="margin-top" :column="1" border>
-          <el-descriptions-item label="接口函数名">
+          <el-descriptions-item :label="$t('MesInterfaceLogPage.name')">
             <el-tag size="small">{{ model.name }}</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="接口名称">{{ model.api_name }}</el-descriptions-item>
-          <el-descriptions-item label="发送请求的时间">{{ model.require_time }}</el-descriptions-item>
-          <el-descriptions-item label="请求类型">{{ model.require_type }}</el-descriptions-item>
-          <el-descriptions-item label="耗时（单位：秒）">{{ model.time_consumed }}</el-descriptions-item>
+          <el-descriptions-item :label="$t('MesInterfaceLogPage.api_name')">{{ model.api_name }}</el-descriptions-item>
+          <el-descriptions-item :label="$t('MesInterfaceLogPage.require_time')">{{ model.require_time }}</el-descriptions-item>
+          <el-descriptions-item :label="$t('MesInterfaceLogPage.require_type')">{{ model.require_type }}</el-descriptions-item>
+          <el-descriptions-item :label="$t('MesInterfaceLogPage.time_consumed')">{{ model.time_consumed }}</el-descriptions-item>
         </el-descriptions>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="exportPostData">导出发送数据</el-button>
-        <el-button type="primary" @click="exportReceiveData">导出接收数据</el-button>
-        <el-button @click="handleFormClose">关闭</el-button>
+        <el-button type="primary" @click="exportPostData">{{ this.$t('MesInterfaceLogPage.ExportPostData') }}</el-button>
+        <el-button type="primary" @click="exportReceiveData">{{ this.$t('MesInterfaceLogPage.ExportReceiveData') }}</el-button>
+        <el-button @click="handleFormClose">{{ $t('PublicBtn.Close') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导出数据"
+      :title="$t('TablePage.TitleExportData')"
       :visible.sync="exportDialogVisible"
       :before-close="handleExportClose"
       width="45%"
       @dragDialog="handleDrag"
     >
       <el-row>
-        <span>导出文件格式：</span>
+        <span>{{ $t('PublicBtn.ConfirmModify') }}</span>
         <el-radio-group v-model="exportRadio">
           <el-radio label="xlsx">.xlsx</el-radio>
         </el-radio-group>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleExportClose">关闭</el-button>
-        <el-button type="primary" @click="exportData">确认导出</el-button>
+        <el-button @click="handleExportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="exportData">{{ $t('TablePage.BtnConfirmExport') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="删除历史数据"
+      :title="$t('MesInterfaceLogPage.DeleteHisData')"
       :visible.sync="filterDialogVisible"
       width="45%"
       @dragDialog="handleDrag"
@@ -122,16 +122,16 @@
         <el-form>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item label="删除几个月前的数据：">
-                <el-input-number v-model="save_months" placeholder="请输入月份数" clearable />
+              <el-form-item :label="$t('FileDataPage.TextDeleteAgoFile')">
+                <el-input-number v-model="save_months" :placeholder="$t('FileDataPage.TextInputMonth')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFilterClose">关闭</el-button>
-        <el-button type="danger" @click="filterData">确认删除</el-button>
+        <el-button @click="handleFilterClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="danger" @click="filterData">{{ this.$t('PublicBtn.ConfirmDelete') }}</el-button>
       </span>
     </el-dialog>
 
@@ -180,6 +180,9 @@ export default {
     this.getTableData(this.currentPage, this.pageSize)
   },
   methods: {
+    handleDrag() {
+      // // this.$refs.select.blur()
+    },
     // 按接口函数名或接口名称搜索
     searchBy_name() {
       // 这样写当接口函数名和接口名称相同时会只有接口函数名搜索结果
@@ -197,7 +200,7 @@ export default {
     handleDetail(index, row) {
       this.scopeIndex = index
       // index是表格行数，row是行数据
-      this.dialogTitle = '数据详情'
+      this.dialogTitle = this.$t('MesInterfaceLogPage.FileDetail')
       this.dataDialogVisible = true
       // 显示表单数据
       for (const key in row) {
@@ -247,16 +250,15 @@ export default {
       this.filterDialogVisible = false
     },
     filterData() {
-      this.$confirm(`确认要删除${this.save_months}个月前的数据吗？`, '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('HistoryOperaPage.DeleteHisLog1') + this.save_months + this.$t('HistoryOperaPage.DeleteHisLog2'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
         if (this.save_months === undefined) {
-          this.$message({
-            title: '过滤失败',
-            message: '请先选择需要保留的日期范围！',
+          this.$alert(this.$t('PublicText.DeleteFailed'), this.$t('PublicText.TitleTip'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
           return
@@ -266,12 +268,10 @@ export default {
           save_months
         }
         FilterTableData(data).then(res => {
-          console.log(res)
           if (res.code === 20000) {
-            this.$notify({
-              title: '过滤成功',
-              message: res.message,
-              type: 'success'
+            this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
+              type: res.message_type
             })
             this.refreshTableData()
             setTimeout(() => {
@@ -282,7 +282,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -298,14 +298,14 @@ export default {
         if (res.code === 20000) {
           if (res.receive_data === '' || res.receive_data === null) {
             this.$notify({
-              title: '导出失败',
-              message: '当前接口接收数据为空',
+              title: this.$t('MesInterfaceLogPage.MsgExport1'),
+              message: this.$t('MesInterfaceLogPage.MsgExport2'),
               type: 'error'
             })
             return
           }
           try {
-            const tableName = `${this.table_data[this.scopeIndex].api_name}-接收数据`
+            const tableName = this.table_data[this.scopeIndex].api_name + this.$t('MesInterfaceLogPage.receive_data')
             const jsonString = this.fixJSONString(res.receive_data)
             const receive_data_array = JSON.parse(jsonString)
             const dataCount = receive_data_array.length
@@ -317,13 +317,13 @@ export default {
             XLSX.writeFile(wb, tableName + '.xlsx')
             this.loading = false
             this.$notify({
-              title: '导出成功',
-              message: '本次共导出了 ' + dataCount + ' 条数据',
+              title: this.$t('TablePage.MsgExportSuccess'),
+              message: this.$t('TablePage.MsgExportData1') + dataCount + this.$t('TablePage.MsgExportData2'),
               type: 'success'
             })
           } catch (error) {
             this.$message({
-              message: '数据解析错误',
+              message: this.$t('MesInterfaceLogPage.MsgExport3'),
               type: 'error'
             })
           }
@@ -337,14 +337,14 @@ export default {
         if (res.code === 20000) {
           if (res.post_data === '' || res.post_data === null) {
             this.$notify({
-              title: '导出失败',
-              message: '当前接发送数据为空',
+              title: this.$t('MesInterfaceLogPage.MsgExport1'),
+              message: this.$t('MesInterfaceLogPage.MsgExport4'),
               type: 'error'
             })
             return
           }
           try {
-            const tableName = `${this.table_data[this.scopeIndex].api_name}-发送数据`
+            const tableName = this.table_data[this.scopeIndex].api_name + this.$t('MesInterfaceLogPage.post_data')
             const jsonString = this.fixJSONString(res.post_data)
             const post_data_array = JSON.parse(jsonString)
             console.log(post_data_array)
@@ -357,8 +357,8 @@ export default {
             XLSX.writeFile(wb, tableName + '.xlsx')
             this.loading = false
             this.$notify({
-              title: '导出成功',
-              message: '本次共导出了 ' + dataCount + ' 条数据',
+              title: this.$t('TablePage.MsgExportSuccess'),
+              message: this.$t('TablePage.MsgExportData1') + dataCount + this.$t('TablePage.MsgExportData2'),
               type: 'success'
             })
           } catch (error) {
@@ -366,7 +366,7 @@ export default {
             // 这里是针对解析 JSON 字符串出现异常时的处理
             this.$message({
               type: 'error',
-              message: '数据解析错误'
+              message: this.$t('MesInterfaceLogPage.MsgExport3')
             })
           }
         }
@@ -398,8 +398,8 @@ export default {
           XLSX.utils.book_append_sheet(wb, sheet, tableName)
           XLSX.writeFile(wb, tableName + '.xlsx')
           this.$notify({
-            title: '导出成功',
-            message: '本次共导出了 ' + dataCount + ' 条数据',
+            title: this.$t('TablePage.MsgExportSuccess'),
+            message: this.$t('TablePage.MsgExportData1') + dataCount + this.$t('TablePage.MsgExportData2'),
             type: 'success'
           })
           // 1秒后自动关闭窗口

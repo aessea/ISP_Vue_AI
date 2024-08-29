@@ -5,13 +5,13 @@
         <el-col :span="16">
           <div>
             <el-button v-if="createUserDialogDisable === true" type="primary" @click="createUserDialog">
-              <i class="el-icon-plus" />创建用户
+              <i class="el-icon-plus" />{{ $t('UserManagePage.CreateUser') }}
             </el-button>
           </div>
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -19,14 +19,14 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
+            <!-- <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnViewInstruction')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
                 circle
                 @click="helpTips"
               />
-            </el-tooltip>
+            </el-tooltip> -->
           </div>
         </el-col>
       </el-row>
@@ -40,20 +40,20 @@
 
           stripe
         >
-          <el-table-column prop="username" label="用户名" width="160" />
-          <el-table-column prop="remark" label="备注" width="160" />
-          <el-table-column prop="roles" label="用户角色" width="160" />
-          <el-table-column prop="email" label="电子邮件地址" width="200" />
-          <el-table-column prop="description" label="描述" />
-          <el-table-column prop="enable" label="是否启用" width="120">
+          <el-table-column prop="username" :label="$t('UserManagePage.username')" width="160" />
+          <el-table-column prop="remark" :label="$t('UserManagePage.remark')" width="160" />
+          <el-table-column prop="roles" :label="$t('UserManagePage.roles')" width="160" />
+          <el-table-column prop="email" :label="$t('UserManagePage.email')" width="200" />
+          <el-table-column prop="description" :label="$t('UserManagePage.description')" />
+          <el-table-column prop="enable" :label="$t('UserManagePage.enable')" width="120">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.enable === true" size="small" type="success">已启用</el-tag>
-              <el-tag v-else-if="scope.row.enable === false" size="small" type="danger">未启用</el-tag>
+              <el-tag v-if="scope.row.enable === true" size="small" type="success">{{ $t('PublicText.Enabled') }}</el-tag>
+              <el-tag v-else-if="scope.row.enable === false" size="small" type="danger">{{ $t('PublicText.NotEnabled') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column width="150" fixed="right" label="操作">
+          <el-table-column width="150" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" content="修改密码" placement="top">
+              <el-tooltip class="item" effect="dark" :content="$t('UserManagePage.ModifyPwd')" placement="top">
                 <el-button
                   v-if="handleModifyPasswordDisable === true"
                   type="success"
@@ -63,7 +63,7 @@
                   @click="handleModifyPassword(scope.$index, scope.row)"
                 />
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="查看或修改信息" placement="top">
+              <el-tooltip class="item" effect="dark" :content="$t('UserManagePage.ViewOrModifyInfo')" placement="top">
                 <el-button
                   v-if="handleModifyUserInfoDisable === true"
                   type="primary"
@@ -73,7 +73,7 @@
                   @click="handleModifyUserInfo(scope.$index, scope.row)"
                 />
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="删除用户" placement="top">
+              <el-tooltip class="item" effect="dark" :content="$t('UserManagePage.DeleteUser')" placement="top">
                 <el-button
                   v-if="handleDeleteUserDisable === true"
                   type="danger"
@@ -100,105 +100,90 @@
         <div v-if="dialogBtnType === true">
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" tag="div">
-              <el-form-item :rules="rules.username" prop="username" label="用户名">
-                <el-input v-model="model.username" placeholder="请输入用户名" clearable />
+              <el-form-item :rules="rules.username" prop="username" :label="$t('UserManagePage.username')">
+                <el-input v-model="model.username" :placeholder="$t('Placeholder.Enter')" clearable autocomplete="new-username" />
               </el-form-item>
             </el-col>
             <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" tag="div">
-              <el-form-item :rules="rules.password" prop="password" label="密码">
-                <el-input v-model="model.password" placeholder="请输入密码" clearable show-password />
+              <el-form-item :rules="rules.password" prop="password" :label="$t('UserManagePage.password')">
+                <el-input v-model="model.password" :placeholder="$t('Placeholder.Enter')" clearable show-password autocomplete="new-password" />
               </el-form-item>
             </el-col>
           </el-row>
         </div>
         <div v-if="dialogBtnType === false">
-          <el-form-item :rules="rules.username" prop="username" label="用户名">
-            <el-input v-model="model.username" placeholder="请输入用户名" clearable />
+          <el-form-item :rules="rules.username" prop="username" :label="$t('UserManagePage.username')">
+            <el-input v-model="model.username" :placeholder="$t('Placeholder.Enter')" clearable />
           </el-form-item>
         </div>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.roles" prop="roles" label="用户权限">
-              <el-select v-model="model.roles" placeholder="请选择用户权限" :style="{width: '100%'}">
+            <el-form-item :rules="rules.roles" prop="roles" :label="$t('UserManagePage.roles')">
+              <el-select v-model="model.roles" :placeholder="$t('Placeholder.Select')" :style="{width: '100%'}">
                 <el-option v-for="(item) in rolesOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.remark" prop="remark" label="备注">
-              <el-input v-model="model.remark" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.remark" prop="remark" :label="$t('UserManagePage.remark')">
+              <el-input v-model="model.remark" :placeholder="$t('Placeholder.Enter')" clearable />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.enable" prop="enable" label="是否启用">
+            <el-form-item :rules="rules.enable" prop="enable" :label="$t('UserManagePage.enable')">
               <el-switch v-model="model.enable" />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.email" prop="email" label="电子邮件地址">
-              <el-input v-model="model.email" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.email" prop="email" :label="$t('UserManagePage.email')">
+              <el-input v-model="model.email" :placeholder="$t('Placeholder.Enter')" clearable />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item :rules="rules.description" prop="description" label="描述">
-          <el-input v-model="model.description" placeholder="请输入" :rows="2" type="textarea" clearable />
+        <el-form-item :rules="rules.description" prop="description" :label="$t('UserManagePage.description')">
+          <el-input v-model="model.description" :placeholder="$t('Placeholder.Enter')" :rows="2" type="textarea" clearable />
         </el-form-item>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.create_time" prop="create_time" label="创建时间">
+            <el-form-item :rules="rules.create_time" prop="create_time" :label="$t('UserManagePage.create_time')">
               <el-input v-model="model.create_time" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.last_login_time" prop="last_login_time" label="最后一次登录时间">
+            <el-form-item :rules="rules.last_login_time" prop="last_login_time" :label="$t('UserManagePage.last_login_time')">
               <el-input v-model="model.last_login_time" disabled />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="createUser">创建</el-button>
-        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyUserInfo">确认修改</el-button>
+        <el-button @click="handleFormClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="createUser">{{ $t('PublicBtn.Crrate') }}</el-button>
+        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyUserInfo">{{ $t('PublicBtn.Modify') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="用户权限管理说明"
-      :visible.sync="helpDialogVisible"
-      width="60%"
-      @dragDialog="handleDrag"
-    >
-      <p>超级管理员：拥有最高权限，支持管理所有表格和用户</p>
-      <p>普通管理员：支持管理所有表格，但无法管理用户</p>
-      <p>程序员：仅支持对程序表进行操作</p>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="helpDialogVisible = false">关闭</el-button>
-      </span>
-    </el-dialog>
-
-    <el-dialog
-      v-el-drag-dialog
-      title="修改用户密码"
+      :title="$t('UserManagePage.ModifyPwd')"
       :visible.sync="passwordDialogVisible"
       width="30%"
       :before-close="handlePasswordClose"
       @dragDialog="handleDrag"
     >
       <el-form ref="$pwdForm" :model="pwdModel" label-position="left" label-width="100px" size="small">
-        <el-form-item :rules="pwdRules.password" prop="password" label="新的密码">
-          <el-input v-model="pwdModel.password" placeholder="请输入新的密码" :rows="2" show-password clearable />
+        <el-form-item :rules="pwdRules.password" prop="password" :label="$t('UserManagePage.NewPwd')">
+          <el-input v-model="pwdModel.password" :placeholder="$t('UserManagePage.PleInputNewPwd')" :rows="2" show-password clearable />
         </el-form-item>
-        <el-form-item :rules="pwdRules.password_twice" prop="password_twice" label="确认密码">
-          <el-input v-model="pwdModel.password_twice" placeholder="请再次输入密码" :rows="2" show-password clearable />
+        <el-form-item :rules="pwdRules.password_twice" prop="password_twice" :label="$t('UserManagePage.ConfirmPwd')">
+          <el-input v-model="pwdModel.password_twice" :placeholder="$t('UserManagePage.PleReInputNewPwd')" :rows="2" show-password clearable />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handlePasswordClose">关闭</el-button>
-        <el-button type="primary" @click="modifyUserPassword">确认修改</el-button>
+        <el-button @click="handlePasswordClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="modifyUserPassword">{{ $t('PublicBtn.ConfirmModify') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -214,7 +199,7 @@ export default {
   data() {
     var validatePass = (rule, value, callback) => {
       if (this.checkPass(value) < 4) {
-        callback(new Error('密码应由字母、数字、符号三种组成，且必须包含大小写'))
+        callback(new Error(this.$t('UserManagePage.PwdVerification')))
       } else {
         callback()
       }
@@ -226,36 +211,36 @@ export default {
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
-      helpDialogVisible: false, // 帮助提示dialog
+      // helpDialogVisible: false, // 帮助提示dialog
       passwordDialogVisible: false, // 修改密码dialog
       isClick: false, // 是否点击了保存或者提交
       // 表单相关数据
       forms: ['$form'],
       pwdForms: ['$pwdForm'],
       model: {
-        id: '',
-        username: '',
-        password: '',
-        roles: '',
-        remark: '',
-        enable: '',
-        email: '',
-        description: '',
-        create_time: '',
-        last_login_time: ''
+        id: null,
+        username: null,
+        password: null,
+        roles: null,
+        remark: null,
+        enable: true,
+        email: null,
+        description: null,
+        create_time: null,
+        last_login_time: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        username: '',
-        password: '',
-        roles: '',
-        remark: '',
-        enable: '',
-        email: '',
-        description: '',
-        create_time: '',
-        last_login_time: ''
+        id: null,
+        username: null,
+        password: null,
+        roles: null,
+        remark: null,
+        enable: true,
+        email: null,
+        description: null,
+        create_time: null,
+        last_login_time: null
       },
       pwdModel: {
         password: '',
@@ -264,24 +249,24 @@ export default {
       rules: {
         username: [{
           required: true,
-          message: '用户名不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }, {
           type: 'string',
           min: 5,
           max: 20,
-          message: '用户名长度必须为 5 到 20 个字符',
+          message: this.$t('Form.UserNameLength'),
           trigger: 'blur'
         }],
         password: [{
           required: true,
-          message: '密码不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }, {
           type: 'string',
           min: 8,
           max: 20,
-          message: '密码长度必须为 8 到 20 个字符',
+          message: this.$t('Form.PasswordLength'),
           trigger: 'blur'
         }, {
           validator: validatePass,
@@ -289,22 +274,22 @@ export default {
         }],
         roles: [{
           required: true,
-          message: '用户权限不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         remark: [{
           required: true,
-          message: '备注不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         enable: [{
           required: true,
-          message: '是否启用不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'change'
         }],
         email: [{
           type: 'email',
-          message: '邮箱格式不正确',
+          message: this.$t('Form.NotNulEmailFormatErrorl'),
           trigger: 'blur'
         }],
         description: [],
@@ -314,13 +299,13 @@ export default {
       pwdRules: {
         password: [{
           required: true,
-          message: '密码不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }, {
           type: 'string',
           min: 8,
           max: 20,
-          message: '密码长度必须为 8 到 20 个字符',
+          message: this.$t('Form.PasswordLength'),
           trigger: 'blur'
         }, {
           validator: validatePass,
@@ -328,13 +313,13 @@ export default {
         }],
         password_twice: [{
           required: true,
-          message: '请再次输入密码',
+          message: this.$t('Form.InputPwdTwice'),
           trigger: 'blur'
         }, {
           type: 'string',
           min: 8,
           max: 20,
-          message: '密码长度必须为 8 到 20 个字符',
+          message: this.$t('Form.PasswordLength'),
           trigger: 'blur'
         }, {
           validator: validatePass,
@@ -408,7 +393,7 @@ export default {
     },
     // 创建用户dialog
     createUserDialog() {
-      this.dialogTitle = '创建用户'
+      this.dialogTitle = this.$t('UserManagePage.CreateUser')
       this.dialogBtnType = true
       this.dataDialogVisible = true
       this.isClick = false
@@ -422,7 +407,7 @@ export default {
           CreateUser(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
-                title: '创建成功',
+                title: this.$t('UserManagePage.CreateUserSuccess'),
                 message: res.message,
                 type: 'success'
               })
@@ -435,7 +420,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写信息！'
+            message: this.$t('TablePage.MsgModifyError')
           })
         }
       })
@@ -456,7 +441,7 @@ export default {
       if (this.pwdModel['password'] !== this.pwdModel['password_twice']) {
         this.$message({
           type: 'error',
-          message: '两次输入密码不一致，请重新输入！'
+          message: this.$t('UserManagePage.TwiceInputError')
         })
         return
       }
@@ -467,7 +452,7 @@ export default {
           ModifyUserPassword(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
-                title: '修改成功',
+                title: this.$t('PublicText.ModifySuccess'),
                 message: res.message,
                 type: 'success'
               })
@@ -479,7 +464,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写密码！'
+            message: this.$t('TablePage.MsgModifyError')
           })
         }
       })
@@ -487,7 +472,7 @@ export default {
     // 修改用户信息dialog
     handleModifyUserInfo(index, row) {
       // 修改dialog
-      this.dialogTitle = '修改用户信息'
+      this.dialogTitle = this.$t('UserManagePage.ViewOrModifyInfo')
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
@@ -508,7 +493,7 @@ export default {
       if (!this.checkFormChange()) {
         this.$message({
           type: 'info',
-          message: '数据未修改，无需提交'
+          message: this.$t('TablePage.MsgModifyInfo')
         })
         return
       }
@@ -519,7 +504,7 @@ export default {
           ModifyUserInfo(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
-                title: '修改成功',
+                title: this.$t('PublicText.ModifySuccess'),
                 message: res.message,
                 type: 'success'
               })
@@ -529,15 +514,15 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写信息！'
+            message: this.$t('TablePage.MsgModifyError')
           })
         }
       })
     },
     handleDeleteUser(index, row) {
-      this.$confirm('确定要删除该用户？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('UserManagePage.ConfirmDeleteUser'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -547,7 +532,7 @@ export default {
         DeleteUser(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
+              title: this.$t('PublicText.TitleTip'),
               message: res.message,
               type: 'success'
             })
@@ -557,7 +542,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -575,9 +560,9 @@ export default {
     // 表单dialog关闭前提示
     handleFormClose() {
       if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgModifyCloseWarn'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           type: 'warning'
         }).then(() => {
           this.closeFormDialog()
@@ -596,11 +581,11 @@ export default {
         this.modelOriginal[key] = ''
       }
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
-    },
-    // 帮助提示按钮
-    helpTips() {
-      this.helpDialogVisible = true
     }
+    // 帮助提示按钮
+    // helpTips() {
+    //   this.helpDialogVisible = true
+    // }
   }
 }
 </script>

@@ -5,22 +5,22 @@
         <el-col :span="16">
           <div>
             <el-button v-if="buttons.includes('NoProgramData/add')" type="primary" @click="addDataDialog">
-              <i class="el-icon-plus" />添加
+              <i class="el-icon-plus" />{{ $t('TablePage.BtnAppend') }}
             </el-button>
             <el-button v-if="buttons.includes('NoProgramData/delete')" type="danger" @click="deleteData">
-              <i class="el-icon-delete" />删除
+              <i class="el-icon-delete" />{{ $t('TablePage.BtnDelete') }}
             </el-button>
             <el-button v-if="buttons.includes('NoProgramData/import')" @click="importDataDialog">
-              <i class="el-icon-upload2" />导入
+              <i class="el-icon-upload2" />{{ $t('TablePage.BtnImport') }}
             </el-button>
             <el-button v-if="buttons.includes('NoProgramData/export')" @click="exportDataDialog">
-              <i class="el-icon-download" />导出
+              <i class="el-icon-download" />{{ $t('TablePage.BtnExport') }}
             </el-button>
           </div>
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -28,7 +28,7 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnViewInstruction')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
@@ -51,26 +51,26 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="line" label="需求线体" width="110" sortable />
-          <el-table-column prop="package_stage" width="170" label="需求包装阶" sortable />
-          <el-table-column prop="machine_name" label="机种名" width="150" sortable />
-          <el-table-column prop="raw_order_id" label="订单号" width="100" sortable />
-          <el-table-column prop="order_num" label="工单量" width="100" sortable />
-          <el-table-column prop="process" label="制程" width="80" sortable />
-          <el-table-column prop="board" label="板号" width="200" sortable />
-          <el-table-column prop="no_program_flag" label="有无程序" width="110" sortable />
-          <el-table-column prop="no_package_flag" label="有无包装阶" width="120" sortable />
+          <el-table-column prop="line" :label="lang_dict.line" width="110" sortable />
+          <el-table-column prop="package_stage" :label="lang_dict.package_stage" width="170" sortable />
+          <el-table-column prop="machine_name" :label="lang_dict.machine_name" width="150" sortable />
+          <el-table-column prop="raw_order_id" :label="lang_dict.raw_order_id" width="100" sortable />
+          <el-table-column prop="order_num" :label="lang_dict.order_num" width="100" sortable />
+          <el-table-column prop="process" :label="lang_dict.process" width="80" sortable />
+          <el-table-column prop="board" :label="lang_dict.board" width="200" sortable />
+          <el-table-column prop="no_program_flag" :label="lang_dict.no_program_flag" width="110" sortable />
+          <el-table-column prop="no_package_flag" :label="lang_dict.no_package_flag" width="120" sortable />
           <!-- <el-table-column prop="program_line" label="已有程序的线体" /> -->
-          <el-table-column prop="connecting_plates" label="联板数" width="80" />
-          <el-table-column prop="single_points" label="单面点数" width="110" sortable />
-          <el-table-column prop="long" label="长" width="70" sortable />
-          <el-table-column prop="width" label="宽" width="70" sortable />
-          <el-table-column prop="thick" label="厚" width="70" sortable />
+          <el-table-column prop="connecting_plates" :label="lang_dict.connecting_plates" width="80" />
+          <el-table-column prop="single_points" :label="lang_dict.single_points" width="110" sortable />
+          <el-table-column prop="long" :label="lang_dict.long" width="70" sortable />
+          <el-table-column prop="width" :label="lang_dict.width" width="70" sortable />
+          <el-table-column prop="thick" :label="lang_dict.thick" width="70" sortable />
           <el-table-column prop="program_CT" label="program_CT" width="140" sortable />
-          <el-table-column prop="component_bind" label="组件绑定" width="200" sortable />
-          <el-table-column prop="require_time" label="程序需求时间" width="180" sortable />
-          <el-table-column prop="finish_time" label="程序完成时间" width="180" sortable />
-          <el-table-column width="110" fixed="right" label="操作">
+          <el-table-column prop="component_bind" :label="lang_dict.component_bind" width="200" sortable />
+          <el-table-column prop="require_time" :label="lang_dict.require_time" width="180" sortable />
+          <el-table-column prop="finish_time" :label="lang_dict.finish_time" width="180" sortable />
+          <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
               <el-button
                 v-if="buttons.includes('NoProgramData/modify')"
@@ -115,129 +115,129 @@
         <el-form ref="$form" :model="model" label-position="left" size="small">
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line" prop="line" label="需求线体">
-                <el-input v-model="model.line" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.line" prop="line" :label="lang_dict.line">
+                <el-input v-model="model.line" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.package_stage" prop="package_stage" label="需求包装阶">
-                <el-input v-model="model.package_stage" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.package_stage" prop="package_stage" :label="lang_dict.package_stage">
+                <el-input v-model="model.package_stage" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
-                <el-input v-model="model.machine_name" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.machine_name" prop="machine_name" :label="lang_dict.machine_name">
+                <el-input v-model="model.machine_name" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.raw_order_id" prop="raw_order_id" label="订单号">
-                <el-input v-model="model.raw_order_id" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.raw_order_id" prop="raw_order_id" :label="lang_dict.raw_order_id">
+                <el-input v-model="model.raw_order_id" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.order_num" prop="order_num" label="工单量">
-                <el-input v-model="model.order_num" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.order_num" prop="order_num" :label="lang_dict.order_num">
+                <el-input v-model="model.order_num" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process" prop="process" label="制程">
-                <el-input v-model="model.process" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.process" prop="process" :label="lang_dict.process">
+                <el-input v-model="model.process" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process" prop="process" label="板号">
-                <el-input v-model="model.process" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.board" prop="board" :label="lang_dict.board">
+                <el-input v-model="model.board" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.no_program_flag" prop="no_program_flag" label="有无程序">
-                <el-input v-model="model.no_program_flag" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.no_program_flag" prop="no_program_flag" :label="lang_dict.no_program_flag">
+                <el-input v-model="model.no_program_flag" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.no_package_flag" prop="no_package_flag" label="有无包装阶">
-                <el-input v-model="model.no_package_flag" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.no_package_flag" prop="no_package_flag" :label="lang_dict.no_package_flag">
+                <el-input v-model="model.no_package_flag" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.program_line" prop="program_line" label="已有程序的线体">
-                <el-input v-model="model.program_line" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.program_line" prop="program_line" :label="lang_dict.program_line">
+                <el-input v-model="model.program_line" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" label="联板数">
-                <el-input-number v-model="model.connecting_plates" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" :label="lang_dict.connecting_plates">
+                <el-input-number v-model="model.connecting_plates" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.single_points" prop="single_points" label="单面点数">
-                <el-input-number v-model="model.single_points" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.single_points" prop="single_points" :label="lang_dict.single_points">
+                <el-input-number v-model="model.single_points" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.long" prop="long" label="长">
-                <el-input-number v-model="model.long" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.long" prop="long" :label="lang_dict.long">
+                <el-input-number v-model="model.long" :placeholder="$t('Placeholder.Enter')" :step="0.1" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.width" prop="width" label="宽">
-                <el-input-number v-model="model.width" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.width" prop="width" :label="lang_dict.width">
+                <el-input-number v-model="model.width" :placeholder="$t('Placeholder.Enter')" :step="0.1" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.thick" prop="thick" label="厚">
-                <el-input-number v-model="model.thick" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.program_CT" prop="program_CT" label="程序CT">
-                <el-input-number v-model="model.program_CT" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.component_bind" prop="component_bind" label="组件绑定">
-                <el-input v-model="model.component_bind" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.require_time" prop="require_time" label="程序需求时间">
-                <el-date-picker v-model="model.require_time" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.finish_time" prop="finish_time" label="程序完成时间">
-                <el-date-picker v-model="model.finish_time" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.thick" prop="thick" :label="lang_dict.thick">
+                <el-input-number v-model="model.thick" :placeholder="$t('Placeholder.Enter')" :step="0.1" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
+              <el-form-item :rules="rules.program_CT" prop="program_CT" :label="lang_dict.program_CT">
+                <el-input-number v-model="model.program_CT" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.component_bind" prop="component_bind" :label="lang_dict.component_bind">
+                <el-input v-model="model.component_bind" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.require_time" prop="require_time" :label="lang_dict.require_time">
+                <el-date-picker v-model="model.require_time" type="datetime" :placeholder="$t('Placeholder.Select')" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.finish_time" prop="finish_time" :label="lang_dict.finish_time">
+                <el-date-picker v-model="model.finish_time" type="datetime" :placeholder="$t('Placeholder.Select')" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" :label="lang_dict.CREATED_BY">
                 <el-input v-model="model.CREATED_BY" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
+              <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" :label="lang_dict.CREATED_TIME">
                 <el-input v-model="model.CREATED_TIME" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
+              <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" :label="lang_dict.UPDATED_BY">
                 <el-input v-model="model.UPDATED_BY" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
+              <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" :label="lang_dict.UPDATED_TIME">
                 <el-input v-model="model.UPDATED_TIME" disabled />
               </el-form-item>
             </el-col>
@@ -245,67 +245,38 @@
         </el-form>
       </el-card>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
-        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">确认修改</el-button>
+        <el-button @click="handleFormClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">{{ $t('TablePage.BtnAppend') }}</el-button>
+        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">{{ $t('TablePage.BtnModify') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="表格说明"
+      :title="$t('TablePage.TitleFormDescription')"
       :visible.sync="helpDialogVisible"
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>关于表格的各种说明可以写在这</span>
+      <span>{{ $t('TablePage.MsgIllustrate') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="helpDialogVisible = false">关闭</el-button>
+        <el-button @click="helpDialogVisible = false">{{ $t('PublicBtn.Close') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导入数据"
+      :title="$t('TablePage.TitleImportData')"
       :visible.sync="importDialogVisible"
       width="60%"
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="line" label="需求线体" width="110" />
-        <el-table-column prop="package_stage" width="170" label="需求包装阶" />
-        <el-table-column prop="machine_name" label="机种名" width="150" />
-        <el-table-column prop="raw_order_id" label="订单号" width="100" />
-        <el-table-column prop="order_num" label="工单量" width="100" />
-        <el-table-column prop="process" label="制程" width="80" />
-        <el-table-column prop="board" label="板号" width="200" />
-        <el-table-column prop="no_program_flag" label="有无程序" width="110" />
-        <el-table-column prop="no_package_flag" label="有无包装阶" width="120" />
-        <el-table-column prop="program_line" label="已有程序的线体" width="160" />
-        <el-table-column prop="connecting_plates" label="联板数" width="80" />
-        <el-table-column prop="single_points" label="单面点数" width="110" />
-        <el-table-column prop="long" label="长" width="100" />
-        <el-table-column prop="width" label="宽" width="100" />
-        <el-table-column prop="thick" label="厚" width="100" />
-        <el-table-column prop="program_CT" label="program_CT" width="140" />
-        <el-table-column prop="component_bind" label="组件绑定" width="200" />
-        <el-table-column prop="require_time" label="程序需求时间" width="180" />
-        <el-table-column prop="finish_time" label="程序完成时间" width="180" />
-      </el-table>
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="append">追加数据</el-radio>
-            <el-radio label="replace">替换数据</el-radio>
+            <el-radio label="append">{{ $t('TablePage.BtnAppendData') }}</el-radio>
+            <el-radio label="replace">{{ $t('TablePage.BtnReplaceData') }}</el-radio>
           </el-radio-group>
         </el-col>
         <el-col :span="16">
@@ -323,35 +294,35 @@
             >
               <el-button slot="trigger" type="primary" style="margin-left: 10px;">
                 <i class="el-icon-upload" />
-                上传文件
+                {{ $t('TablePage.BtnUploadFile') }}
               </el-button>
             </el-upload>
           </div>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleImportClose">关闭</el-button>
-        <el-button type="primary" @click="confirmImport">确认导入</el-button>
+        <el-button @click="handleImportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="confirmImport">{{ $t('TablePage.BtnConfirmImport') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导出数据"
+      :title="$t('TablePage.TitleExportData')"
       :visible.sync="exportDialogVisible"
       :before-close="handleExportClose"
       width="45%"
       @dragDialog="handleDrag"
     >
       <el-row>
-        <span>导出文件格式：</span>
+        <span>{{ $t('PublicBtn.ConfirmModify') }}</span>
         <el-radio-group v-model="exportRadio">
           <el-radio label="xlsx">.xlsx</el-radio>
         </el-radio-group>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleExportClose">关闭</el-button>
-        <el-button type="primary" @click="exportData">确认导出</el-button>
+        <el-button @click="handleExportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="exportData">{{ $t('TablePage.BtnConfirmExport') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -361,61 +332,21 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/DayConfig/NoProgramData'
-import { LineOptions } from '@/utils/items'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, GetLangDict } from '@/api/DayConfig/NoProgramData'
+import { deepClone } from '@/utils'
 export default {
   name: 'NoProgramData',
   directives: { elDragDialog },
   data() {
     return {
+      lang_dict: {}, // 从后端获取表格列名
       loading: true, // 表格加载动画
       importLoading: {
-        text: '拼命导入中...',
+        text: this.$t('PublicText.ImportLoadiing'),
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExample: [
-        {
-          line: '',
-          package_stage: '',
-          machine_name: '',
-          raw_order_id: '',
-          order_num: '',
-          process: '',
-          no_program_flag: '',
-          no_package_flag: '',
-          program_line: '',
-          connecting_plates: 0,
-          single_points: 0,
-          long: 0,
-          width: 0,
-          thick: 0,
-          program_CT: 0,
-          component_bind: '',
-          require_time: '',
-          finish_time: ''
-        }, {
-          line: '(待确定)',
-          package_stage: '(待确定)',
-          machine_name: '(待确定)',
-          raw_order_id: '(待确定)',
-          order_num: '(待确定)',
-          process: '(待确定)',
-          no_program_flag: '(待确定)',
-          no_package_flag: '(待确定)',
-          program_line: '(待确定)',
-          connecting_plates: '(待确定)',
-          single_points: '(待确定)',
-          long: '(待确定)',
-          width: '(待确定)',
-          thick: '(待确定)',
-          program_CT: '(待确定)',
-          component_bind: '(待确定)',
-          require_time: '(待确定)',
-          finish_time: '(待确定)'
-        }
-      ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -434,149 +365,149 @@ export default {
       // 表单相关数据
       forms: ['$form'],
       model: {
-        id: '',
-        line: '',
-        package_stage: '',
-        machine_name: '',
-        raw_order_id: '',
-        order_num: '',
-        process: '',
-        no_program_flag: '',
-        no_package_flag: '',
-        program_line: '',
-        connecting_plates: 0,
-        single_points: 0,
-        long: 0,
-        width: 0,
-        thick: 0,
-        program_CT: 0,
-        component_bind: '',
-        require_time: '',
-        finish_time: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        id: null,
+        line: null,
+        package_stage: null,
+        machine_name: null,
+        raw_order_id: null,
+        order_num: null,
+        process: null,
+        no_program_flag: null,
+        no_package_flag: null,
+        program_line: null,
+        connecting_plates: undefined,
+        single_points: undefined,
+        long: undefined,
+        width: undefined,
+        thick: undefined,
+        program_CT: undefined,
+        component_bind: null,
+        require_time: null,
+        finish_time: null,
+        CREATED_BY: null,
+        CREATED_TIME: null,
+        UPDATED_BY: null,
+        UPDATED_TIME: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        line: '',
-        package_stage: '',
-        machine_name: '',
-        raw_order_id: '',
-        order_num: '',
-        process: '',
-        no_program_flag: '',
-        no_package_flag: '',
-        program_line: '',
-        connecting_plates: 0,
-        single_points: 0,
-        long: 0,
-        width: 0,
-        thick: 0,
-        program_CT: 0,
-        component_bind: '',
-        require_time: '',
-        finish_time: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        id: null,
+        line: null,
+        package_stage: null,
+        machine_name: null,
+        raw_order_id: null,
+        order_num: null,
+        process: null,
+        no_program_flag: null,
+        no_package_flag: null,
+        program_line: null,
+        connecting_plates: undefined,
+        single_points: undefined,
+        long: undefined,
+        width: undefined,
+        thick: undefined,
+        program_CT: undefined,
+        component_bind: null,
+        require_time: null,
+        finish_time: null,
+        CREATED_BY: null,
+        CREATED_TIME: null,
+        UPDATED_BY: null,
+        UPDATED_TIME: null
       },
+      modelBackup: {},
       rules: {
         line: [{
           required: true,
-          message: '需求线体不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         package_stage: [{
           required: true,
-          message: '需求包装阶不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         machine_name: [{
           required: true,
-          message: '机种名不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         raw_order_id: [{
           required: true,
-          message: '订单号不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         order_num: [{
           required: true,
-          message: '工单量不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         process: [{
           required: true,
-          message: '板号不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         no_program_flag: [{
           required: true,
-          message: '有无程序不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         no_package_flag: [{
           required: true,
-          message: '有无包装阶不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         program_line: [{
           required: true,
-          message: '已有程序的线体不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         connecting_plates: [{
           required: true,
-          message: '联板数不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         single_points: [{
           required: true,
-          message: '单面点数不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         long: [{
           required: true,
-          message: '长不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         width: [{
           required: true,
-          message: '宽不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         thick: [{
           required: true,
-          message: '厚不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         program_CT: [{
           required: true,
-          message: '程序CT不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         component_bind: [{
           required: true,
-          message: '组件绑定不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         require_time: [{
           required: true,
-          message: '程序需求时间不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'change'
         }],
         finish_time: [{
           required: true,
-          message: '程序完成时间不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'change'
         }]
       },
-      line_name_data: LineOptions, // 维护线别
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
@@ -591,24 +522,19 @@ export default {
     ])
   },
   created() {
+    GetLangDict().then(res => {
+      this.lang_dict = res.lang_dict
+    })
     this.getTableData(this.currentPage, this.pageSize)
   },
   mounted() {
     // this.getTableData(this.currentPage, this.pageSize)
+    this.modelBackup = deepClone(this.model)
   },
   methods: {
     // dialog可拖拽
     handleDrag() {
       // this.$refs.select.blur()
-    },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      // if (rowIndex === 1 && columnIndex <= 2) {
-      //   return 'color: #F56C6C;font-weight: bold;'
-      // } else if (rowIndex === 1 && columnIndex > 2) {
-      //   return 'color: #E6A23C;font-weight: bold;'
-      // }
-      return ''
     },
     // 分页
     handlePageChange(val) {
@@ -638,7 +564,7 @@ export default {
     },
     // 添加数据
     addDataDialog() {
-      this.dialogTitle = '添加数据'
+      this.dialogTitle = this.$t('TablePage.TitleAppendData')
       this.dialogBtnType = true
       this.dataDialogVisible = true
       this.isClick = false
@@ -653,20 +579,19 @@ export default {
           AddData(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
-                title: '添加成功',
-                message: '成功添加 1 条数据',
+                title: this.$t('PublicText.TitleTip'),
+                message: this.$t('TablePage.MsgAppendSuccess'),
                 type: 'success'
               })
-              setTimeout(() => {
-                this.closeFormDialog()
-              }, 1000)
+              this.model = deepClone(this.modelBackup)
+              this.modelOriginal = deepClone(this.modelBackup)
               this.refreshTableData(true)
             }
           })
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
@@ -681,7 +606,7 @@ export default {
       if (dataLength === 0) {
         this.$message({
           type: 'warning',
-          message: '请至少选中一条数据'
+          message: this.$t('TablePage.MsgSelectWarn')
         })
         return
       }
@@ -689,9 +614,9 @@ export default {
       for (let i = 0; i < dataLength; i++) {
         idList.push(this.dataTableSelections[i].id)
       }
-      this.$confirm('确定要删除选中的 ' + dataLength + ' 条数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('TablePage.MsgDeleteMultiDataWarn1') + dataLength + this.$t('TablePage.MsgDeleteMultiDataWarn2'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -699,8 +624,8 @@ export default {
         DeleteData(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '成功删除选中的 ' + dataLength + ' 条数据',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('TablePage.MsgDeleteMultiDataWarn3') + dataLength + this.$t('TablePage.MsgDeleteMultiDataWarn4'),
               type: 'success'
             })
             this.refreshTableData() // 刷新表格数据
@@ -709,14 +634,14 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 修改数据
     handleModify(index, row) {
       // 修改dialog
-      this.dialogTitle = '修改数据'
+      this.dialogTitle = this.$t('TablePage.TitleModifyData')
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
@@ -738,7 +663,7 @@ export default {
       if (!this.checkFormChange()) {
         this.$message({
           type: 'info',
-          message: '数据未修改，无需提交'
+          message: this.$t('TablePage.MsgModifyInfo')
         })
         return
       }
@@ -751,7 +676,7 @@ export default {
             if (res.code === 20000) {
               this.$notify({
                 title: res.message,
-                message: '数据已修改',
+                message: this.$t('TablePage.MsgModifySuccess'),
                 type: 'success'
               })
               this.refreshTableData()
@@ -760,7 +685,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
@@ -779,9 +704,9 @@ export default {
     // 表单dialog关闭前提示
     handleFormClose() {
       if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgModifyCloseWarn'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           type: 'warning'
         }).then(() => {
           this.closeFormDialog()
@@ -795,23 +720,15 @@ export default {
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      for (const key in this.model) {
-        var isNum = /^[0-9]+.?[0-9]*/
-        if (isNum.test(this.model[key])) { // 数字要初始化为0
-          this.model[key] = 0
-          this.modelOriginal[key] = 0
-        } else {
-          this.model[key] = ''
-          this.modelOriginal[key] = ''
-        }
-      }
+      this.model = deepClone(this.modelBackup)
+      this.modelOriginal = deepClone(this.modelBackup)
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
     handleDelete(index, row) {
-      this.$confirm('确定要删除该数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('TablePage.MsgDeleteWarn'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -824,8 +741,8 @@ export default {
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '该数据已删除',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('TablePage.MsgDeleteSuccess'),
               type: 'success'
             })
             this.refreshTableData()
@@ -834,7 +751,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -845,9 +762,9 @@ export default {
     // 确认导入
     confirmImport() {
       if (this.importMode === 'replace') {
-        this.$confirm('此操作将会清空所有原有内容, 确定要进行替换操作？', '提示', {
-          confirmButtonText: '确定替换',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgImportReplace'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           confirmButtonClass: 'btnDanger',
           type: 'warning'
         }).then(() => {
@@ -855,7 +772,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '取消导入'
+            message: this.$t('PublicBtn.MsgUnimport')
           })
         })
       } else {
@@ -872,8 +789,8 @@ export default {
       form.append('import_mode', this.importMode)
       ImportData(form).then(res => {
         if (res.code === 20000) {
-          this.$alert('本次共导入了 ' + res.data_count + ' 条数据', res.message, {
-            confirmButtonText: '确定',
+          this.$alert(this.$t('TablePage.MsgExportData1') + res.data_count + this.$t('TablePage.MsgExportData2'), res.message, {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
           // this.loadingInstance.close() // 清除动画
@@ -885,8 +802,8 @@ export default {
         }
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })
@@ -926,8 +843,8 @@ export default {
           XLSX.utils.book_append_sheet(wb, sheet, tableName)
           XLSX.writeFile(wb, tableName + '.xlsx')
           this.$notify({
-            title: '导出成功',
-            message: '本次共导出了 ' + dataCount + ' 条数据',
+            title: this.$t('TablePage.MsgExportSuccess'),
+            message: this.$t('TablePage.MsgExportData1') + dataCount + this.$t('TablePage.MsgExportData2'),
             type: 'success'
           })
           // 1秒后自动关闭窗口

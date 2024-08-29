@@ -8,29 +8,22 @@ const LongConfigRouter = {
   alwaysShow: true,
   name: 'LongConfig',
   meta: {
-    title: '长期配置',
+    title: 'LongConfig',
     icon: 'el-icon-setting',
-    roles: ['MP1AddLineData', 'NotMP1AddLineData', 'ExchangeLineData', 'LineData', 'CapacityChangeData', 'OptimizedMachineData',
+    roles: [
+      'MP1AddLineData', 'NotMP1AddLineData', 'ExchangeLineData', 'LineData', 'CapacityChangeData', 'OptimizedMachineData',
       'ProcessData', 'EarlyDueDateBoard8', 'ChangeLineData', 'PairedSMTMachineData', 'CorrespondenceData', 'KeyBoardSpecialModel',
-      'DispensingBeforeAIMachine', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData',
-      'ProcessSequenceMap', 'CustomerData', 'DelayPackingLine', 'ForceLineData', 'ContinuousData', 'GroupAloneData']
+      'DispensingBeforeAIMachine', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData', 'ProcessSequenceMap',
+      'CustomerData', 'DelayPackingLine', 'ForceLineData', 'ContinuousData', 'GroupAloneData'
+    ]
   },
   children: [
-    // {
-    //   path: 'ledctata',
-    //   component: () => import('@/views/LongConfig/LEDCTData'),
-    //   name: 'LEDCTData',
-    //   meta: {
-    //     title: 'LED经验数据',
-    //     roles: ['admin', 'common']
-    //   }
-    // },
     {
       path: 'delaypackingline',
       component: () => import('@/views/LongConfig/DelayPackingLine'),
       name: 'DelayPackingLine',
       meta: {
-        title: '包装线延后表',
+        title: 'DelayPackingLine',
         roles: ['DelayPackingLine']
       }
     },
@@ -39,7 +32,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/MP1AddLineData'),
       name: 'MP1AddLineData',
       meta: {
-        title: 'MP1补线表',
+        title: 'MP1AddLineData',
         roles: ['MP1AddLineData']
       }
     },
@@ -48,7 +41,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/NotMP1AddLineData'),
       name: 'NotMP1AddLineData',
       meta: {
-        title: '非MP1补线表',
+        title: 'NotMP1AddLineData',
         roles: ['NotMP1AddLineData']
       }
     },
@@ -57,7 +50,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/ExchangeLineData'),
       name: 'ExchangeLineData',
       meta: {
-        title: '交换线别表',
+        title: 'ExchangeLineData',
         roles: ['ExchangeLineData']
       }
     },
@@ -66,7 +59,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/LineData'),
       name: 'LineData',
       meta: {
-        title: '产线配置表',
+        title: 'LineData',
         roles: ['LineData']
       }
     },
@@ -75,7 +68,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/CapacityChangeData'),
       name: 'CapacityChangeData',
       meta: {
-        title: '产能变化表',
+        title: 'CapacityChangeData',
         roles: ['CapacityChangeData']
       }
     },
@@ -84,43 +77,25 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/OptimizedMachineData'),
       name: 'OptimizedMachineData',
       meta: {
-        title: '优化机种表',
+        title: 'OptimizedMachineData',
         roles: ['OptimizedMachineData']
       }
     },
-    // {
-    //   path: 'setupdata',
-    //   component: () => import('@/views/LongConfig/SetUpData'),
-    //   name: 'SetUpData',
-    //   meta: {
-    //     title: '切换表',
-    //     roles: ['admin']
-    //   }
-    // },
     {
       path: 'processdata',
       component: () => import('@/views/LongConfig/ProcessData'),
       name: 'ProcessData',
       meta: {
-        title: '制程配置表',
+        title: 'ProcessData',
         roles: ['ProcessData']
       }
     },
-    // {
-    //   path: 'keyBoardlinedata',
-    //   component: () => import('@/views/LongConfig/KeyBoardLineData'),
-    //   name: 'KeyBoardLineData',
-    //   meta: {
-    //     title: '按键板表',
-    //     roles: ['admin', 'common']
-    //   }
-    // },
     {
       path: 'earlyduedateboard8',
       component: () => import('@/views/LongConfig/EarlyDueDateBoard8'),
       name: 'EarlyDueDateBoard8',
       meta: {
-        title: '提早交期机种表',
+        title: 'EarlyDueDateBoard8',
         roles: ['EarlyDueDateBoard8']
       }
     },
@@ -129,7 +104,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/ChangeLineData'),
       name: 'ChangeLineData',
       meta: {
-        title: '线体变化表',
+        title: 'ChangeLineData',
         roles: ['ChangeLineData']
       }
     },
@@ -138,7 +113,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/PairedSMTMachineData'),
       name: 'PairedSMTMachineData',
       meta: {
-        title: '配套板表',
+        title: 'PairedSMTMachineData',
         roles: ['PairedSMTMachineData']
       }
     },
@@ -147,7 +122,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/CorrespondenceData'),
       name: 'CorrespondenceData',
       meta: {
-        title: 'AI点胶对应关系表',
+        title: 'CorrespondenceData',
         roles: ['CorrespondenceData']
       }
     },
@@ -156,7 +131,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/KeyBoardSpecialModel'),
       name: 'KeyBoardSpecialModel',
       meta: {
-        title: '只烧录不打板特殊机种表',
+        title: 'KeyBoardSpecialModel',
         roles: ['KeyBoardSpecialModel']
       }
     },
@@ -165,7 +140,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/DispensingBeforeAIMachine'),
       name: 'DispensingBeforeAIMachine',
       meta: {
-        title: '先点胶后AI特殊机种表',
+        title: 'DispensingBeforeAIMachine',
         roles: ['DispensingBeforeAIMachine']
       }
     },
@@ -174,7 +149,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/EarlyDueDateGoWhereName'),
       name: 'EarlyDueDateGoWhereName',
       meta: {
-        title: '去向列提前天数表',
+        title: 'EarlyDueDateGoWhereName',
         roles: ['EarlyDueDateGoWhereName']
       }
     },
@@ -183,8 +158,8 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/BoardAdvanceDate'),
       name: 'BoardAdvanceDate',
       meta: {
-        title: '后工序提早交期表',
-        roles: ['BoardAdvanceDate', 'senioradmin']
+        title: 'BoardAdvanceDate',
+        roles: ['BoardAdvanceDate']
       }
     },
     {
@@ -192,17 +167,8 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/DyeLineData'),
       name: 'DyeLineData',
       meta: {
-        title: '染色线体及阈值表',
+        title: 'DyeLineData',
         roles: ['DyeLineData']
-      }
-    },
-    {
-      path: 'processsequencmap',
-      component: () => import('@/views/LongConfig/ProcessSequenceMap'),
-      name: 'ProcessSequenceMap',
-      meta: {
-        title: '先后加工顺序对照表',
-        roles: ['ProcessSequenceMap']
       }
     },
     {
@@ -210,7 +176,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/CustomerData'),
       name: 'CustomerData',
       meta: {
-        title: '客户识别表',
+        title: 'CustomerData',
         roles: ['CustomerData']
       }
     },
@@ -219,7 +185,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/ForceLineData'),
       name: 'ForceLineData',
       meta: {
-        title: '强制线别表',
+        title: 'ForceLineData',
         roles: ['ForceLineData']
       }
     },
@@ -228,7 +194,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/ContinuousData'),
       name: 'ContinuousData',
       meta: {
-        title: '一条龙对照表',
+        title: 'ContinuousData',
         roles: ['ContinuousData']
       }
     },
@@ -237,7 +203,7 @@ const LongConfigRouter = {
       component: () => import('@/views/LongConfig/GroupAloneData'),
       name: 'GroupAloneData',
       meta: {
-        title: '单独成组表',
+        title: 'GroupAloneData',
         roles: ['GroupAloneData']
       }
     }

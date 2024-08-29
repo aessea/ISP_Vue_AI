@@ -1,6 +1,7 @@
-module.exports = {
-  title: 'AI排程系统',
 
+module.exports = {
+  title: 'SMT',
+  // title: this.$t('title.text'),
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel

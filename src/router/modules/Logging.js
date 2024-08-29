@@ -8,7 +8,7 @@ const LoggingRouter = {
   alwaysShow: true,
   name: 'Logging',
   meta: {
-    title: '日志系统',
+    title: 'SystemLog',
     icon: 'documentation',
     roles: ['HistoryRun', 'HistoryOpera', 'ScheduleResData', 'MesInterfaceLog']
   },
@@ -18,7 +18,7 @@ const LoggingRouter = {
       component: () => import('@/views/HistoryLog/HistoryRun'),
       name: 'HistoryRun',
       meta: {
-        title: '运行日志',
+        title: 'HistoryRun',
         roles: ['HistoryRun'],
         noCache: true
       }
@@ -28,7 +28,7 @@ const LoggingRouter = {
       component: () => import('@/views/HistoryLog/HistoryOpera'),
       name: 'HistoryOpera',
       meta: {
-        title: '历史操作',
+        title: 'HistoryOpera',
         roles: ['HistoryOpera'],
         noCache: true
       }
@@ -38,7 +38,7 @@ const LoggingRouter = {
       component: () => import('@/views/HistoryLog/ScheduleResData'),
       name: 'ScheduleResData',
       meta: {
-        title: '历史排程数据',
+        title: 'ScheduleResData',
         roles: ['ScheduleResData'],
         noCache: true
       }
@@ -48,7 +48,7 @@ const LoggingRouter = {
       component: () => import('@/views/HistoryLog/MesInterfaceLog'),
       name: 'MesInterfaceLog',
       meta: {
-        title: '接口日志表',
+        title: 'MesInterfaceLog',
         roles: ['MesInterfaceLog'],
         noCache: true
       }

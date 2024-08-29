@@ -7,16 +7,13 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-// import OutsourceConstraintsRouter from './modules/OutsourceConstraints'
-// import OutsourceBaseDataRouter from './modules/OutsourceBaseData'
-// import OutsourceOtherDataRouter from './modules/OutsourceOtherData'
 import DayConfigRouter from './modules/DayConfig'
 import LongConfigRouter from './modules/LongConfig'
 import PredictRouter from './modules/Predict'
 import FileManageRouter from './modules/FileManage'
+import PermissionRouter from './modules/Permission'
 import LoggingRouter from './modules/Logging'
 import SchedulePanelRouter from './modules/SchedulePanel'
-import PermissionRouter from './modules/Permission'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -84,7 +81,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/Dashboard/Dashboard'),
         name: 'Dashboard',
-        meta: { title: '首页', icon: 'el-icon-s-home', affix: true }
+        meta: { title: 'Dashboard', icon: 'el-icon-s-home', affix: true }
       }
     ]
   }
@@ -95,16 +92,15 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+
   SchedulePanelRouter,
   DayConfigRouter,
   LongConfigRouter,
   PredictRouter,
   FileManageRouter,
-  // OutsourceConstraintsRouter,
-  // OutsourceBaseDataRouter,
-  // OutsourceOtherDataRouter,
   PermissionRouter,
   LoggingRouter,
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/401', hidden: true }
 ]

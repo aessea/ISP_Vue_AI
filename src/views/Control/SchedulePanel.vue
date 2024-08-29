@@ -10,7 +10,7 @@
         <el-col :span="4">
           <div class="card-panel-description">
             <div class="card-panel-text-upper">
-              排程日期
+              {{ $t('SchedulePanelPage.ScheduleDateTitle') }}
             </div>
             <div class="card-panel-text-down">
               {{ schedule_time }}-{{ schedule_mode }}
@@ -25,7 +25,7 @@
         <el-col :span="8">
           <div class="card-panel-description">
             <div class="card-panel-text-upper">
-              排程运行时长
+              {{ $t('SchedulePanelPage.TitleScheduleRunTime') }}
             </div>
             <div class="card-panel-text-down">
               {{ schedule_run_time }}
@@ -42,12 +42,12 @@
               :header-cell-style="{'font-weight':'normal', 'text-align':'right'}"
               :cell-style="{'font-size':'20px', 'font-weight':'20px', 'text-align': 'right'}"
             >
-              <el-table-column prop="schedule_type" label="排程类型" width="100px;" />
-              <el-table-column prop="enable" label="是否可行解" width="100px;" />
-              <el-table-column prop="line_balance" label="包装线平衡" width="100px;" />
-              <el-table-column prop="idle_value" label="停顿(天)" width="100px;" />
-              <el-table-column prop="overdue_value" label="逾期(天)" width="100px;" />
-              <el-table-column prop="obj_value" label="目标值" width="110px;" />
+              <el-table-column prop="schedule_type" :label="$t('SchedulePanelPage.ScheduleType')" width="120px;" />
+              <el-table-column prop="enable" :label="$t('PublicText.Feasible')" width="100px;" />
+              <el-table-column prop="line_balance" :label="$t('PublicText.LineBalanceValue')" width="100px;" />
+              <el-table-column prop="idle_value" :label="$t('PublicText.IdleValue')" width="100px;" />
+              <el-table-column prop="overdue_value" :label="$t('PublicText.OverdueValue')" width="85px;" />
+              <el-table-column prop="obj_value" :label="$t('PublicText.ResultValue')" width="105px;" />
             </el-table>
           </div>
         </el-col>
@@ -57,7 +57,7 @@
       <el-col :span="8">
         <el-card class="card-progress">
           <div slot="header" class="clearfix">
-            <span>任务进度</span>
+            <span>{{ $t('SchedulePanelPage.TaskProgress') }}</span>
           </div>
           <el-progress
             :text-inside="true"
@@ -122,12 +122,12 @@
       <el-col :span="8">
         <el-card class="control">
           <div slot="header" class="clearfix">
-            <span>控制中心</span>
+            <span>{{ $t('SchedulePanelPage.ControlPanel') }}</span>
           </div>
           <el-row>
             <el-col :span="24">
               <el-alert
-                title="训练预测模型"
+                :title="$t('SchedulePanelPage.TitleTrainPredictModel')"
                 type="info"
                 :closable="false"
               />
@@ -135,64 +135,68 @@
                 <el-date-picker
                   v-model="trainDate"
                   type="date"
-                  placeholder="选择预测模型日期"
+                  :placeholder="$t('SchedulePanelPage.TextChooseTrainDate')"
                 />
                 <el-tooltip class="item" effect="dark" :content="trainDateTip" placement="top">
-                  <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="trainModel">
+                  <el-button v-if="buttons.includes('SchedulePanel/trainModel')" type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="trainModel">
                     <i class="el-icon-pie-chart" />
-                    训练预测模型
+                    {{ $t('SchedulePanelPage.BtnTrainPredictModel') }}
                   </el-button>
                 </el-tooltip>
               </div>
               <el-alert
-                title="排程相关操作"
+                :title="$t('SchedulePanelPage.TitleRelatedOperate')"
                 type="info"
                 :closable="false"
               />
-              <div class="box-button">
+              <el-row class="button-row">
+                <el-button v-if="buttons.includes('SchedulePanel/computeDialogMain')" type="primary" plain @click="computeDialogMain">
+                  <i class="el-icon-monitor" />
+                  {{ $t('SchedulePanelPage.BtnComputeMain') }}
+                </el-button>
+                <el-button v-if="buttons.includes('SchedulePanel/computeDialogSmall')" type="primary" plain class="button-margin" @click="computeDialogSmall">
+                  <i class="el-icon-monitor" />
+                  {{ $t('SchedulePanelPage.BtnComputeSmall') }}
+                </el-button>
+              </el-row>
+              <el-row class="button-row">
+                <el-button v-if="buttons.includes('SchedulePanel/computeDialogBoth')" type="primary" plain @click="computeDialogBoth">
+                  <i class="el-icon-monitor" />
+                  {{ $t('SchedulePanelPage.BtnComputeBoth') }}
+                </el-button>
+              </el-row>
+              <el-row class="button-row">
+                <el-button v-if="buttons.includes('SchedulePanel/stopTabu')" type="stopBtn" plain @click="stopTabu">
+                  <i class="el-icon-warning-outline" />
+                  {{ $t('SchedulePanelPage.BtnEndDeepSearch') }}
+                </el-button>
+                <el-button v-if="buttons.includes('SchedulePanel/stopSchedule')" type="stopBtn" plain @click="stopSchedule">
+                  <i class="el-icon-warning-outline" />
+                  {{ $t('SchedulePanelPage.BtnEndCompute') }}
+                </el-button>
+              </el-row>
+              <!-- <div class="box-button">
                 <el-row>
-                  <el-col :span="8">
-                    <el-button v-if="buttons.includes('SchedulePanel/computeDialogMain')" type="primary" plain @click="computeDialogMain">
-                      <i class="el-icon-monitor" />
-                      计算AI排程
-                    </el-button>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-button v-if="buttons.includes('SchedulePanel/computeDialogSmall')" type="primary" plain @click="computeDialogSmall">
-                      <i class="el-icon-monitor" />
-                      计算点胶排程
-                    </el-button>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-button v-if="buttons.includes('SchedulePanel/computeDialogBoth')" type="primary" plain @click="computeDialogBoth">
-                      <i class="el-icon-monitor" />
-                      计算AI点胶
-                    </el-button>
-                  </el-col>
-                </el-row>
-              </div>
-              <div class="box-button">
-                <el-row>
-                  <el-col :span="8">
+                  <el-col :span="12">
                     <el-button v-if="buttons.includes('SchedulePanel/stopTabu')" type="stopBtn" plain @click="stopTabu">
                       <i class="el-icon-warning-outline" />
-                      终止深度搜索
+                      {{ $t('SchedulePanelPage.BtnEndDeepSearch') }}
                     </el-button>
                   </el-col>
-                  <el-col :span="8">
+                  <el-col :span="12">
                     <el-button v-if="buttons.includes('SchedulePanel/stopSchedule')" type="stopBtn" plain @click="stopSchedule">
                       <i class="el-icon-warning-outline" />
-                      终止计算排程
+                      {{ $t('SchedulePanelPage.BtnEndCompute') }}
                     </el-button>
                   </el-col>
                   <el-col :span="8">
                     <el-button v-if="buttons.includes('SchedulePanel/post_statistics')" type="pushBtn" plain @click="post_statistics">
                       <i class="el-icon-upload2" />
-                      推送量化结果
+                      {{ $t('SchedulePanelPage.BtnPushStatistics') }}
                     </el-button>
                   </el-col>
                 </el-row>
-              </div>
+              </div> -->
             </el-col>
           </el-row>
         </el-card>
@@ -200,167 +204,114 @@
       <el-col :span="8">
         <el-card style="margin-right: 16px;height: 400px;">
           <el-tabs v-model="activeName" type="card">
-            <el-tab-pane label="AI下载" name="main">
+            <el-tab-pane :label="$t('SchedulePanelPage.MainDowload')" name="main">
               <el-row>
                 <el-col :span="24">
-                  <!-- <el-alert
-                    title="AI下载历史数据"
-                    type="info"
-                    :closable="false"
-                  />
-                  <div class="box-button">
-                    <el-select v-model="selectExcelValue" placeholder="选择AI历史排程">
-                      <el-option
-                        v-for="item in options_history_excel"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      />
-                    </el-select>
-                    <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryExcel">
-                      <i class="el-icon-download" />
-                      下载历史排程
-                    </el-button>
-                  </div> -->
                   <el-alert
-                    title="AI下载最新数据"
+                    :title="$t('SchedulePanelPage.TitleDownloadNewMain')"
                     type="info"
                     :closable="false"
                   />
-                  <div class="box-button">
+                  <el-row class="button-row">
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('result_file_path_main')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadMain') }}
+                    </el-button>
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('idle_info_file_path_main')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadIdle') }}
+                    </el-button>
+                  </el-row>
+                  <el-row class="button-row">
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('statistics_file_path_main')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadStastic') }}
+                    </el-button>
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('no_program_file_path_main')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadNoPro') }}
+                    </el-button>
+                  </el-row>
+                  <!-- <div class="box-button">
                     <el-row>
                       <el-col :span="8">
-                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadSchedule">
+                        <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('result_file_path_main')">
                           <i class="el-icon-download" />
-                          下载最新排程
+                          {{ $t('SchedulePanelPage.BtnDownloadMain') }}
                         </el-button>
                       </el-col>
                       <el-col :span="8">
-                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadIdleInfo">
+                        <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('idle_info_file_path_main')">
                           <i class="el-icon-download" />
-                          下载idle明细
+                          {{ $t('SchedulePanelPage.BtnDownloadIdle') }}
                         </el-button>
                       </el-col>
                       <el-col :span="8">
-                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadStatistics">
+                        <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('statistics_file_path_main')">
                           <i class="el-icon-download" />
-                          下载量化结果
+                          {{ $t('SchedulePanelPage.BtnDownloadStastic') }}
                         </el-button>
                       </el-col>
                     </el-row>
-                  </div>
-                  <div class="box-button">
+                  </div> -->
+                  <!-- <div class="box-button">
                     <el-row>
                       <el-col :span="8">
-                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadNoProgram">
+                        <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('no_program_file_path_main')">
                           <i class="el-icon-download" />
-                          下载无程序表
+                          {{ $t('SchedulePanelPage.BtnDownloadNoPro') }}
                         </el-button>
                       </el-col>
                     </el-row>
-                  </div>
+                  </div> -->
                 </el-col>
               </el-row>
             </el-tab-pane>
-            <el-tab-pane label="点胶下载" name="small">
+            <el-tab-pane :label="$t('SchedulePanelPage.SmallDowload')" name="small">
               <el-row>
                 <el-col :span="24">
-                  <!-- <el-alert
-                    title="点胶下载历史数据"
-                    type="info"
-                    :closable="false"
-                  />
-                  <div class="box-button">
-                    <el-select v-model="selectExcelValue" placeholder="选择点胶历史排程">
-                      <el-option
-                        v-for="item in options_history_excel"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      />
-                    </el-select>
-                    <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryExcel">
-                      <i class="el-icon-download" />
-                      下载历史排程
-                    </el-button>
-                  </div> -->
                   <el-alert
-                    title="点胶下载最新数据"
+                    :title="$t('SchedulePanelPage.TitleDownloadNewSmall')"
                     type="info"
                     :closable="false"
                   />
-                  <div class="box-button">
-                    <el-row>
-                      <el-col :span="8">
-                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadScheduleSmall">
-                          <i class="el-icon-download" />
-                          下载最新排程
-                        </el-button>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadIdleInfoSmall">
-                          <i class="el-icon-download" />
-                          下载idle明细
-                        </el-button>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadStatisticsSmall">
-                          <i class="el-icon-download" />
-                          下载量化结果
-                        </el-button>
-                      </el-col>
-                    </el-row>
-                    <div class="box-button">
-                      <el-row>
-                        <el-col :span="8">
-                          <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadNoProgramSmall">
-                            <i class="el-icon-download" />
-                            下载无程序表
-                          </el-button>
-                        </el-col>
-                      </el-row>
-                    </div>
-                  </div>
+                  <el-row class="button-row">
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('result_file_path_small')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadSmall') }}
+                    </el-button>
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('idle_info_file_path_small')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadIdle') }}
+                    </el-button>
+                  </el-row>
+                  <el-row class="button-row">
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('statistics_file_path_small')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadStastic') }}
+                    </el-button>
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('no_program_file_path_small')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadNoPro') }}
+                    </el-button>
+                  </el-row>
                 </el-col>
               </el-row>
             </el-tab-pane>
-            <el-tab-pane label="日志下载" name="log">
+            <el-tab-pane :label="$t('SchedulePanelPage.LogDownload')" name="log">
               <el-row>
                 <el-col :span="24">
-                  <!-- <el-alert
-                    title="下载历史日志"
-                    type="info"
-                    :closable="false"
-                  />
-                  <div class="box-button">
-                    <el-select v-model="selectLogValue" placeholder="选择历史日志">
-                      <el-option
-                        v-for="item in options_history_log"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      />
-                    </el-select>
-                    <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryLog">
-                      <i class="el-icon-download" />
-                      下载历史日志
-                    </el-button>
-                  </div> -->
                   <el-alert
-                    title="下载最新日志"
+                    :title="$t('SchedulePanelPage.TitleDownloadNewLog')"
                     type="info"
                     :closable="false"
                   />
-                  <div class="box-button">
-                    <el-row>
-                      <el-col :span="8">
-                        <el-button v-if="buttons.includes('SchedulePanel/download')" type="primary" plain @click="downloadLatestLog">
-                          <i class="el-icon-download" />
-                          下载最新日志
-                        </el-button>
-                      </el-col>
-                    </el-row>
-                  </div>
+                  <el-row class="button-row">
+                    <el-button v-if="buttons.includes('SchedulePanel/downloadScheduleFiles')" type="primary" plain @click="downloadFileBackend('log_file_path')">
+                      <i class="el-icon-download" />
+                      {{ $t('SchedulePanelPage.BtnDownloadLog') }}
+                    </el-button>
+                  </el-row>
                 </el-col>
               </el-row>
             </el-tab-pane>
@@ -372,32 +323,25 @@
       <el-col :span="24">
         <el-card class="card-config">
           <div slot="header" class="clearfix">
-            <span>配置</span>
+            <span>{{ $t('SchedulePanelPage.Config') }}</span>
           </div>
           <el-date-picker
             v-model="pack_holiday_day_list"
             type="dates"
-            placeholder="选择一个或多个包装放假日期"
+            :placeholder="$t('SchedulePanelPage.TextChooseHoliday')"
             :style="{width: '70%'}"
             value-format="yyyy-MM-dd"
           />
           <el-button v-if="buttons.includes('SchedulePanel/modifyHoliday')" type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="modifyHoliday">
-            修改包装放假
+            {{ $t('SchedulePanelPage.BtnModifyPackHoliday') }}
           </el-button>
         </el-card>
       </el-col>
-      <!-- <el-col :span="12">
-        <el-card class="card-gantt">
-          <div slot="header" class="clearfix">
-            <span>其它</span>
-          </div>
-        </el-card>
-      </el-col> -->
     </el-row>
 
     <el-dialog
       v-el-drag-dialog
-      title="计算AI和点胶排程"
+      :title="$t('SchedulePanelPage.TitleComputeBoth')"
       :visible.sync="computeBothDialogVisible"
       width="60%"
       :close-on-click-modal="false"
@@ -405,14 +349,14 @@
       @dragDialog="handleDrag"
     >
       <el-steps :active="stepNowBoth" finish-status="success" simple>
-        <el-step title="上传排程" />
-        <el-step title="导入排程" />
-        <el-step title="更新信息" />
-        <el-step title="计算排程" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep1')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep2')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep3')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep4')" />
       </el-steps>
       <el-row style="margin-top:10px;">
         <el-col :span="6">
-          <el-input placeholder="请上传AI排程文件" :value="uploadFileNameMain" />
+          <el-input :placeholder="$t('SchedulePanelPage.TextUploadMainFile')" :value="uploadFileNameMain" />
         </el-col>
         <el-col :span="4">
           <el-upload
@@ -427,7 +371,7 @@
             style="margin-left: 10px;"
           >
             <el-button slot="trigger" type="primary">
-              上传AI排程
+              {{ $t('SchedulePanelPage.BtnUploadMain') }}
             </el-button>
           </el-upload>
         </el-col>
@@ -439,7 +383,7 @@
           </el-tooltip>
         </el-col> -->
         <el-col :span="6">
-          <el-input style="margin-left: 10px;" placeholder="请上传点胶排程文件" :value="uploadFileNameSmall" />
+          <el-input style="margin-left: 10px;" :placeholder="$t('SchedulePanelPage.TextUploadSmallFile')" :value="uploadFileNameSmall" />
         </el-col>
         <el-col :span="4">
           <el-upload
@@ -454,42 +398,42 @@
             style="margin-left: 20px;"
           >
             <el-button slot="trigger" type="primary">
-              上传点胶排程
+              {{ $t('SchedulePanelPage.BtnUploadSmall') }}
             </el-button>
           </el-upload>
         </el-col>
         <el-col :span="4">
           <el-button type="success" style="margin-left:20px;" @click="beforeImportBoth">
-            导入排程
+            {{ $t('SchedulePanelPage.BtnImportFile') }}
           </el-button>
         </el-col>
       </el-row>
       <el-row style="margin-top: 10px;">
         <el-button type="success" style="margin-left:10px;" @click="beforeDoBucklePoints(uploadFileNameMain)">
-          AI转移扣点
+          {{ $t('SchedulePanelPage.BtnTransferMain') }}
         </el-button>
         <el-button type="success" style="margin-left:10px;" @click="beforeDoBucklePoints(uploadFileNameSmall)">
-          点胶转移扣点
+          {{ $t('SchedulePanelPage.BtnTransferSmall') }}
         </el-button>
         <el-button @click="exportScheduleDataMain">
-          导出AI
+          {{ $t('SchedulePanelPage.BtnExportMain') }}
         </el-button>
         <el-button @click="exportScheduleDataSmall">
-          导出点胶
+          {{ $t('SchedulePanelPage.BtnExportSmall') }}
         </el-button>
         <el-tooltip class="item" effect="dark" :content="mainUploadName" placement="top">
-          <el-button style="margin-left: 10px;" @click="getUploadFileMain">
-            获取AI上传文件
+          <el-button style="margin-left: 10px;" @click="downloadFileBackend('upload_file_path_main')">
+            {{ $t('SchedulePanelPage.BtnGetMainUpload') }}
           </el-button>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" :content="smallUploadName" placement="top">
-          <el-button style="margin-left: 10px;" @click="getUploadFileSmall">
-            获取点胶上传文件
+          <el-button style="margin-left: 10px;" @click="downloadFileBackend('upload_file_path_small')">
+            {{ $t('SchedulePanelPage.BtnGetSmallUpload') }}
           </el-button>
         </el-tooltip>
       </el-row>
       <el-alert
-        title="更新信息"
+        :title="$t('SchedulePanelPage.ComputeTextStep3')"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
@@ -498,55 +442,55 @@
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="apsProgramMsg" placement="top">
             <el-button type="primary" @click="getApsProgram('both')">
-              更新程序信息
+              {{ $t('SchedulePanelPage.BtnGetApsProgram') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
             <el-button type="primary" @click="getApsMtool('both')">
-              更新钢网信息
+              {{ $t('SchedulePanelPage.BtnGetApsMtool') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData('both')">
-              更新齐套信息
+              {{ $t('SchedulePanelPage.BtnGetApsMoBaseData') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
             <el-button type="primary" @click="getApsMoProgData('both')">
-              更新工单进度
+              {{ $t('SchedulePanelPage.BtnGetApsMoProgData') }}
             </el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
+          <!-- <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
             <el-button type="primary" @click="getApsDeliveryDay('both')">
-              更新包装时间
+              {{ $t('SchedulePanelPage.BtnGetApsDeliveryDay') }}
             </el-button>
-          </el-tooltip>
+          </el-tooltip> -->
         </el-col>
       </el-row>
       <el-alert
-        title="计算排程"
+        :title="$t('SchedulePanelPage.ComputeTextStep4')"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
       />
       <el-button type="primary" @click="beforeComputeBoth">
-        开始计算排程
+        {{ $t('SchedulePanelPage.BtnBeginCompute') }}
       </el-button>
       <span slot="footer" class="dialog-footer">
-        <el-tooltip class="item" effect="dark" content="刷新上传文件时间" placement="top">
+        <el-tooltip class="item" effect="dark" :content="$t('SchedulePanelPage.ComputeTextStep4')" placement="top">
           <el-button @click="getUploadFileTime">
             <i class="el-icon-refresh" />
           </el-button>
         </el-tooltip>
         <el-button @click="handleCloseBoth">
-          关闭
+          {{ $t('PublicBtn.Close') }}
         </el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="计算AI排程"
+      :title="$t('SchedulePanelPage.TitleComputeMain')"
       :visible.sync="computeMainDialogVisible"
       width="50%"
       :close-on-click-modal="false"
@@ -554,14 +498,14 @@
       @dragDialog="handleDrag"
     >
       <el-steps :active="stepNowMain" finish-status="success" simple>
-        <el-step title="上传排程" />
-        <el-step title="导入排程" />
-        <el-step title="更新信息" />
-        <el-step title="计算排程" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep1')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep2')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep3')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep4')" />
       </el-steps>
       <el-row style="margin-top:10px;">
         <el-col :span="8">
-          <el-input placeholder="请上传AI排程文件" :value="uploadFileNameMain" />
+          <el-input :placeholder="$t('SchedulePanelPage.TextUploadMainFile')" :value="uploadFileNameMain" />
         </el-col>
         <el-col :span="16">
           <el-upload
@@ -576,22 +520,22 @@
             style="margin-left: 10px;"
           >
             <el-button slot="trigger" type="primary">
-              上传AI排程
+              {{ $t('SchedulePanelPage.BtnUploadMain') }}
             </el-button>
             <el-button type="success" style="margin-left:10px;" @click="beforeImportMain">
-              导入排程
+              {{ $t('SchedulePanelPage.BtnImportFile') }}
             </el-button>
             <el-button type="success" style="margin-left:10px;" @click="beforeDoBucklePoints(uploadFileNameMain)">
-              转移扣点
+              {{ $t('SchedulePanelPage.BtnTransfer') }}
             </el-button>
             <el-button @click="exportScheduleDataMain">
-              导出AI
+              {{ $t('SchedulePanelPage.BtnExportMain') }}
             </el-button>
           </el-upload>
         </el-col>
       </el-row>
       <el-alert
-        title="更新信息"
+        :title="$t('SchedulePanelPage.ComputeTextStep3')"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
@@ -600,50 +544,50 @@
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="apsProgramMsg" placement="top">
             <el-button type="primary" @click="getApsProgram('main')">
-              更新程序信息
+              {{ $t('SchedulePanelPage.BtnGetApsProgram') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
             <el-button type="primary" @click="getApsMtool('main')">
-              更新钢网信息
+              {{ $t('SchedulePanelPage.BtnGetApsMtool') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData('main')">
-              更新齐套信息
+              {{ $t('SchedulePanelPage.BtnGetApsMoBaseData') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
             <el-button type="primary" @click="getApsMoProgData('main')">
-              更新工单进度
+              {{ $t('SchedulePanelPage.BtnGetApsMoProgData') }}
             </el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
+          <!-- <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
             <el-button type="primary" @click="getApsDeliveryDay('main')">
-              更新包装时间
+              {{ $t('SchedulePanelPage.BtnGetApsDeliveryDay') }}
             </el-button>
-          </el-tooltip>
+          </el-tooltip> -->
         </el-col>
       </el-row>
       <el-alert
-        title="计算排程"
+        :title="$t('SchedulePanelPage.ComputeTextStep4')"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
       />
       <el-button type="primary" @click="beforeComputeMain">
-        开始计算排程
+        {{ $t('SchedulePanelPage.BtnBeginCompute') }}
       </el-button>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCloseMain">
-          关闭
+          {{ $t('PublicBtn.Close') }}
         </el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="计算点胶排程"
+      :title="$t('SchedulePanelPage.TitleComputeSmall')"
       :visible.sync="computeSmallDialogVisible"
       width="50%"
       :close-on-click-modal="false"
@@ -651,14 +595,14 @@
       @dragDialog="handleDrag"
     >
       <el-steps :active="stepNowSmall" finish-status="success" simple>
-        <el-step title="上传排程" />
-        <el-step title="导入排程" />
-        <el-step title="更新信息" />
-        <el-step title="计算排程" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep1')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep2')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep3')" />
+        <el-step :title="$t('SchedulePanelPage.ComputeTextStep4')" />
       </el-steps>
       <el-row style="margin-top:10px;">
         <el-col :span="8">
-          <el-input placeholder="请上传点胶排程文件" :value="uploadFileNameSmall" />
+          <el-input :placeholder="$t('SchedulePanelPage.TextUploadSmallFile')" :value="uploadFileNameSmall" />
         </el-col>
         <el-col :span="16">
           <el-upload
@@ -673,22 +617,22 @@
             style="margin-left: 10px;"
           >
             <el-button slot="trigger" type="primary">
-              上传点胶排程
+              {{ $t('SchedulePanelPage.BtnUploadSmall') }}
             </el-button>
             <el-button type="success" style="margin-left:10px;" @click="beforeImportSmall">
-              导入排程
+              {{ $t('SchedulePanelPage.BtnImportFile') }}
             </el-button>
             <el-button type="success" style="margin-left:10px;" @click="beforeDoBucklePoints(uploadFileNameSmall)">
-              转移扣点
+              {{ $t('SchedulePanelPage.BtnTransfer') }}
             </el-button>
             <el-button @click="exportScheduleDataSmall">
-              导出点胶
+              {{ $t('SchedulePanelPage.BtnExportSmall') }}
             </el-button>
           </el-upload>
         </el-col>
       </el-row>
       <el-alert
-        title="更新信息"
+        :title="$t('SchedulePanelPage.ComputeTextStep3')"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
@@ -697,60 +641,60 @@
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="apsProgramMsg" placement="top">
             <el-button type="primary" @click="getApsProgram('small')">
-              更新程序信息
+              {{ $t('SchedulePanelPage.BtnGetApsProgram') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
             <el-button type="primary" @click="getApsMtool('small')">
-              更新钢网信息
+              {{ $t('SchedulePanelPage.BtnGetApsMtool') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData('small')">
-              更新齐套信息
+              {{ $t('SchedulePanelPage.BtnGetApsMoBaseData') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
             <el-button type="primary" @click="getApsMoProgData('small')">
-              更新工单进度
+              {{ $t('SchedulePanelPage.BtnGetApsMoProgData') }}
             </el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
+          <!-- <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
             <el-button type="primary" @click="getApsDeliveryDay('small')">
-              更新包装时间
+              {{ $t('SchedulePanelPage.BtnGetApsDeliveryDay') }}
             </el-button>
-          </el-tooltip>
+          </el-tooltip> -->
         </el-col>
       </el-row>
       <el-alert
-        title="计算排程"
+        :title="$t('SchedulePanelPage.ComputeTextStep4')"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
       />
       <el-button type="primary" @click="beforeComputeSmall">
-        开始计算排程
+        {{ $t('SchedulePanelPage.BtnBeginCompute') }}
       </el-button>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCloseSmall">
-          关闭
+          {{ $t('PublicBtn.Close') }}
         </el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="提示"
+      :title="$t('PublicText.TitleTip')"
       :visible.sync="stopScheduleDialog"
       width="30%"
       :before-close="handleCloseStop"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;">请在下方输入框输入<span style="color:#F56C6C;font-weight:bold;"> 确认终止 </span>后点击确定以终止排程！</p>
-      <el-input v-model="stopInput" placeholder="请输入" style="width: 200px;" />
+      <p style="font-size:16px;">{{ $t('SchedulePanelPage.TextStopCompute1') }}<span style="color:#F56C6C;font-weight:bold;"> {{ $t('SchedulePanelPage.TextStopCompute2') }} </span>{{ $t('SchedulePanelPage.TextStopCompute3') }}</p>
+      <el-input v-model="stopInput" :placeholder="$t('Placeholder.Enter')" style="width: 200px;" />
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCloseStop">取 消</el-button>
-        <el-button type="primary" @click="confirmStopSchedule">确 定</el-button>
+        <el-button @click="handleCloseStop">{{ $t('PublicBtn.Cancel') }}</el-button>
+        <el-button type="primary" @click="confirmStopSchedule">{{ $t('PublicBtn.Confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -760,13 +704,15 @@
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadSchedule, DownloadLatestLog,
-  DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfoMain, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool, ExportMainScheduleData, GetApsProgram, DownloadStatisticsMain,
-  GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
-  GetApsMoBaseData, GetApsMoProgData, DownloadUploadFileMain, DownloadUploadFileSmall, ModifyHoliday,
-  GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount,
-  DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckScheduleFile, DownloadNoProgramSmall, DoBucklePoints } from '@/api/Control/SchedulePanel'
+import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain,
+  GetRunFlag, StopTabu, GeScheduleRes, StopSchedule, ExportMainScheduleData,
+  ImportScheduleBoth, ComputeScheduleSmall, ModifyHoliday, DownloadUploadFileMain,
+  DownloadUploadFileSmall, DoBucklePoints, GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData,
+  DoCheckScheduleData
+} from '@/api/Control/SchedulePanel'
+import { GetApsMtool, GetApsMoBaseData, GetApsMoProgData, GetApsProgram, GetApsDeliveryDay
+} from '@/api/Control/DockingMes'
+import { DownloadFile } from '@/api/common'
 export default {
   name: 'SchedulePanel',
   directives: { elDragDialog },
@@ -779,7 +725,7 @@ export default {
       computeBothDialogVisible: false, // 计算AI+点胶排程dialog
 
       stepNowMain: 0, // 计算AI排程
-      stepNowSmall: 0, // 计算AI排程
+      stepNowSmall: 0, // 计算点胶排程
       stepNowBoth: 0, // 计算AI+点胶排程
 
       uploadFileListMain: [], // AI上传的文件列表
@@ -791,34 +737,30 @@ export default {
       uploadFileNameSmall: '', // 点胶文件名
 
       checkLoading: {
-        text: '拼命检查中...',
+        text: this.$t('PublicText.CheckLoadiing'),
         background: 'rgba(0, 0, 0, 0.6)'
       }, // 检查动画
       importLoading: {
-        text: '拼命导入中...',
+        text: this.$t('PublicText.ImportLoadiing'),
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入排程动画
       loadingInstance: null, // 动画实例
       trainDate: new Date(), // 训练预测模型日期
-
-      options_history_log: [], // 历史日志列表
-      selectLogValue: '', // 当前选中的历史日志
       options_history_excel: [], // 历史排程列表
-      selectExcelValue: '', // 当前选中的要下载的历史日志
       isImportMain: false, // 是否上传文件
-      isImportMainSmall: false, // 是否上传点胶
+      isImportSmall: false, // 是否上传点胶
       isImportBoth: false, // 是否上传AI点胶
       // 进度条相关
       percentage_1: 0,
       percentage_2: 0,
       percentage_3: 0,
       percentage_4: 0,
-      progress_text_1: '未开始训练预测模型|0%',
-      progress_text_2: '未开始|0%',
-      progress_text_3: '未开始初始解|0%',
-      progress_text_4: '未开始深度搜索|0%',
+      progress_text_1: this.$t('SchedulePanelPage.Progress1'), // '未开始训练预测模型|0%'
+      progress_text_2: this.$t('SchedulePanelPage.Progress2'),
+      progress_text_3: this.$t('SchedulePanelPage.Progress3'),
+      progress_text_4: this.$t('SchedulePanelPage.Progress4'),
       // 排程结果
-      schedule_run_time: '未开始', // 排程时间 未开始 计算完毕，共耗时：00 时 00 分 00 秒
+      schedule_run_time: this.$t('SchedulePanelPage.TextScheduleRunTime1'), // 排程时间 未开始 计算完毕，共耗时：00 时 00 分 00 秒
       schedule_time: '', // 排程时间
       schedule_mode: '', // 正排或预排
       schedule_result: [{
@@ -830,20 +772,20 @@ export default {
         line_balance: ''
       }],
       progress_refresh: null, // 刷新进度条
-      apsMtoolMsg: '未更新', // 钢网信息更新提示
-      apsProgramMsg: '未更新', // 程序信息更新提示
-      apsMoProgData: '未更新', // 更新工单进度提示
-      apsMoBaseData: '未更新', // 更新齐套信息提示
-      apsDeliveryDay: '未更新', // 更新包装时间提示
+      apsMtoolMsg: this.$t('PublicText.MesApiNotUpdate'), // 钢网信息更新提示
+      apsProgramMsg: this.$t('PublicText.MesApiNotUpdate'), // 程序信息更新提示
+      apsMoProgData: this.$t('PublicText.MesApiNotUpdate'), // 更新工单进度提示
+      apsMoBaseData: this.$t('PublicText.MesApiNotUpdate'), // 更新齐套信息提示
+      apsDeliveryDay: this.$t('PublicText.MesApiNotUpdate'), // 更新包装时间提示
       stopScheduleDialog: false, // 终止计算排程dialog
       stopInput: '', // 确认终止
       trainDateTip: '', // 训练日期提示
 
       activeName: 'main',
-      mainUploadName: '获取AI上传文件',
-      smallUploadName: '获取点胶上传文件',
+      mainUploadName: this.$t('SchedulePanelPage.TextMainUploadName'),
+      smallUploadName: this.$t('SchedulePanelPage.TextSmallUploadName'),
 
-      saveApsOutPutCountTip: '未推送',
+      saveApsOutPutCountTip: this.$t('PublicText.MesApiPush'),
 
       clickComputeCount: 0, // 点击计算排程的次数
       pack_holiday_day_list: []
@@ -852,12 +794,11 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      'buttons'
+      'buttons',
+      'language'
     ])
   },
   created() {
-    this.getLogSelectItem()
-    this.getExcelSelectItem()
     this.listenProgress()
     this.getScheduleRes()
   },
@@ -873,7 +814,7 @@ export default {
     listenProgress() {
       this.progress_refresh = setInterval(() => { // 每隔2秒监听进度条
         setTimeout(this.getProgress(), 0)
-      }, 1000 * 10)
+      }, 10 * 1000)
     },
     // 取消监听进度条
     clearListenProgress() {
@@ -890,7 +831,7 @@ export default {
         if (res.run_flag !== 1) {
           this.$message({
             type: 'warning',
-            message: '未在计算排程，无需终止！'
+            message: this.$t('SchedulePanelPage.TextNoNeedStopTabu')
           })
         } else {
           this.stopScheduleDialog = true
@@ -898,16 +839,16 @@ export default {
       })
     },
     confirmStopSchedule() {
-      if (this.stopInput !== '确认终止') {
+      if (this.stopInput !== this.$t('SchedulePanelPage.TextStopCompute2')) {
         this.$message({
           type: 'error',
-          message: '输入错误！'
+          message: this.$t('PublicText.TextError')
         })
       } else {
         StopSchedule(this.name).then(res => {
           if (res.code === 20000) {
-            this.$alert(res.message, '提示', {
-              confirmButtonText: '确定',
+            this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
               type: 'success'
             })
             setTimeout(() => {
@@ -923,7 +864,7 @@ export default {
           this.schedule_result = res.table_data
           this.schedule_mode = res.mode
           this.schedule_time = res.date
-          this.trainDateTip = '当前模型日期：' + res.train_date
+          this.trainDateTip = this.$t('SchedulePanelPage.TextCurrentTrainDate') + res.train_date
           this.pack_holiday_day_list = res.pack_holiday_day_list
         }
       })
@@ -949,20 +890,20 @@ export default {
         const hour = parseInt((time / (60 * 60)) % 24)
         if (res.run_flag === -1) {
           this.clearListenProgress()
-          this.schedule_run_time = '计算排程出错'
-          this.$alert('计算排程出错：' + res.err_message, '错误', {
-            confirmButtonText: '确定',
+          this.schedule_run_time = this.$t('SchedulePanelPage.TextScheduleRunTime2')
+          this.$alert(this.$t('SchedulePanelPage.TextScheduleRunTime2') + ':' + res.err_message, this.$t('PublicText.TextError'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
-          this.schedule_run_time = '计算排程出错，耗时：' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
+          this.schedule_run_time = this.$t('SchedulePanelPage.TextScheduleRunTime4') + hour.toString() + ' h ' + minute.toString() + ' m ' + second.toString() + ' s'
         } else if (res.run_flag === 1) {
-          this.schedule_run_time = '计算中：' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
+          this.schedule_run_time = this.$t('SchedulePanelPage.TextScheduleRunTime3') + hour.toString() + ' h ' + minute.toString() + ' m ' + second.toString() + ' s'
         } else if (res.run_flag === 2) {
           this.clearListenProgress()
-          this.schedule_run_time = '计算完毕，总耗时: ' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
+          this.schedule_run_time = this.$t('SchedulePanelPage.TextScheduleRunTime5') + hour.toString() + ' h ' + minute.toString() + ' m ' + second.toString() + ' s'
           this.getScheduleRes() // 获取排程结果
         } else {
-          this.schedule_run_time = '未开始'
+          this.schedule_run_time = this.$t('SchedulePanelPage.TextScheduleRunTime1')
         }
       })
     },
@@ -997,12 +938,18 @@ export default {
     // AI文件上传钩子
     handleChangeMain(file, fileList) {
       const fileName = file.name.replace(/\.xlsx$/, '')
-      const regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI)(正排|预排).*$/
-
+      let regex, TextFileTypeError2
+      if (sessionStorage.getItem('lang') === 'zh') {
+        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI)(正排|预排).*$/
+        TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
+      } else {
+        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(AIBoard)_(Preliminary|Regular).*$/
+        TextFileTypeError2 = '(Example of correct file name: 0901_AIBoard_Regular.xlsx)'
+      }
       if (!regex.test(fileName)) {
-        const tip = '文件命名格式错误，请修改后重新上传！' + `<br/>` + '（正确文件名示例：0901AI预排）'
-        this.$alert(tip, '错误', {
-          confirmButtonText: '确定',
+        const tip = this.$t('SchedulePanelPage.TextFileTypeError1') + `<br/>` + TextFileTypeError2
+        this.$alert(tip, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           dangerouslyUseHTMLString: true,
           type: 'error'
         })
@@ -1014,18 +961,24 @@ export default {
           this.uploadFileNameMain = this.uploadFileListMain[0].name // 更新文件名
           this.uploadFileMain = this.uploadFileListMain[0].raw // 更新文件
         }
-        this.checkScheduleFile(this.uploadFileMain, this.uploadFileNameMain)
+        this.doCheckScheduleData(this.uploadFileMain, this.uploadFileNameMain)
       }
     },
     // 点胶文件上传钩子
     handleChangeSmall(file, fileList) {
       const fileName = file.name.replace(/\.xlsx$/, '')
-      const regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(点胶)(正排|预排).*$/
-
+      let regex, TextFileTypeError2
+      if (sessionStorage.getItem('lang') === 'zh') {
+        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(点胶)(正排|预排).*$/
+        TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
+      } else {
+        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(DJBoard)_(Preliminary|Regular).*$/
+        TextFileTypeError2 = '(Example of correct file name: 0901_DJBoard_Regular.xlsx)'
+      }
       if (!regex.test(fileName)) {
-        const tip = '文件命名格式错误，请修改后重新上传！' + `<br/>` + '（正确文件名示例：0901点胶预排）'
-        this.$alert(tip, '错误', {
-          confirmButtonText: '确定',
+        const tip = this.$t('SchedulePanelPage.TextFileTypeError1') + `<br/>` + TextFileTypeError2
+        this.$alert(tip, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           dangerouslyUseHTMLString: true,
           type: 'error'
         })
@@ -1037,41 +990,43 @@ export default {
           this.uploadFileNameSmall = this.uploadFileListSmall[0].name // 更新文件名
           this.uploadFileSmall = this.uploadFileListSmall[0].raw // 更新文件
         }
-        this.checkScheduleFile(this.uploadFileSmall, this.uploadFileNameSmall)
+        this.doCheckScheduleData(this.uploadFileSmall, this.uploadFileNameSmall)
       }
     },
-    // 数据检查
-    async checkScheduleFile(uploadFile, uploadFileName) {
+    // 检查
+    async doCheckScheduleData(uploadFile, uploadFileName) {
       this.loadingInstance = Loading.service(this.checkLoading)
       const form = new FormData()
       form.append('file', uploadFile)
       form.append('file_name', uploadFileName)
-      await CheckScheduleFile(form).then(res => {
+      await DoCheckScheduleData(form).then(res => {
         if (res.message_type === 'success') {
-          this.$alert(res.message, '检查结果', {
-            confirmButtonText: '确定',
+          this.$alert(res.message, this.$t('SchedulePanelPage.TextCheckResult'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
         } else {
-          this.$alert(res.message, '检查结果', {
+          this.$alert(res.message, this.$t('SchedulePanelPage.TextCheckResult'), {
             customClass: 'checkAlertBox',
             dangerouslyUseHTMLString: true,
-            confirmButtonText: '确定',
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: res.message_type
           })
         }
         if (this.uploadFileNameMain !== '') {
           this.stepNowMain = 1
-        } else if (this.uploadFileListSmall !== '') {
+        }
+        if (this.uploadFileNameSmall !== '') {
           this.stepNowSmall = 1
-        } else if (this.uploadFileNameMain !== '' && this.uploadFileNameSmall !== '') {
+        }
+        if (this.uploadFileNameMain !== '' && this.uploadFileNameSmall !== '') {
           this.stepNowBoth = 1
         }
         this.loadingInstance.close()
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert('检查出现异常：' + err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(this.$t('SchedulePanelPage.TextCheckError') + err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })
@@ -1087,7 +1042,7 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '获取失败',
+          message: this.$t('SchedulePanelPage.TextFailedToGet'),
           type: 'error'
         })
       })
@@ -1103,7 +1058,7 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '获取失败',
+          message: this.$t('SchedulePanelPage.TextFailedToGet'),
           type: 'error'
         })
       })
@@ -1112,16 +1067,16 @@ export default {
     getUploadFileTime() {
       GetUploadFileTime().then(res => {
         if (res.code === 20000) {
-          this.mainUploadName = '获取AI上传文件' + res.main_time
-          this.smallUploadName = '获取点胶上传文件' + res.small_time
+          this.mainUploadName = this.$t('SchedulePanelPage.TextGetMainUploadTime') + res.main_time
+          this.smallUploadName = this.$t('SchedulePanelPage.TextGetSmallUploadTime') + res.small_time
         }
       })
     },
     // 终止深度搜索
     stopTabu() {
-      this.$confirm('确定要终止深度搜索？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('SchedulePanelPage.TextStopTabu'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         StopTabu(this.name).then(res => {
@@ -1135,7 +1090,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消终止'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -1144,8 +1099,8 @@ export default {
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
           this.$message({
-            type: 'error',
-            message: '正在计算排程，无法训练预测模型！'
+            type: 'warning',
+            message: this.$t('SchedulePanelPage.TextTrainTip')
           })
         } else {
           this.listenProgress()
@@ -1155,7 +1110,7 @@ export default {
                 message: res.message,
                 type: 'success'
               })
-              this.trainDateTip = '当前模型日期：' + res.train_date
+              this.trainDateTip = this.$t('SchedulePanelPage.TextCurrentTrainDate') + res.train_date
             }
           })
         }
@@ -1163,11 +1118,11 @@ export default {
     },
     // 导入后更新接口更新提示
     clearUpdateMag() {
-      this.apsMtoolMsg = '未更新'
-      this.apsProgramMsg = '未更新'
-      this.apsMoBaseData = '未更新'
-      this.apsMoProgData = '未更新'
-      this.apsDeliveryDay = '未更新'
+      this.apsMtoolMsg = this.$t('PublicText.MesApiNotUpdate')
+      this.apsProgramMsg = this.$t('PublicText.MesApiNotUpdate')
+      this.apsMoBaseData = this.$t('PublicText.MesApiNotUpdate')
+      this.apsMoProgData = this.$t('PublicText.MesApiNotUpdate')
+      this.apsDeliveryDay = this.$t('PublicText.MesApiNotUpdate')
     },
     // 更新步骤条
     updateApiStepMsg() {
@@ -1180,23 +1135,30 @@ export default {
       if (this.uploadFileNameMain === '') {
         this.$message({
           type: 'warning',
-          message: '未上传排程文件，无法导入'
+          message: this.$t('SchedulePanelPage.TextComputeTip1')
         })
         return
       }
-      const confirmText = ['目前正在运行排程，确定要继续导入？', '注意：此操作将会影响当前运行的排程结果！']
-      const newDatas = []
-      const h = this.$createElement
-      for (const i in confirmText) {
-        newDatas.push(h('p', null, confirmText[i]))
-      }
       GetRunFlag().then(res => {
-        if (res.run_flag === 1) {
-          this.$confirm('警告', {
-            title: '警告',
+        if (res.run_flag === 1 || res.ana_run_flag === 1) {
+          var confirmText
+          if (res.run_flag === 1) {
+            confirmText = [this.$t('SchedulePanelPage.TextComputeTip3'), this.$t('SchedulePanelPage.TextComputeTip2')]
+          } else if (res.ana_run_flag === 1) {
+            confirmText = [this.$t('SchedulePanelPage.TextComputeTip4'), this.$t('SchedulePanelPage.TextComputeTip2')]
+          } else {
+            confirmText = [this.$t('SchedulePanelPage.TextComputeTip5'), this.$t('SchedulePanelPage.TextComputeTip2')]
+          }
+          const newDatas = []
+          const h = this.$createElement
+          for (const i in confirmText) {
+            newDatas.push(h('p', null, confirmText[i]))
+          }
+          this.$confirm(this.$t('PublicText.TextWarn'), {
+            title: this.$t('PublicText.TextWarn'),
             message: h('div', null, newDatas),
-            confirmButtonText: '确定，仍要导入',
-            cancelButtonText: '取消',
+            confirmButtonText: this.$t('SchedulePanelPage.BtnContinueImport'),
+            cancelButtonText: this.$t('PublicBtn.Cancel'),
             confirmButtonClass: 'btnDanger',
             type: 'warning'
           }).then(() => {
@@ -1204,7 +1166,7 @@ export default {
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: '取消计算'
+              message: this.$t('PublicText.TextCancel')
             })
           })
         } else {
@@ -1217,30 +1179,37 @@ export default {
       if (this.isImportMain === false) {
         this.$message({
           type: 'warning',
-          message: '未导入文件，无法计算排程'
+          message: this.$t('SchedulePanelPage.TextComputeTip7')
         })
         return
       }
       if (this.clickComputeCount >= 1) {
         this.$message({
           type: 'warning',
-          message: '已开始计算排程，请勿重复点击'
+          message: this.$t('SchedulePanelPage.TextComputeTip8')
         })
         return
       }
-      const confirmText = ['目前正在运行排程，确定要重新开始计算？', '注意：此操作将会中断当前的排程！']
-      const newDatas = []
-      const h = this.$createElement
-      for (const i in confirmText) {
-        newDatas.push(h('p', null, confirmText[i]))
-      }
       GetRunFlag().then(res => {
-        if (res.run_flag === 1) {
-          this.$confirm('警告', {
-            title: '警告',
+        if (res.run_flag === 1 || res.ana_run_flag === 1) {
+          var confirmText
+          if (res.run_flag === 1) {
+            confirmText = [this.$t('SchedulePanelPage.TextComputeTip3'), this.$t('SchedulePanelPage.TextComputeTip2')]
+          } else if (res.ana_run_flag === 1) {
+            confirmText = [this.$t('SchedulePanelPage.TextComputeTip4'), this.$t('SchedulePanelPage.TextComputeTip2')]
+          } else {
+            confirmText = [this.$t('SchedulePanelPage.TextComputeTip5'), this.$t('SchedulePanelPage.TextComputeTip2')]
+          }
+          const newDatas = []
+          const h = this.$createElement
+          for (const i in confirmText) {
+            newDatas.push(h('p', null, confirmText[i]))
+          }
+          this.$confirm(this.$t('PublicText.TextWarn'), {
+            title: this.$t('PublicText.TextWarn'),
             message: h('div', null, newDatas),
-            confirmButtonText: '确定，仍要计算',
-            cancelButtonText: '取消',
+            confirmButtonText: this.$t('SchedulePanelPage.BtnContinueCompute'),
+            cancelButtonText: this.$t('PublicBtn.Cancel'),
             confirmButtonClass: 'btnDanger',
             type: 'warning'
           }).then(() => {
@@ -1248,7 +1217,7 @@ export default {
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: '取消计算'
+              message: this.$t('PublicText.TextCancel')
             })
           })
         } else {
@@ -1261,20 +1230,20 @@ export default {
       this.schedule_result = res.table_data
       this.schedule_mode = res.mode
       this.schedule_time = res.date
-      this.trainDateTip = '当前模型日期：' + res.train_date
+      this.trainDateTip = this.$t('SchedulePanelPage.TextCurrentTrainDate') + res.train_date
     },
     // 开始计算AI排程
     computeScheduleMain() {
       this.clickComputeCount = 1
       this.listenProgress()
       var is_click_apsMoProgData
-      if (this.apsMoProgData === '已更新') {
+      if (this.apsMoProgData === this.$t('PublicText.MesApiNotUpdate')) {
         is_click_apsMoProgData = true
       } else {
         is_click_apsMoProgData = false
       }
       const data = {
-        'file_name': this.uploadFileNameMain,
+        'file_name_main': this.uploadFileNameMain,
         'user_name': this.name,
         'is_click_apsMoProgData': is_click_apsMoProgData
       }
@@ -1288,7 +1257,7 @@ export default {
           this.refreshComputeShow(res)
         } else {
           this.$message({
-            message: '开始计算失败',
+            message: this.$t('SchedulePanelPage.TextComputeTip11'),
             type: 'error'
           })
         }
@@ -1299,23 +1268,30 @@ export default {
       if (this.uploadFileNameSmall === '') {
         this.$message({
           type: 'warning',
-          message: '未上传排程文件，无法导入'
+          message: this.$t('SchedulePanelPage.TextComputeTip1')
         })
         return
       }
-      const confirmText = ['目前正在运行排程，确定要继续导入？', '注意：此操作将会影响当前运行的排程结果！']
-      const newDatas = []
-      const h = this.$createElement
-      for (const i in confirmText) {
-        newDatas.push(h('p', null, confirmText[i]))
-      }
       GetRunFlag().then(res => {
+        var confirmText
         if (res.run_flag === 1) {
-          this.$confirm('警告', {
-            title: '警告',
+          confirmText = [this.$t('SchedulePanelPage.TextComputeTip3'), this.$t('SchedulePanelPage.TextComputeTip2')]
+        } else if (res.ana_run_flag === 1) {
+          confirmText = [this.$t('SchedulePanelPage.TextComputeTip4'), this.$t('SchedulePanelPage.TextComputeTip2')]
+        } else {
+          confirmText = [this.$t('SchedulePanelPage.TextComputeTip5'), this.$t('SchedulePanelPage.TextComputeTip2')]
+        }
+        const newDatas = []
+        const h = this.$createElement
+        for (const i in confirmText) {
+          newDatas.push(h('p', null, confirmText[i]))
+        }
+        if (res.run_flag === 1 || res.ana_run_flag === 1) {
+          this.$confirm(this.$t('PublicText.TextWarn'), {
+            title: this.$t('PublicText.TextWarn'),
             message: h('div', null, newDatas),
-            confirmButtonText: '确定，仍要导入',
-            cancelButtonText: '取消',
+            confirmButtonText: this.$t('SchedulePanelPage.BtnContinueImport'),
+            cancelButtonText: this.$t('PublicBtn.Cancel'),
             confirmButtonClass: 'btnDanger',
             type: 'warning'
           }).then(() => {
@@ -1323,7 +1299,7 @@ export default {
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: '取消计算'
+              message: this.$t('PublicText.TextCancel')
             })
           })
         } else {
@@ -1336,30 +1312,30 @@ export default {
       if (this.isImportSmall === false) {
         this.$message({
           type: 'warning',
-          message: '未导入文件，无法计算排程'
+          message: this.$t('SchedulePanelPage.TextComputeTip7')
         })
         return
       }
       if (this.clickComputeCount >= 1) {
         this.$message({
           type: 'warning',
-          message: '已开始计算排程，请勿重复点击'
+          message: this.$t('SchedulePanelPage.TextComputeTip8')
         })
         return
       }
-      const confirmText = ['目前正在运行排程，确定要重新开始计算？', '注意：此操作将会中断当前的排程！']
+      const confirmText = [this.$t('SchedulePanelPage.TextComputeTip9'), this.$t('SchedulePanelPage.TextComputeTip10')]
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
         newDatas.push(h('p', null, confirmText[i]))
       }
       GetRunFlag().then(res => {
-        if (res.run_flag === 1) {
-          this.$confirm('警告', {
-            title: '警告',
+        if (res.run_flag === 1 || res.ana_run_flag === 1) {
+          this.$confirm(this.$t('PublicText.TextWarn'), {
+            title: this.$t('PublicText.TextWarn'),
             message: h('div', null, newDatas),
-            confirmButtonText: '确定，仍要计算',
-            cancelButtonText: '取消',
+            confirmButtonText: this.$t('SchedulePanelPage.BtnContinueCompute'),
+            cancelButtonText: this.$t('PublicBtn.Cancel'),
             confirmButtonClass: 'btnDanger',
             type: 'warning'
           }).then(() => {
@@ -1367,7 +1343,7 @@ export default {
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: '取消计算'
+              message: this.$t('PublicText.TextCancel')
             })
           })
         } else {
@@ -1380,7 +1356,7 @@ export default {
       this.clickComputeCount = 1
       this.listenProgress()
       var is_click_apsMoProgData
-      if (this.apsMoProgData === '已更新') {
+      if (this.apsMoProgData === this.$t('PublicText.MesApiNotUpdate')) {
         is_click_apsMoProgData = true
       } else {
         is_click_apsMoProgData = false
@@ -1400,7 +1376,7 @@ export default {
           this.refreshComputeShow(res)
         } else {
           this.$message({
-            message: '开始计算失败',
+            message: this.$t('SchedulePanelPage.TextComputeTip11'),
             type: 'error'
           })
         }
@@ -1434,8 +1410,8 @@ export default {
         this.clearUpdateMag()
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })
@@ -1444,23 +1420,30 @@ export default {
       if (this.uploadFileNameMain === '' || this.uploadFileNameSmall === '') {
         this.$message({
           type: 'warning',
-          message: 'AI和点胶的排程文件未全部上传，无法导入'
+          message: this.$t('SchedulePanelPage.TextComputeTip6')
         })
         return
       }
-      const confirmText = ['目前正在运行排程，确定要继续导入？', '注意：此操作将会影响当前运行的排程结果！']
-      const newDatas = []
-      const h = this.$createElement
-      for (const i in confirmText) {
-        newDatas.push(h('p', null, confirmText[i]))
-      }
       GetRunFlag().then(res => {
+        var confirmText
         if (res.run_flag === 1) {
-          this.$confirm('警告', {
-            title: '警告',
+          confirmText = [this.$t('SchedulePanelPage.TextComputeTip3'), this.$t('SchedulePanelPage.TextComputeTip2')]
+        } else if (res.ana_run_flag === 1) {
+          confirmText = [this.$t('SchedulePanelPage.TextComputeTip4'), this.$t('SchedulePanelPage.TextComputeTip2')]
+        } else {
+          confirmText = [this.$t('SchedulePanelPage.TextComputeTip5'), this.$t('SchedulePanelPage.TextComputeTip2')]
+        }
+        const newDatas = []
+        const h = this.$createElement
+        for (const i in confirmText) {
+          newDatas.push(h('p', null, confirmText[i]))
+        }
+        if (res.run_flag === 1 || res.ana_run_flag === 1) {
+          this.$confirm(this.$t('PublicText.TextWarn'), {
+            title: this.$t('PublicText.TextWarn'),
             message: h('div', null, newDatas),
-            confirmButtonText: '确定，仍要导入',
-            cancelButtonText: '取消',
+            confirmButtonText: this.$t('SchedulePanelPage.BtnContinueImport'),
+            cancelButtonText: this.$t('PublicBtn.Cancel'),
             confirmButtonClass: 'btnDanger',
             type: 'warning'
           }).then(() => {
@@ -1468,7 +1451,7 @@ export default {
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: '取消计算'
+              message: this.$t('PublicText.TextCancel')
             })
           })
         } else {
@@ -1494,8 +1477,8 @@ export default {
         this.clearUpdateMag()
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })
@@ -1504,30 +1487,30 @@ export default {
       if (this.isImportBoth === false) {
         this.$message({
           type: 'warning',
-          message: '未导入文件，无法计算排程'
+          message: this.$t('SchedulePanelPage.TextComputeTip7')
         })
         return
       }
       if (this.clickComputeCount >= 1) {
         this.$message({
           type: 'warning',
-          message: '已开始计算排程，请勿重复点击'
+          message: this.$t('SchedulePanelPage.TextComputeTip8')
         })
         return
       }
-      const confirmText = ['目前正在运行排程，确定要重新开始计算？', '注意：此操作将会中断当前的排程！']
+      const confirmText = [this.$t('SchedulePanelPage.TextComputeTip9'), this.$t('SchedulePanelPage.TextComputeTip10')]
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
         newDatas.push(h('p', null, confirmText[i]))
       }
       GetRunFlag().then(res => {
-        if (res.run_flag === 1) {
-          this.$confirm('警告', {
-            title: '警告',
+        if (res.run_flag === 1 || res.ana_run_flag === 1) {
+          this.$confirm(this.$t('PublicText.TextWarn'), {
+            title: this.$t('PublicText.TextWarn'),
             message: h('div', null, newDatas),
-            confirmButtonText: '确定，仍要计算',
-            cancelButtonText: '取消',
+            confirmButtonText: this.$t('SchedulePanelPage.BtnContinueCompute'),
+            cancelButtonText: this.$t('PublicBtn.Cancel'),
             confirmButtonClass: 'btnDanger',
             type: 'warning'
           }).then(() => {
@@ -1535,7 +1518,7 @@ export default {
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: '取消计算'
+              message: this.$t('PublicText.TextCancel')
             })
           })
         } else {
@@ -1547,7 +1530,7 @@ export default {
       this.clickComputeCount = 1
       this.listenProgress()
       var is_click_apsMoProgData
-      if (this.apsMoProgData === '已更新') {
+      if (this.apsMoProgData === this.$t('PublicText.MesApiNotUpdate')) {
         is_click_apsMoProgData = true
       } else {
         is_click_apsMoProgData = false
@@ -1568,7 +1551,7 @@ export default {
           this.refreshComputeShow(res)
         } else {
           this.$message({
-            message: '开始计算失败',
+            message: this.$t('SchedulePanelPage.TextComputeTip11'),
             type: 'error'
           })
         }
@@ -1576,11 +1559,11 @@ export default {
     },
     // 更新钢网信息前的提示
     getApsMtool(mode) {
-      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      const tip = this.$t('SchedulePanelPage.TextApiUploadTip1') + `<br/>` + this.$t('SchedulePanelPage.TextApiUploadTip2')
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$alert(tip, '警告', {
-            confirmButtonText: '确定',
+          this.$alert(tip, this.$t('PublicText.TextWarn'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             dangerouslyUseHTMLString: true,
             type: 'warning'
           })
@@ -1595,7 +1578,7 @@ export default {
         if (this.isImportMain === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1603,7 +1586,7 @@ export default {
         if (this.isImportSmall === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1611,33 +1594,33 @@ export default {
         if (this.isImportBoth === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
       } else {
         return
       }
-      this.$confirm('提示', {
-        title: '提示',
-        message: '确定要更新钢网信息？',
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('PublicText.TitleTip'), {
+        title: this.$t('PublicText.TitleTip'),
+        message: this.$t('SchedulePanelPage.TextApiUploadTip4'),
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         const updateLoading = {
-          text: '钢网信息更新中...',
+          title: this.$t('PublicText.MesApiUpdating'),
           background: 'rgba(0, 0, 0, 0.5)'
         }
         this.loadingInstance = Loading.service(updateLoading)
         GetApsMtool().then(res => {
           if (res.code === 20000) {
             this.loadingInstance.close()
-            this.$alert('钢网信息更新成功！', '提示', {
-              confirmButtonText: '确定',
-              type: 'success'
+            this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
+              type: res.message_type
             })
-            this.apsMtoolMsg = '已更新'
+            this.apsMtoolMsg = this.$t('PublicText.MesApiUpdate')
             if (mode === 'main') {
               this.stepNowMain = 3
             } else if (mode === 'small') {
@@ -1648,25 +1631,25 @@ export default {
           }
         }).catch(err => {
           this.loadingInstance.close() // 清除动画
-          this.$alert(err, '更新信息出错', {
-            confirmButtonText: '确定',
+          this.$alert(err, this.$t('SchedulePanelPage.TextApiUploadTip5'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消更新'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 更新程序信息前的提示
     getApsProgram(mode) {
-      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      const tip = this.$t('SchedulePanelPage.TextApiUploadTip1') + `<br/>` + this.$t('SchedulePanelPage.TextApiUploadTip2')
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$alert(tip, '警告', {
-            confirmButtonText: '确定',
+          this.$alert(tip, this.$t('PublicText.TextWarn'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             dangerouslyUseHTMLString: true,
             type: 'warning'
           })
@@ -1681,7 +1664,7 @@ export default {
         if (this.isImportMain === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1689,7 +1672,7 @@ export default {
         if (this.isImportSmall === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1697,33 +1680,33 @@ export default {
         if (this.isImportBoth === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
       } else {
         return
       }
-      this.$confirm('提示', {
-        title: '提示',
-        message: '确定要更新程序信息？',
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('PublicText.TitleTip'), {
+        title: this.$t('PublicText.TitleTip'),
+        message: this.$t('SchedulePanelPage.TextApiUploadTip4'),
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         const updateLoading = {
-          text: '程序信息更新中...',
+          title: this.$t('PublicText.MesApiUpdating'),
           background: 'rgba(0, 0, 0, 0.5)'
         }
         this.loadingInstance = Loading.service(updateLoading)
         GetApsProgram().then(res => {
           if (res.code === 20000) {
             this.loadingInstance.close()
-            this.$alert('程序信息更新成功！', '提示', {
-              confirmButtonText: '确定',
-              type: 'success'
+            this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
+              type: res.message_type
             })
-            this.apsProgramMsg = '已更新'
+            this.apsProgramMsg = this.$t('PublicText.MesApiUpdate')
             if (mode === 'main') {
               this.stepNowMain = 3
             } else if (mode === 'small') {
@@ -1734,25 +1717,25 @@ export default {
           }
         }).catch(err => {
           this.loadingInstance.close() // 清除动画
-          this.$alert(err, '更新信息错误', {
-            confirmButtonText: '确定',
+          this.$alert(err, this.$t('SchedulePanelPage.TextApiUploadTip5'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消更新'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 更新齐套信息前的提示
     getApsMoBaseData(mode) {
-      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      const tip = this.$t('SchedulePanelPage.TextApiUploadTip1') + `<br/>` + this.$t('SchedulePanelPage.TextApiUploadTip2')
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$alert(tip, '警告', {
-            confirmButtonText: '确定',
+          this.$alert(tip, this.$t('PublicText.TextWarn'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             dangerouslyUseHTMLString: true,
             type: 'warning'
           })
@@ -1767,7 +1750,7 @@ export default {
         if (this.isImportMain === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1775,7 +1758,7 @@ export default {
         if (this.isImportSmall === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1783,33 +1766,33 @@ export default {
         if (this.isImportBoth === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
       } else {
         return
       }
-      this.$confirm('提示', {
-        title: '提示',
-        message: '确定要更新齐套信息？',
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('PublicText.TitleTip'), {
+        title: this.$t('PublicText.TitleTip'),
+        message: this.$t('SchedulePanelPage.TextApiUploadTip4'),
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         const updateLoading = {
-          text: '齐套信息更新中...',
+          title: this.$t('PublicText.MesApiUpdating'),
           background: 'rgba(0, 0, 0, 0.5)'
         }
         this.loadingInstance = Loading.service(updateLoading)
         GetApsMoBaseData().then(res => {
           if (res.code === 20000) {
             this.loadingInstance.close()
-            this.$alert(res.message, '提示', {
-              confirmButtonText: '确定',
+            this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
               type: res.message_type
             })
-            this.apsMoBaseData = '已更新'
+            this.apsMoBaseData = this.$t('PublicText.MesApiUpdate')
             if (mode === 'main') {
               this.stepNowMain = 3
             } else if (mode === 'small') {
@@ -1820,25 +1803,25 @@ export default {
           }
         }).catch(err => {
           this.loadingInstance.close() // 清除动画
-          this.$alert(err, '更新信息错误', {
-            confirmButtonText: '确定',
+          this.$alert(err, this.$t('SchedulePanelPage.TextApiUploadTip5'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消更新'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 更新工单进度前的提示
     getApsMoProgData(mode) {
-      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      const tip = this.$t('SchedulePanelPage.TextApiUploadTip1') + `<br/>` + this.$t('SchedulePanelPage.TextApiUploadTip2')
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$alert(tip, '警告', {
-            confirmButtonText: '确定',
+          this.$alert(tip, this.$t('PublicText.TextWarn'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             dangerouslyUseHTMLString: true,
             type: 'warning'
           })
@@ -1853,7 +1836,7 @@ export default {
         if (this.isImportMain === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1861,7 +1844,7 @@ export default {
         if (this.isImportSmall === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1869,33 +1852,33 @@ export default {
         if (this.isImportBoth === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
       } else {
         return
       }
-      this.$confirm('提示', {
-        title: '提示',
-        message: '确定要更新工单进度？',
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('PublicText.TitleTip'), {
+        title: this.$t('PublicText.TitleTip'),
+        message: this.$t('SchedulePanelPage.TextApiUploadTip4'),
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         const updateLoading = {
-          text: '工单进度更新中...',
+          title: this.$t('PublicText.MesApiUpdating'),
           background: 'rgba(0, 0, 0, 0.5)'
         }
         this.loadingInstance = Loading.service(updateLoading)
         GetApsMoProgData().then(res => {
           if (res.code === 20000) {
             this.loadingInstance.close()
-            this.$alert('工单进度更新成功！', '提示', {
-              confirmButtonText: '确定',
-              type: 'success'
+            this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
+              type: res.message_type
             })
-            this.apsMoProgData = '已更新'
+            this.apsMoProgData = this.$t('PublicText.MesApiUpdate')
             if (mode === 'main') {
               this.stepNowMain = 3
             } else if (mode === 'small') {
@@ -1906,25 +1889,25 @@ export default {
           }
         }).catch(err => {
           this.loadingInstance.close() // 清除动画
-          this.$alert(err, '更新信息错误', {
-            confirmButtonText: '确定',
+          this.$alert(err, this.$t('SchedulePanelPage.TextApiUploadTip5'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消更新'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 更新包装时间前的提示
     getApsDeliveryDay(mode) {
-      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      const tip = this.$t('SchedulePanelPage.TextApiUploadTip1') + `<br/>` + this.$t('SchedulePanelPage.TextApiUploadTip2')
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$alert(tip, '警告', {
-            confirmButtonText: '确定',
+          this.$alert(tip, this.$t('PublicText.TextWarn'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             dangerouslyUseHTMLString: true,
             type: 'warning'
           })
@@ -1939,7 +1922,7 @@ export default {
         if (this.isImportMain === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1947,7 +1930,7 @@ export default {
         if (this.isImportSmall === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
@@ -1955,33 +1938,33 @@ export default {
         if (this.isImportBoth === false) {
           this.$message({
             type: 'warning',
-            message: '未导入文件，无法更新信息'
+            message: this.$t('SchedulePanelPage.TextApiUploadTip3')
           })
           return
         }
       } else {
         return
       }
-      this.$confirm('提示', {
-        title: '提示',
-        message: '确定要更新包装点时间？',
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('PublicText.TitleTip'), {
+        title: this.$t('PublicText.TitleTip'),
+        message: this.$t('SchedulePanelPage.TextApiUploadTip4'),
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         const updateLoading = {
-          text: '包装点时间更新中...',
+          title: this.$t('PublicText.MesApiUpdating'),
           background: 'rgba(0, 0, 0, 0.5)'
         }
         this.loadingInstance = Loading.service(updateLoading)
         GetApsDeliveryDay().then(res => {
           if (res.code === 20000) {
             this.loadingInstance.close()
-            this.$alert('包装点时间更新成功！', '提示', {
-              confirmButtonText: '确定',
+            this.$alert(this.$t('SchedulePanelPage.TextApiUploadTip7'), this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
               type: 'success'
             })
-            this.apsDeliveryDay = '已更新'
+            this.apsDeliveryDay = this.$t('PublicText.MesApiUpdate')
             if (mode === 'main') {
               this.stepNowMain = 3
             } else if (mode === 'small') {
@@ -1992,15 +1975,15 @@ export default {
           }
         }).catch(err => {
           this.loadingInstance.close() // 清除动画
-          this.$alert(err, '更新信息错误', {
-            confirmButtonText: '确定',
+          this.$alert(err, this.$t('SchedulePanelPage.TextApiUploadTip5'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消更新'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -2022,7 +2005,7 @@ export default {
     exportScheduleDataMain() {
       if (!this.isImportMain && !this.isImportBoth) {
         this.$message({
-          message: '未导入文件，无需导出',
+          message: this.$t('SchedulePanelPage.TextExportTip1'),
           type: 'warning'
         })
         return
@@ -2030,13 +2013,13 @@ export default {
       ExportMainScheduleData().then(res => {
         this.downloadFile(res)
         this.$message({
-          message: '开始下载',
+          message: this.$t('Msg.BeginDownload'),
           type: 'success'
         })
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '导出失败，文件不存在',
+          message: this.$t('SchedulePanelPage.TextExportTip2'),
           type: 'error'
         })
       })
@@ -2045,7 +2028,7 @@ export default {
     exportScheduleDataSmall() {
       if (!this.isImportSmall && !this.isImportBoth) {
         this.$message({
-          message: '未导入文件，无需导出',
+          message: this.$t('SchedulePanelPage.TextExportTip1'),
           type: 'warning'
         })
         return
@@ -2053,265 +2036,148 @@ export default {
       ExportSmallScheduleData().then(res => {
         this.downloadFile(res)
         this.$message({
-          message: '开始下载',
+          message: this.$t('Msg.BeginDownload'),
           type: 'success'
         })
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '导出失败，文件不存在',
+          message: this.$t('SchedulePanelPage.TextExportTip2'),
           type: 'error'
         })
       })
     },
-    // 下载AI最新排程
-    downloadSchedule() {
-      DownloadSchedule().then(res => {
+    downloadFileBackend(file_key) {
+      DownloadFile(file_key).then(res => {
         this.downloadFile(res)
         this.$message({
-          message: '开始下载',
+          message: this.$t('Msg.BeginDownload'),
           type: 'success'
         })
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败',
+          message: this.$t('Msg.DownloadFail'),
           type: 'error'
         })
       })
     },
-    // 下载最新日志
-    downloadLatestLog() {
-      DownloadLatestLog().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 下载无程序表
-    downloadNoProgram() {
-      DownloadNoProgram().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 获取历史日志选择器选项
-    getLogSelectItem() {
-      this.options_history_log = []
-      GetLogSelectItem().then(res => {
-        for (const key in res.log_data) {
-          const temp = {}
-          temp['value'] = res.log_data[key]
-          temp['label'] = res.log_data[key]
-          this.options_history_log.push(temp)
+    // post_statistics() {
+    //   this.$confirm(this.$t('PublicText.TitleTip'), {
+    //     title: this.$t('PublicText.TitleTip'),
+    //     message: this.$t('SchedulePanelPage.TextApiUploadTip6'),
+    //     confirmButtonText: this.$t('PublicBtn.Confirm'),
+    //     cancelButtonText: this.$t('PublicBtn.Cancel'),
+    //     type: 'warning'
+    //   }).then(() => {
+    //     const pushLoading = {
+    //       text: this.$t('PublicText.MesApiPushing'),
+    //       background: 'rgba(0, 0, 0, 0.5)'
+    //     } // 导入排程动画
+    //     this.loadingInstance = Loading.service(pushLoading)
+    //     const form = {
+    //       'user_name': this.name
+    //     }
+    //     SaveApsOutPutCount(form).then(res => {
+    //       if (res.code === 20000) {
+    //         this.$alert(res.message, this.$t('PublicText.MesApiPushSuccess'), {
+    //           confirmButtonText: this.$t('PublicBtn.Confirm'),
+    //           type: 'success'
+    //         })
+    //         this.saveApsOutPutCountTip = this.$t('PublicBtn.MesApiPushed')
+    //       } else {
+    //         this.$alert(this.$t('PublicText.MesApiPushError'), this.$t('PublicText.TextError'), {
+    //           confirmButtonText: this.$t('PublicBtn.Confirm'),
+    //           type: 'error'
+    //         })
+    //       }
+    //       this.loadingInstance.close() // 清除动画
+    //     }).catch(err => {
+    //       this.loadingInstance.close() // 清除动画
+    //       this.$alert(err, this.$t('PublicText.TextError'), {
+    //         confirmButtonText: this.$t('PublicBtn.Confirm'),
+    //         type: 'error'
+    //       })
+    //     })
+    //   }).catch(() => {
+    //     this.$message({
+    //       type: 'info',
+    //       message: this.$t('PublicText.TextCancel')
+    //     })
+    //   })
+    // },
+    beforeDoBucklePoints(upload_file_name) {
+      if (upload_file_name.includes(this.$t('FileKeyWord.MainWord'))) {
+        if (this.isImportMain === false) {
+          this.$message({
+            type: 'warning',
+            message: this.$t('SchedulePanelPage.TextBucklePoints1')
+          })
+          return
         }
-      })
-    },
-    // 获取历史日志选择器选项
-    getExcelSelectItem() {
-      this.options_history_excel = []
-      GetExcelSelectItem().then(res => {
-        for (const key in res.excel_data) {
-          const temp = {}
-          temp['value'] = res.excel_data[key]
-          temp['label'] = res.excel_data[key]
-          this.options_history_excel.push(temp)
+      }
+      if (upload_file_name.includes(this.$t('FileKeyWord.SmallWord'))) {
+        if (this.isImportSmall === false) {
+          this.$message({
+            type: 'warning',
+            message: this.$t('SchedulePanelPage.TextBucklePoints1')
+          })
+          return
         }
-      })
+      }
+      var tip_message = this.$t('SchedulePanelPage.TextBucklePoints2')
+      if (this.apsMoProgData !== this.$t('PublicText.MesApiNotUpdate')) {
+        tip_message = this.$t('SchedulePanelPage.TextBucklePoints3')
+      }
+      this.doBucklePoints(upload_file_name, tip_message)
     },
-    // 下载历史日志
-    downloadHistoryLog() {
-      DownloadHistoryLog({ 'filename': this.selectLogValue }).then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 下载历史排程
-    downloadHistoryExcel() {
-      DownloadHistoryExcel({ 'filename': this.selectExcelValue }).then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 下载idle明细
-    downloadIdleInfo() {
-      DownloadIdleInfoMain().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 下载量化结果
-    downloadStatistics() {
-      DownloadStatisticsMain().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 下载点胶最新排程
-    downloadScheduleSmall() {
-      DownloadScheduleSmall().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 下载点胶idle明细
-    downloadIdleInfoSmall() {
-      DownloadIdleInfoSmall().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 下载点胶量化结果
-    downloadStatisticsSmall() {
-      DownloadStatisticsSmall().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    // 下载点胶无程序表
-    downloadNoProgramSmall() {
-      DownloadNoProgramSmall().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
-        })
-      })
-    },
-    post_statistics() {
-      this.$confirm('提示', {
-        title: '提示',
-        message: '确定要推送量化结果？',
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+    doBucklePoints(upload_file_name, tip_message) {
+      this.$confirm(this.$t('PublicText.TitleTip'), {
+        title: this.$t('PublicText.TitleTip'),
+        message: tip_message,
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         const pushLoading = {
-          text: '推送中，请稍等...',
+          text: this.$t('SchedulePanelPage.TextBucklePoints4'),
           background: 'rgba(0, 0, 0, 0.5)'
         } // 导入排程动画
         this.loadingInstance = Loading.service(pushLoading)
         const form = {
-          'user_name': this.name
+          'file_name': upload_file_name
         }
-        SaveApsOutPutCount(form).then(res => {
+        DoBucklePoints(form).then(res => {
           if (res.code === 20000) {
-            this.$alert(res.message, '推送量化结果成功', {
-              confirmButtonText: '确定',
+            this.$alert(res.message, this.$t('SchedulePanelPage.TextBucklePoints5'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
               type: 'success'
             })
-            this.saveApsOutPutCountTip = '已推送'
           } else {
-            this.$alert('推送失败', '错误', {
-              confirmButtonText: '确定',
+            this.$alert(this.$t('SchedulePanelPage.TextBucklePoints6'), this.$t('PublicText.TextError'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
               type: 'error'
             })
           }
           this.loadingInstance.close() // 清除动画
         }).catch(err => {
           this.loadingInstance.close() // 清除动画
-          this.$alert(err, '错误', {
-            confirmButtonText: '确定',
+          this.$alert(err, this.$t('PublicText.TextError'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消推送'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     modifyHoliday() {
-      this.$confirm('确定要修改放假日期？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('SchedulePanelPage.TextModifyHoliday'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         const data = {}
@@ -2328,75 +2194,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消'
-        })
-      })
-    },
-    beforeDoBucklePoints(upload_file_name) {
-      if (upload_file_name.includes('主板')) {
-        if (this.isImportMain === false) {
-          this.$message({
-            type: 'warning',
-            message: '主板未导入文件，无法转移扣点'
-          })
-          return
-        }
-      }
-      if (upload_file_name.includes('小板')) {
-        if (this.isImportSmall === false) {
-          this.$message({
-            type: 'warning',
-            message: '小板未导入文件，无法转移扣点'
-          })
-          return
-        }
-      }
-      var tip_message = '确定要进行转移扣点操作？'
-      if (this.apsMoProgData !== '已更新') {
-        tip_message = '未更新工单进度，确定要转移扣点操作？'
-      }
-      this.doBucklePoints(upload_file_name, tip_message)
-    },
-    doBucklePoints(upload_file_name, tip_message) {
-      this.$confirm('提示', {
-        title: '提示',
-        message: tip_message,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const pushLoading = {
-          text: '转移扣点中，请稍等...',
-          background: 'rgba(0, 0, 0, 0.5)'
-        } // 导入排程动画
-        this.loadingInstance = Loading.service(pushLoading)
-        const form = {
-          'file_name': upload_file_name
-        }
-        DoBucklePoints(form).then(res => {
-          if (res.code === 20000) {
-            this.$alert(res.message, '转移扣点成功', {
-              confirmButtonText: '确定',
-              type: 'success'
-            })
-          } else {
-            this.$alert('扣点失败', '错误', {
-              confirmButtonText: '确定',
-              type: 'error'
-            })
-          }
-          this.loadingInstance.close() // 清除动画
-        }).catch(err => {
-          this.loadingInstance.close() // 清除动画
-          this.$alert(err, '错误', {
-            confirmButtonText: '确定',
-            type: 'error'
-          })
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消转移扣点'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     }
@@ -2450,6 +2248,17 @@ export default {
   width: 46%;
   word-break: break-all !important;
   overflow: auto;
+}
+.box-button {
+  text-align: left;
+}
+.button-row {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.button-margin {
+  margin-left: 10px;
 }
 </style>
 

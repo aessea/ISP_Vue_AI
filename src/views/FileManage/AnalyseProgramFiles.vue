@@ -4,20 +4,20 @@
       <el-row>
         <el-col :span="16">
           <div>
-            <el-button v-if="buttons.includes('AnalyseProgramFiles/delete')" type="danger" @click="deleteFiles">
-              <i class="el-icon-delete" />删除文件
+            <el-button v-if="buttons.includes('AnalyseProgramFiles/deleteFile')" type="danger" @click="deleteFiles">
+              <i class="el-icon-delete" />{{ this.$t('FileDataPage.BtnDeleteFile') }}
             </el-button>
-            <el-button v-if="buttons.includes('AnalyseProgramFiles/deleteOld')" type="danger" @click="filterDataDialog">
-              <i class="el-icon-delete" />批量删除文件
+            <el-button v-if="buttons.includes('AnalyseProgramFiles/deleteBulkFiles')" type="danger" @click="filterDataDialog">
+              <i class="el-icon-delete" />{{ this.$t('FileDataPage.BtnDeleteBulkFiles') }}
             </el-button>
-            <el-button v-if="buttons.includes('AnalyseProgramFiles/reset')" type="primary" @click="resetAllFileList">
-              <i class="el-icon-refresh" />重置文件列表
+            <el-button v-if="buttons.includes('AnalyseProgramFiles/resetFileList')" type="primary" @click="resetAllFileList">
+              <i class="el-icon-refresh" />{{ this.$t('FileDataPage.BtnResetFilesList') }}
             </el-button>
           </div>
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -25,7 +25,7 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnViewInstruction')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
@@ -48,14 +48,14 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="file_name" label="文件名" sortable />
-          <el-table-column prop="file_time" label="创建时间" sortable width="200" />
-          <el-table-column prop="remark" label="备注" sortable width="160" />
-          <el-table-column prop="create_user" label="创建人" sortable width="160" />
-          <el-table-column width="110" fixed="right" label="操作">
+          <el-table-column prop="file_name" :label="$t('FileDataPage.file_name')" sortable />
+          <el-table-column prop="file_time" :label="$t('FileDataPage.file_time')" sortable width="200" />
+          <el-table-column prop="remark" :label="$t('FileDataPage.remark')" width="160" />
+          <el-table-column prop="create_user" :label="$t('FileDataPage.create_user')" width="160" />
+          <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
               <el-button
-                v-if="buttons.includes('AnalyseProgramFiles/download')"
+                v-if="buttons.includes('AnalyseProgramFiles/downloadFile')"
                 type="primary"
                 size="mini"
                 icon="el-icon-download"
@@ -80,20 +80,20 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="表格说明"
+      :title="$t('TablePage.TitleFormDescription')"
       :visible.sync="helpDialogVisible"
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>关于表格的各种说明可以写在这</span>
+      <span>{{ $t('TablePage.MsgIllustrate') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="helpDialogVisible = false">关闭</el-button>
+        <el-button @click="helpDialogVisible = false">{{ $t('PublicBtn.Close') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="批量删除文件"
+      :title="$t('FileDataPage.BtnDeleteBulkFiles')"
       :visible.sync="filterDialogVisible"
       width="45%"
       @dragDialog="handleDrag"
@@ -102,16 +102,16 @@
         <el-form>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item label="删除几个月前的数据：">
-                <el-input-number v-model="save_months" :min="3" placeholder="请输入月份数" clearable />
+              <el-form-item :label="$t('FileDataPage.TextDeleteAgoFile')">
+                <el-input-number v-model="save_months" :min="3" :placeholder="$t('FileDataPage.TextInputMonth')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFilterClose">关闭</el-button>
-        <el-button type="danger" @click="deleteBeforeFiles">确认删除</el-button>
+        <el-button @click="handleFilterClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="danger" @click="deleteBeforeFiles">{{ this.$t('PublicBtn.ConfirmDelete') }}</el-button>
       </span>
     </el-dialog>
 
@@ -166,15 +166,6 @@ export default {
     handleDrag() {
       // this.$refs.select.blur()
     },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 2) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 2) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
-      return ''
-    },
     // 分页
     handlePageChange(val) {
       this.currentPage = val
@@ -211,7 +202,7 @@ export default {
       if (dataLength === 0) {
         this.$message({
           type: 'warning',
-          message: '请至少选中一个文件'
+          message: this.$t('FileDataPage.MsgDeleteFile1')
         })
         return
       }
@@ -219,9 +210,9 @@ export default {
       for (let i = 0; i < dataLength; i++) {
         idList.push(this.dataTableSelections[i].id)
       }
-      this.$confirm('确定要删除选中的 ' + dataLength + ' 个文件？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('FileDataPage.MsgDeleteFile2') + dataLength + this.$t('FileDataPage.MsgDeleteFile4') + '?', this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -229,8 +220,8 @@ export default {
         DeleteFiles(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '成功删除选中的 ' + dataLength + ' 个文件',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('FileDataPage.MsgDeleteFile7') + dataLength + this.$t('FileDataPage.MsgDeleteFile4'),
               type: 'success'
             })
             this.refreshTableData() // 刷新表格数据
@@ -239,15 +230,15 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 删除三个月前的文件
     deleteBeforeFiles() {
-      this.$confirm(`确定要删除${this.save_months}个月前的文件？`, '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('FileDataPage.MsgDeleteFile5') + this.save_months + this.$t('FileDataPage.MsgDeleteFile6'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -256,22 +247,22 @@ export default {
         DeleteBeforeFiles(data).then(res => {
           if (res.code === 20000 && res.count > 0) {
             this.$notify({
-              title: '删除成功',
-              message: '成功删除:' + res.count + '个文件',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('FileDataPage.MsgDeleteFile7') + res.count + this.$t('FileDataPage.MsgDeleteFile4'),
               type: 'success'
             })
             this.refreshTableData() // 刷新表格数据
           } else if (res.count === 0) {
             this.$message({
               type: 'warning',
-              message: `未查找到${this.save_months}个月前的文件`
+              message: this.$t('FileDataPage.MsgDeleteFile8') + this.save_months + this.$t('FileDataPage.MsgDeleteFile9')
             })
           }
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -294,13 +285,13 @@ export default {
       DownloadFile({ 'id': row.id }).then(res => {
         this.frontDownloadFile(res)
         this.$message({
-          message: '开始下载',
+          message: this.$t('Msg.BeginDownload'),
           type: 'success'
         })
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败',
+          message: this.$t('Msg.DownloadFail'),
           type: 'error'
         })
       })
@@ -310,14 +301,14 @@ export default {
       this.helpDialogVisible = true
     },
     resetAllFileList() {
-      this.$confirm('确定要重置文件列表？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('FileDataPage.MsgDeleteFile10'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         type: 'warning'
       }).then(() => {
         ResetAllFileList().then(res => {
-          this.$alert(res.message, '提示', {
-            confirmButtonText: '确定',
+          this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
           this.refreshTableData() // 刷新表格数据
@@ -325,7 +316,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     }

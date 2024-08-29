@@ -1,4 +1,5 @@
 // 将数据库中datetime类型的字段转化为 "YYYY-MM-DD HH:MM:SS"
+
 function FormatDatabaseDatetime(dbDatetime) {
   const dateObject = new Date(dbDatetime)
   const year = dateObject.getFullYear()

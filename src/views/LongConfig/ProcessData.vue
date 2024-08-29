@@ -5,22 +5,16 @@
         <el-col :span="16">
           <div>
             <el-button v-if="buttons.includes('ProcessData/add')" type="primary" @click="addDataDialog">
-              <i class="el-icon-plus" />添加
+              <i class="el-icon-plus" />{{ $t('TablePage.BtnAppend') }}
             </el-button>
-            <!-- <el-button v-if="buttons.includes('ProcessData/delete')" type="danger" @click="deleteData">
-              <i class="el-icon-delete" />删除
-            </el-button>
-            <el-button v-if="buttons.includes('ProcessData/import')" @click="importDataDialog">
-              <i class="el-icon-upload2" />导入
-            </el-button> -->
             <el-button v-if="buttons.includes('ProcessData/export')" @click="exportDataDialog">
-              <i class="el-icon-download" />导出
+              <i class="el-icon-download" />{{ $t('TablePage.BtnExport') }}
             </el-button>
           </div>
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -28,7 +22,7 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnViewInstruction')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
@@ -46,51 +40,55 @@
           :data="table_data"
           :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
-
           stripe
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="name" label="制程" width="90" sortable fixed />
-          <el-table-column prop="enable" label="是否启用该制程" width="130">
+          <el-table-column prop="name" :label="lang_dict.name" width="120" sortable fixed />
+          <el-table-column prop="TB" :label="lang_dict.TB" width="50" />
+          <el-table-column prop="paired_process" :label="lang_dict.paired_process" width="100" />
+          <el-table-column prop="grouping_factor_day" :label="lang_dict.grouping_factor_day" width="240" />
+          <el-table-column prop="grouping_factor_overtime" :label="lang_dict.grouping_factor_overtime" width="160" />
+          <el-table-column prop="grouping_factor_hour" :label="lang_dict.grouping_factor_hour" width="170" />
+          <el-table-column prop="grouping_combination_flag" :label="lang_dict.grouping_combination_flag" width="130">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.enable === true" size="small" type="success">启用</el-tag>
-              <el-tag v-else size="small" type="danger">关闭</el-tag>
+              <el-tag v-if="scope.row.grouping_combination_flag === 1" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.grouping_combination_flag === 0" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="TB" label="面" width="50" />
-          <el-table-column prop="paired_process" label="配对制程名" width="100" />
-          <el-table-column prop="grouping_factor_day" label="第一块工单划分参数" width="240" />
-          <el-table-column prop="grouping_factor_overtime" label="第二块划分参数" width="160" />
-          <el-table-column prop="grouping_factor_hour" label="第二块工单控制大小" width="170" />
-          <el-table-column prop="grouping_combination_flag" label="第三块是否可并" width="130">
+          <el-table-column prop="first_second_flag" :label="lang_dict.first_second_flag" width="180">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.grouping_combination_flag === 1" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.grouping_combination_flag === 0" size="small" type="danger">否</el-tag>
+              <el-tag v-if="scope.row.first_second_flag === 1" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.first_second_flag === 0" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="first_second_flag" label="第一块和第二块是否可并" width="180">
+          <el-table-column prop="first_second_combination_flag" :label="lang_dict.first_second_combination_flag" width="260">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.first_second_flag === 1" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.first_second_flag === 0" size="small" type="danger">否</el-tag>
+              <el-tag v-if="scope.row.first_second_combination_flag === 1" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.first_second_combination_flag === 0" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="first_second_combination_flag" label="没有第三块时，前两块是否可以合并" width="260">
+          <el-table-column prop="buffer_time" :label="lang_dict.buffer_time" width="130" />
+          <el-table-column prop="is_point" :label="lang_dict.is_point" width="100">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.first_second_combination_flag === 1" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.first_second_combination_flag === 0" size="small" type="danger">否</el-tag>
+              <el-tag v-if="scope.row.is_point === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="buffer_time" label="上下板间隔时间(小时)" width="130" />
-          <el-table-column prop="is_point" label="是否按点数" width="120">
+          <el-table-column prop="deleted_process_flag" :label="lang_dict.deleted_process_flag" width="200">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_point === true" size="small" type="success">是</el-tag>
-              <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">否</el-tag>
+              <el-tag v-if="scope.row.deleted_process_flag === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.deleted_process_flag === false" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="upper_completed_buffer_time" label="上阶完工上下板间隔时间(小时)" width="220" />
-          <el-table-column prop="upper_in_production_buffer_time" label="上阶在产上下板间隔时间(小时)" width="220" />
-          <el-table-column width="110" fixed="right" label="操作">
+          <el-table-column prop="locked_buffer_time" :label="lang_dict.locked_buffer_time" width="200" />
+          <el-table-column prop="netboard_buffer_time" :label="lang_dict.netboard_buffer_time" width="180" />
+          <el-table-column prop="ct_predict_lower" :label="lang_dict.ct_predict_lower" width="120" />
+          <el-table-column prop="ct_predict_upper" :label="lang_dict.ct_predict_upper" width="120" />
+          <el-table-column prop="process_sequence" :label="lang_dict.process_sequence" width="120" />
+          <el-table-column prop="process_order" :label="lang_dict.process_order" width="120" sortable />
+          <el-table-column prop="switch_name" :label="lang_dict.switch_name" width="120" sortable />
+          <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
               <el-button
                 v-if="buttons.includes('ProcessData/modify')"
@@ -135,146 +133,146 @@
         <el-form ref="$form" :model="model" label-position="left" size="small">
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.name" prop="name" label="制程">
-                <el-input v-model="model.name" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.name" prop="name" :label="lang_dict.name">
+                <el-input v-model="model.name" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.enable" prop="enable" label="是否启用该制程">
-                <el-switch v-model="model.enable" style="width: 100%;" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.TB" prop="TB" label="面">
-                <el-select v-model="model.TB" placeholder="Top面/Button面/Single面" :style="{width: '100%'}">
+              <el-form-item :rules="rules.TB" prop="TB" :label="lang_dict.TB">
+                <el-select v-model="model.TB" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}">
                   <el-option v-for="(item) in TBOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.paired_process" prop="paired_process" label="配对制程名">
-                <el-input v-model="model.paired_process" placeholder="对应的另一面，如果是单面则为空" clearable />
+              <el-form-item :rules="rules.paired_process" prop="paired_process" :label="lang_dict.paired_process">
+                <el-input v-model="model.paired_process" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.process_order" prop="process_order" :label="lang_dict.process_order">
+                <el-input v-model="model.process_order" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.process_sequence" prop="process_sequence" :label="lang_dict.process_sequence">
+                <el-input v-model="model.process_sequence" :placeholder="$t('Placeholder.PleInput012')" oninput="this.value=this.value.replace(/[^0-2]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.grouping_factor_day" prop="grouping_factor_day" :label="lang_dict.grouping_factor_day">
+                <el-input-number v-model="model.grouping_factor_day" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.grouping_factor_overtime" prop="grouping_factor_overtime" :label="lang_dict.grouping_factor_overtime">
+                <el-input-number v-model="model.grouping_factor_overtime" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.grouping_factor_hour" prop="grouping_factor_hour" :label="lang_dict.grouping_factor_hour">
+                <el-input-number v-model="model.grouping_factor_hour" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_factor_day" prop="grouping_factor_day" label="第一块工单划分参数">
-                <el-input-number v-model="model.grouping_factor_day" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.first_second_flag" prop="first_second_flag" :label="lang_dict.first_second_flag">
+                <el-input v-model="model.first_second_flag" :placeholder="$t('Placeholder.No0Yes1')" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_factor_overtime" prop="grouping_factor_overtime" label="第二块工单划分参数">
-                <el-input-number v-model="model.grouping_factor_overtime" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.grouping_combination_flag" prop="grouping_combination_flag" :label="lang_dict.grouping_combination_flag">
+                <el-input v-model="model.grouping_combination_flag" :placeholder="$t('Placeholder.No0Yes1')" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_factor_hour" prop="grouping_factor_hour" label="第二块工单控制大小">
-                <el-input-number v-model="model.grouping_factor_hour" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.first_second_flag" prop="first_second_flag" label="第一块和第二块是否可并">
-                <el-input v-model="model.first_second_flag" placeholder="0否,1是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.grouping_combination_flag" prop="grouping_combination_flag" label="第三块是否可并">
-                <el-input v-model="model.grouping_combination_flag" placeholder="0否,1是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.first_second_combination_flag" prop="first_second_combination_flag" label="没有第三块时，前两块是否可以合并">
-                <el-input v-model="model.first_second_combination_flag" placeholder="0否,1是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              <el-form-item :rules="rules.first_second_combination_flag" prop="first_second_combination_flag" :label="lang_dict.first_second_combination_flag">
+                <el-input v-model="model.first_second_combination_flag" :placeholder="$t('Placeholder.No0Yes1')" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.buffer_time" prop="buffer_time" label="上下板间隔时间(小时)">
-                <el-input-number v-model="model.buffer_time" placeholder="请输入" :style="{width: '100%'}" />
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.locked_buffer_time" prop="locked_buffer_time" :label="lang_dict.locked_buffer_time">
+                <el-input-number v-model="model.locked_buffer_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_point" prop="is_point" label="是否按点数">
-                <el-switch v-model="model.is_point" style="width: 100%;" />
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.netboard_buffer_time" prop="netboard_buffer_time" :label="lang_dict.netboard_buffer_time">
+                <el-input-number v-model="model.netboard_buffer_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process_order" prop="process_order" label="制程分配点数的优先顺序">
-                <el-input v-model="model.process_order" placeholder="请输入" clearable />
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.ct_predict_lower" prop="ct_predict_lower" :label="lang_dict.ct_predict_lower">
+                <el-input-number v-model="model.ct_predict_lower" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.ct_predict_upper" prop="ct_predict_upper" :label="lang_dict.ct_predict_upper">
+                <el-input-number v-model="model.ct_predict_upper" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.upper_completed_buffer_time" prop="upper_completed_buffer_time" label="上阶完工上下板间隔时间(小时)">
-                <el-input-number v-model="model.upper_completed_buffer_time" placeholder="请输入" :style="{width: '100%'}" />
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.buffer_time" prop="buffer_time" :label="lang_dict.buffer_time">
+                <el-input-number v-model="model.buffer_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.upper_in_production_buffer_time" prop="upper_in_production_buffer_time" label="上阶在产上下板间隔时间(小时)">
-                <el-input-number v-model="model.upper_in_production_buffer_time" :style="{width: '100%'}" />
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_point" prop="is_point" :label="lang_dict.is_point">
+                <el-switch v-model="model.is_point" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.switch_name" prop="switch_name" :label="lang_dict.switch_name">
+                <el-input v-model="model.switch_name" :placeholder="$t('Placeholder.Enter')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.deleted_process_flag" prop="deleted_process_flag" :label="lang_dict.deleted_process_flag">
+                <el-switch v-model="model.deleted_process_flag" style="width: 100%" />
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-card>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
-        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">确认修改</el-button>
+        <el-button @click="handleFormClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">{{ $t('TablePage.BtnAppend') }}</el-button>
+        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">{{ $t('TablePage.BtnModify') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="表格说明"
+      :title="$t('TablePage.TitleFormDescription')"
       :visible.sync="helpDialogVisible"
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>关于表格的各种说明可以写在这</span>
+      <span>{{ $t('TablePage.MsgIllustrate') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="helpDialogVisible = false">关闭</el-button>
+        <el-button @click="helpDialogVisible = false">{{ $t('PublicBtn.Close') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导入数据"
+      :title="$t('TablePage.TitleImportData')"
       :visible.sync="importDialogVisible"
       width="60%"
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="name" label="制程名" width="90" />
-        <el-table-column prop="TB" label="面" width="60" />
-        <el-table-column prop="paired_process" label="配对制程名" width="100" />
-        <el-table-column prop="grouping_factor_day" label="第一块和第二块工单划分参数(天)" width="240" />
-        <el-table-column prop="grouping_factor_hour" label="第二块工单控制大小(时)" width="190" />
-        <el-table-column prop="grouping_factor_overtime" label="第三块划分参数(天)" width="160" />
-        <el-table-column prop="grouping_combination_flag" label="第三块是否可并(0否,1是)" width="180" />
-        <el-table-column prop="first_second_combination_flag" label="没有第三块时，前两块是否可并(0否,1是)" width="280" />
-        <el-table-column prop="buffer_time" label="上下板间隔时间" width="130" />
-        <el-table-column prop="is_point" label="是否按点数" width="110" />
-      </el-table>
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="append">追加数据</el-radio>
-            <el-radio label="replace">替换数据</el-radio>
+            <el-radio label="append">{{ $t('TablePage.BtnAppendData') }}</el-radio>
+            <el-radio label="replace">{{ $t('TablePage.BtnReplaceData') }}</el-radio>
           </el-radio-group>
         </el-col>
         <el-col :span="16">
@@ -292,35 +290,35 @@
             >
               <el-button slot="trigger" type="primary" style="margin-left: 10px;">
                 <i class="el-icon-upload" />
-                上传文件
+                {{ $t('TablePage.BtnUploadFile') }}
               </el-button>
             </el-upload>
           </div>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleImportClose">关闭</el-button>
-        <el-button type="primary" @click="confirmImport">确认导入</el-button>
+        <el-button @click="handleImportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="confirmImport">{{ $t('TablePage.BtnConfirmImport') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导出数据"
+      :title="$t('TablePage.TitleExportData')"
       :visible.sync="exportDialogVisible"
       :before-close="handleExportClose"
       width="45%"
       @dragDialog="handleDrag"
     >
       <el-row>
-        <span>导出文件格式：</span>
+        <span>{{ $t('PublicBtn.ConfirmModify') }}</span>
         <el-radio-group v-model="exportRadio">
           <el-radio label="xlsx">.xlsx</el-radio>
         </el-radio-group>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleExportClose">关闭</el-button>
-        <el-button type="primary" @click="exportData">确认导出</el-button>
+        <el-button @click="handleExportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="exportData">{{ $t('TablePage.BtnConfirmExport') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -330,45 +328,21 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/ProcessData'
-import { LineOptions } from '@/utils/items'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, GetLangDict } from '@/api/LongConfig/ProcessData'
+import { deepClone } from '@/utils'
 export default {
   name: 'ProcessData',
   directives: { elDragDialog },
   data() {
     return {
+      lang_dict: {}, // 从后端获取表格列名
       loading: true, // 表格加载动画
       importLoading: {
-        text: '拼命导入中...',
+        text: this.$t('PublicText.ImportLoadiing'),
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExample: [
-        {
-          name: 'T',
-          TB: 'T',
-          paired_process: 'B',
-          grouping_factor_day: 2.0,
-          grouping_factor_hour: 0.0,
-          grouping_factor_overtime: 4.0,
-          grouping_combination_flag: 1,
-          first_second_combination_flag: 0,
-          is_point: 'TRUE',
-          buffer_time: 8.0
-        }, {
-          name: '(必填)',
-          TB: '(必填)',
-          paired_process: '(必填)',
-          grouping_factor_day: '(必填)',
-          grouping_factor_hour: '(必填)',
-          grouping_factor_overtime: '(必填)',
-          grouping_combination_flag: '(必填)',
-          first_second_combination_flag: '(必填)',
-          is_point: '(必填)',
-          buffer_time: '(必填)'
-        }
-      ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -387,102 +361,147 @@ export default {
       // 表单相关数据
       forms: ['$form'],
       model: {
-        id: '',
-        name: '',
-        TB: '',
-        paired_process: '',
-        grouping_factor_day: 0,
-        grouping_factor_hour: 0,
-        grouping_factor_overtime: 0,
-        grouping_combination_flag: '',
-        first_second_combination_flag: '',
-        process_order: '',
-        is_point: '',
-        buffer_time: 0,
-        onehot_code: '',
-        upper_completed_buffer_time: 0,
-        upper_in_production_buffer_time: 0,
-        enable: false
+        id: null,
+        name: null,
+        TB: null,
+        paired_process: null,
+        grouping_factor_day: undefined,
+        grouping_factor_hour: undefined,
+        grouping_factor_overtime: undefined,
+        grouping_combination_flag: null,
+        first_second_flag: null,
+        first_second_combination_flag: null,
+        is_point: false,
+        buffer_time: undefined,
+        locked_buffer_time: undefined,
+        netboard_buffer_time: undefined,
+        ct_predict_lower: undefined,
+        ct_predict_upper: undefined,
+        process_order: null,
+        process_sequence: null,
+        onehot_code: null,
+        switch_name: null,
+        deleted_process_flag: false
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        name: '',
-        TB: '',
-        paired_process: '',
-        grouping_factor_day: 0,
-        grouping_factor_hour: 0,
-        grouping_factor_overtime: 0,
-        grouping_combination_flag: '',
-        first_second_combination_flag: '',
-        process_order: '',
-        is_point: '',
-        buffer_time: 0,
-        onehot_code: '',
-        upper_completed_buffer_time: 0,
-        upper_in_production_buffer_time: 0,
-        enable: false
+        id: null,
+        name: null,
+        TB: null,
+        paired_process: null,
+        grouping_factor_day: undefined,
+        grouping_factor_hour: undefined,
+        grouping_factor_overtime: undefined,
+        grouping_combination_flag: null,
+        first_second_flag: null,
+        first_second_combination_flag: null,
+        is_point: false,
+        buffer_time: undefined,
+        locked_buffer_time: undefined,
+        netboard_buffer_time: undefined,
+        ct_predict_lower: undefined,
+        ct_predict_upper: undefined,
+        process_order: null,
+        process_sequence: null,
+        onehot_code: null,
+        switch_name: null,
+        deleted_process_flag: false
       },
+      modelBackup: {},
       rules: {
         name: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         TB: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'change'
         }],
         paired_process: [{
         }],
         grouping_factor_day: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         grouping_factor_hour: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         grouping_factor_overtime: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         grouping_combination_flag: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         first_second_combination_flag: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         is_point: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         buffer_time: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        enable: [{
+        first_second_flag: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        locked_buffer_time: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        netboard_buffer_time: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        ct_predict_lower: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        ct_predict_upper: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        process_sequence: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         process_order: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        switch_name: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
+          trigger: 'blur'
+        }],
+        deleted_process_flag: [{
+          required: true,
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }]
       },
-      line_name_data: LineOptions, // 维护线别
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
@@ -502,24 +521,19 @@ export default {
     ])
   },
   created() {
+    GetLangDict().then(res => {
+      this.lang_dict = res.lang_dict
+    })
     this.getTableData(this.currentPage, this.pageSize)
   },
   mounted() {
     // this.getTableData(this.currentPage, this.pageSize)
+    this.modelBackup = deepClone(this.model)
   },
   methods: {
     // dialog可拖拽
     handleDrag() {
       // this.$refs.select.blur()
-    },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 20) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 20) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
-      return ''
     },
     // 分页
     handlePageChange(val) {
@@ -549,7 +563,7 @@ export default {
     },
     // 添加数据
     addDataDialog() {
-      this.dialogTitle = '添加数据'
+      this.dialogTitle = this.$t('TablePage.TitleAppendData')
       this.dialogBtnType = true
       this.dataDialogVisible = true
       this.isClick = false
@@ -564,20 +578,19 @@ export default {
           AddData(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
-                title: '添加成功',
-                message: '成功添加 1 条数据',
+                title: this.$t('PublicText.TitleTip'),
+                message: this.$t('TablePage.MsgAppendSuccess'),
                 type: 'success'
               })
-              setTimeout(() => {
-                this.closeFormDialog()
-              }, 2000)
+              this.model = deepClone(this.modelBackup)
+              this.modelOriginal = deepClone(this.modelBackup)
               this.refreshTableData(true)
             }
           })
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
@@ -592,7 +605,7 @@ export default {
       if (dataLength === 0) {
         this.$message({
           type: 'warning',
-          message: '请至少选中一条数据'
+          message: this.$t('TablePage.MsgSelectWarn')
         })
         return
       }
@@ -600,9 +613,9 @@ export default {
       for (let i = 0; i < dataLength; i++) {
         idList.push(this.dataTableSelections[i].id)
       }
-      this.$confirm('确定要删除选中的 ' + dataLength + ' 条数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('TablePage.MsgDeleteMultiDataWarn1') + dataLength + this.$t('TablePage.MsgDeleteMultiDataWarn2'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -610,8 +623,8 @@ export default {
         DeleteData(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '成功删除选中的 ' + dataLength + ' 条数据',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('TablePage.MsgDeleteMultiDataWarn3') + dataLength + this.$t('TablePage.MsgDeleteMultiDataWarn4'),
               type: 'success'
             })
             this.refreshTableData() // 刷新表格数据
@@ -620,14 +633,14 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 修改数据
     handleModify(index, row) {
       // 修改dialog
-      this.dialogTitle = '修改数据'
+      this.dialogTitle = this.$t('TablePage.TitleModifyData')
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
@@ -649,7 +662,7 @@ export default {
       if (!this.checkFormChange()) {
         this.$message({
           type: 'info',
-          message: '数据未修改，无需提交'
+          message: this.$t('TablePage.MsgModifyInfo')
         })
         return
       }
@@ -662,7 +675,7 @@ export default {
             if (res.code === 20000) {
               this.$notify({
                 title: res.message,
-                message: '数据已修改',
+                message: this.$t('TablePage.MsgModifySuccess'),
                 type: 'success'
               })
               this.refreshTableData()
@@ -671,7 +684,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
@@ -690,9 +703,9 @@ export default {
     // 表单dialog关闭前提示
     handleFormClose() {
       if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgModifyCloseWarn'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           type: 'warning'
         }).then(() => {
           this.closeFormDialog()
@@ -706,23 +719,15 @@ export default {
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      for (const key in this.model) {
-        var isNum = /^[0-9]+.?[0-9]*/
-        if (isNum.test(this.model[key])) { // 数字要初始化为0
-          this.model[key] = 0
-          this.modelOriginal[key] = 0
-        } else {
-          this.model[key] = ''
-          this.modelOriginal[key] = ''
-        }
-      }
+      this.model = deepClone(this.modelBackup)
+      this.modelOriginal = deepClone(this.modelBackup)
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
     handleDelete(index, row) {
-      this.$confirm('确定要删除该数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('TablePage.MsgDeleteWarn'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -733,8 +738,8 @@ export default {
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '该数据已删除',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('TablePage.MsgDeleteSuccess'),
               type: 'success'
             })
             this.refreshTableData()
@@ -743,7 +748,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -754,9 +759,9 @@ export default {
     // 确认导入
     confirmImport() {
       if (this.importMode === 'replace') {
-        this.$confirm('此操作将会清空所有原有内容, 确定要进行替换操作？', '提示', {
-          confirmButtonText: '确定替换',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgImportReplace'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           confirmButtonClass: 'btnDanger',
           type: 'warning'
         }).then(() => {
@@ -764,7 +769,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '取消导入'
+            message: this.$t('PublicBtn.MsgUnimport')
           })
         })
       } else {
@@ -781,8 +786,8 @@ export default {
       form.append('import_mode', this.importMode)
       ImportData(form).then(res => {
         if (res.code === 20000) {
-          this.$alert('本次共导入了 ' + res.data_count + ' 条数据', res.message, {
-            confirmButtonText: '确定',
+          this.$alert(this.$t('TablePage.MsgExportData1') + res.data_count + this.$t('TablePage.MsgExportData2'), res.message, {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
           // this.loadingInstance.close() // 清除动画
@@ -794,8 +799,8 @@ export default {
         }
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })
@@ -835,8 +840,8 @@ export default {
           XLSX.utils.book_append_sheet(wb, sheet, tableName)
           XLSX.writeFile(wb, tableName + '.xlsx')
           this.$notify({
-            title: '导出成功',
-            message: '本次共导出了 ' + dataCount + ' 条数据',
+            title: this.$t('TablePage.MsgExportSuccess'),
+            message: this.$t('TablePage.MsgExportData1') + dataCount + this.$t('TablePage.MsgExportData2'),
             type: 'success'
           })
           // 1秒后自动关闭窗口

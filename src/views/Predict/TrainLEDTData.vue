@@ -5,22 +5,22 @@
         <el-col :span="16">
           <div>
             <el-button v-if="buttons.includes('TrainLEDTData/add')" type="primary" @click="addDataDialog">
-              <i class="el-icon-plus" />添加
+              <i class="el-icon-plus" />{{ $t('TablePage.BtnAppend') }}
             </el-button>
             <el-button v-if="buttons.includes('TrainLEDTData/delete')" type="danger" @click="deleteData">
-              <i class="el-icon-delete" />删除
+              <i class="el-icon-delete" />{{ $t('TablePage.BtnDelete') }}
             </el-button>
             <el-button v-if="buttons.includes('TrainLEDTData/import')" @click="importDataDialog">
-              <i class="el-icon-upload2" />导入
+              <i class="el-icon-upload2" />{{ $t('TablePage.BtnImport') }}
             </el-button>
             <el-button v-if="buttons.includes('TrainLEDTData/export')" @click="exportDataDialog">
-              <i class="el-icon-download" />导出
+              <i class="el-icon-download" />{{ $t('TablePage.BtnExport') }}
             </el-button>
           </div>
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -28,7 +28,7 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnViewInstruction')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
@@ -50,25 +50,22 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="board" label="板号前八位" width="120" sortable />
-          <el-table-column prop="SMT_machine_name" label="SMT机种名" width="200" sortable />
-          <el-table-column prop="line" label="线体" width="80" sortable />
-          <el-table-column prop="line_classify" label="线别类" width="95" sortable />
-          <el-table-column prop="connecting_plates" label="联片数" width="95" sortable />
-          <el-table-column prop="passing_plates" label="过板数" width="95" sortable />
-          <el-table-column prop="single_points" label="单板点数(点)" width="110" sortable />
-          <el-table-column prop="process" label="制程" width="80" sortable />
-          <!-- <el-table-column prop="long" label="长" width="60" />
-          <el-table-column prop="wide" label="宽" width="60" />
-          <el-table-column prop="thick" label="厚" width="60" /> -->
-          <el-table-column prop="completed_quantity" label="产出片数" width="110" sortable />
-          <el-table-column prop="total_points" label="总点数" width="95" sortable />
-          <el-table-column prop="process_time" label="加工时间" width="110" sortable />
-          <el-table-column prop="other_time" label="其他时间" width="110" sortable />
-          <el-table-column prop="program_CT" label="程序CT" width="100" sortable />
-          <el-table-column prop="average_CT" label="平均CT" width="110" sortable />
-          <el-table-column prop="data_time" label="数据时间" sortable />
-          <el-table-column width="110" fixed="right" label="操作">
+          <el-table-column prop="board" :label="lang_dict.board" width="120" sortable />
+          <el-table-column prop="SMT_machine_name" :label="lang_dict.SMT_machine_name" width="200" sortable />
+          <el-table-column prop="line" :label="lang_dict.line" width="80" sortable />
+          <el-table-column prop="line_classify" :label="lang_dict.line_classify" width="95" sortable />
+          <el-table-column prop="connecting_plates" :label="lang_dict.connecting_plates" width="95" sortable />
+          <el-table-column prop="passing_plates" :label="lang_dict.passing_plates" width="95" sortable />
+          <el-table-column prop="single_points" :label="lang_dict.single_points" width="110" sortable />
+          <el-table-column prop="process" :label="lang_dict.process" width="80" sortable />
+          <el-table-column prop="completed_quantity" :label="lang_dict.completed_quantity" width="110" sortable />
+          <el-table-column prop="total_points" :label="lang_dict.total_points" width="95" sortable />
+          <el-table-column prop="process_time" :label="lang_dict.process_time" width="110" sortable />
+          <el-table-column prop="other_time" :label="lang_dict.other_time" width="110" sortable />
+          <el-table-column prop="program_CT" :label="lang_dict.program_CT" width="100" sortable />
+          <el-table-column prop="average_CT" :label="lang_dict.average_CT" width="110" sortable />
+          <el-table-column prop="data_time" :label="lang_dict.data_time" width="110" sortable />
+          <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
               <el-button
                 v-if="buttons.includes('TrainLEDTData/modify')"
@@ -113,18 +110,18 @@
         <el-form ref="$form" :model="model" label-position="left" size="small">
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.board" prop="board" label="板号前八位">
-                <el-input v-model="model.board" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.board" prop="board" :label="lang_dict.board">
+                <el-input v-model="model.board" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.SMT_machine_name" prop="SMT_machine_name" label="SMT机种名">
-                <el-input v-model="model.SMT_machine_name" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.SMT_machine_name" prop="SMT_machine_name" :label="lang_dict.SMT_machine_name">
+                <el-input v-model="model.SMT_machine_name" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line" prop="line" label="线体">
-                <el-select v-model="model.line" placeholder="请选择线体" :style="{width: '100%'}">
+              <el-form-item :rules="rules.line" prop="line" :label="lang_dict.line">
+                <el-select v-model="model.line" :placeholder="$t('Placeholder.Select')" :style="{width: '100%'}">
                   <el-option v-for="(item) in lineOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
                 </el-select>
               </el-form-item>
@@ -132,154 +129,126 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line_classify" prop="line_classify" label="线别类">
-                <el-input v-model="model.line_classify" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.line_classify" prop="line_classify" :label="lang_dict.line_classify">
+                <el-input v-model="model.line_classify" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process" prop="process" label="制程">
-                <el-select v-model="model.process" placeholder="请选择制程" :style="{width: '100%'}">
+              <el-form-item :rules="rules.process" prop="process" :label="lang_dict.process">
+                <el-select v-model="model.process" :placeholder="$t('Placeholder.Select')" :style="{width: '100%'}">
                   <el-option v-for="(item) in processOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" label="联片数">
-                <el-input-number v-model="model.connecting_plates" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" :label="lang_dict.connecting_plates">
+                <el-input-number v-model="model.connecting_plates" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.passing_plates" prop="passing_plates" label="过板数">
-                <el-input-number v-model="model.passing_plates" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.passing_plates" prop="passing_plates" :label="lang_dict.passing_plates">
+                <el-input-number v-model="model.passing_plates" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数(点)">
-                <el-input-number v-model="model.single_points" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.single_points" prop="single_points" :label="lang_dict.single_points">
+                <el-input-number v-model="model.single_points" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.completed_quantity" prop="completed_quantity" label="产出片数">
-                <el-input-number v-model="model.completed_quantity" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.long" prop="long" label="长">
-                <el-input v-model="model.long" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.wide" prop="wide" label="宽">
-                <el-input v-model="model.wide" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.thick" prop="thick" label="厚">
-                <el-input v-model="model.thick" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.completed_quantity" prop="completed_quantity" :label="lang_dict.completed_quantity">
+                <el-input-number v-model="model.completed_quantity" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.total_points" prop="total_points" label="总点数">
-                <el-input-number v-model="model.total_points" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.long" prop="long" :label="lang_dict.long">
+                <el-input v-model="model.long" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process_time" prop="process_time" label="加工时间">
-                <el-input-number v-model="model.process_time" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.wide" prop="wide" :label="lang_dict.wide">
+                <el-input v-model="model.wide" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.other_time" prop="other_time" label="其他时间">
-                <el-input-number v-model="model.other_time" placeholder="请输入" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.thick" prop="thick" :label="lang_dict.thick">
+                <el-input v-model="model.thick" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.program_CT" prop="program_CT" label="程序CT">
-                <el-input-number v-model="model.program_CT" placeholder="请输入" step="0.1" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.total_points" prop="total_points" :label="lang_dict.total_points">
+                <el-input-number v-model="model.total_points" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.average_CT" prop="average_CT" label="平均CT">
-                <el-input-number v-model="model.average_CT" placeholder="请输入" step="0.1" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.process_time" prop="process_time" :label="lang_dict.process_time">
+                <el-input-number v-model="model.process_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.data_time" prop="data_time" label="数据时间">
-                <el-date-picker v-model="model.data_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.other_time" prop="other_time" :label="lang_dict.other_time">
+                <el-input-number v-model="model.other_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.program_CT" prop="program_CT" :label="lang_dict.program_CT">
+                <el-input-number v-model="model.program_CT" :placeholder="$t('Placeholder.Enter')" step="0.1" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.average_CT" prop="average_CT" :label="lang_dict.average_CT">
+                <el-input-number v-model="model.average_CT" :placeholder="$t('Placeholder.Enter')" step="0.1" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.data_time" prop="data_time" :label="lang_dict.data_time">
+                <el-date-picker v-model="model.data_time" :placeholder="$t('Placeholder.Select')" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-card>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
-        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">确认修改</el-button>
+        <el-button @click="handleFormClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">{{ $t('TablePage.BtnAppend') }}</el-button>
+        <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">{{ $t('TablePage.BtnModify') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="表格说明"
+      :title="$t('TablePage.TitleFormDescription')"
       :visible.sync="helpDialogVisible"
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>关于表格的各种说明可以写在这</span>
+      <span>{{ $t('TablePage.MsgIllustrate') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="helpDialogVisible = false">关闭</el-button>
+        <el-button @click="helpDialogVisible = false">{{ $t('PublicBtn.Close') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导入数据"
+      :title="$t('TablePage.TitleImportData')"
       :visible.sync="importDialogVisible"
       width="60%"
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
-      </p>
-      <el-table
-        :data="tableDataExample"
-        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-        :cell-style="setCellColor"
-        border
-      >
-        <el-table-column prop="board" label="板号前八位" width="120" />
-        <el-table-column prop="SMT_machine_name" label="SMT机种名" width="200" />
-        <el-table-column prop="line" label="线体" width="80" />
-        <el-table-column prop="line_classify" label="线别类" width="95" />
-        <el-table-column prop="connecting_plates" label="联片数" width="95" />
-        <el-table-column prop="passing_plates" label="过板数" width="95" />
-        <el-table-column prop="single_points" label="单板点数(点)" width="110" />
-        <el-table-column prop="process" label="制程" width="80" />
-        <el-table-column prop="long" label="长" width="60" />
-        <el-table-column prop="wide" label="宽" width="60" />
-        <el-table-column prop="thick" label="厚" width="60" />
-        <el-table-column prop="completed_quantity" label="产出片数" width="110" />
-        <el-table-column prop="total_points" label="总点数" width="95" />
-        <el-table-column prop="process_time" label="加工时间" width="110" />
-        <el-table-column prop="other_time" label="其他时间" width="110" />
-        <el-table-column prop="program_CT" label="程序CT" width="100" />
-        <el-table-column prop="average_CT" label="平均CT" width="110" />
-        <el-table-column prop="data_time" label="数据时间" width="110" />
-      </el-table>
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
-            <el-radio label="append">追加数据</el-radio>
-            <el-radio label="replace">替换数据</el-radio>
+            <el-radio label="append">{{ $t('TablePage.BtnAppendData') }}</el-radio>
+            <el-radio label="replace">{{ $t('TablePage.BtnReplaceData') }}</el-radio>
           </el-radio-group>
         </el-col>
         <el-col :span="16">
@@ -297,35 +266,35 @@
             >
               <el-button slot="trigger" type="primary" style="margin-left: 10px;">
                 <i class="el-icon-upload" />
-                上传文件
+                {{ this.$t('TablePage.BtnUploadFile') }}
               </el-button>
             </el-upload>
           </div>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleImportClose">关闭</el-button>
-        <el-button type="primary" @click="confirmImport">确认导入</el-button>
+        <el-button @click="handleImportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="confirmImport">{{ $t('TablePage.BtnConfirmImport') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       v-el-drag-dialog
-      title="导出数据"
+      :title="$t('TablePage.TitleExportData')"
       :visible.sync="exportDialogVisible"
       :before-close="handleExportClose"
       width="45%"
       @dragDialog="handleDrag"
     >
       <el-row>
-        <span>导出文件格式：</span>
+        <span>{{ $t('PublicBtn.ConfirmModify') }}</span>
         <el-radio-group v-model="exportRadio">
           <el-radio label="xlsx">.xlsx</el-radio>
         </el-radio-group>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleExportClose">关闭</el-button>
-        <el-button type="primary" @click="exportData">确认导出</el-button>
+        <el-button @click="handleExportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="exportData">{{ $t('TablePage.BtnConfirmExport') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -335,65 +304,26 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/Predict/TrainLEDTData'
-import { LineOptions, ProcessOptions } from '@/utils/items'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, GetLangDict } from '@/api/Predict/TrainLEDTData'
+import { GetLineProcess } from '@/api/common'
+import { deepClone } from '@/utils'
 export default {
   name: 'TrainLEDTData',
   directives: { elDragDialog },
   data() {
     return {
+      lang_dict: {}, // 从后端获取表格列名
       loading: true, // 表格加载动画
       importLoading: {
-        text: '拼命导入中...',
+        text: this.$t('PublicText.ImportLoadiing'),
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       exportLoading: {
-        text: '拼命导出中...',
+        text: this.$t('PublicText.ExportLoadiing'),
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导出动画
       loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExample: [
-        {
-          board: '715GC159',
-          SMT_machine_name: 'MLPD1DFA426AE4SMT',
-          line: 'SM19',
-          line_classify: 'c5',
-          process: 'T',
-          connecting_plates: 1.0,
-          passing_plates: 25.0,
-          single_points: 10816.0,
-          completed_quantity: 0,
-          long: '0',
-          wide: '0',
-          thick: '0',
-          total_points: 270400.0,
-          process_time: 438,
-          other_time: 20,
-          program_CT: 0.0,
-          average_CT: 422.40,
-          data_time: '2021-04-09'
-        }, {
-          board: '(必填)',
-          SMT_machine_name: '(必填)',
-          line: '(必填)',
-          line_classify: '(必填)',
-          process: '(必填)',
-          connecting_plates: '(必填)',
-          passing_plates: '(必填)',
-          single_points: '(必填)',
-          completed_quantity: '(必填)',
-          long: '(必填)',
-          wide: '(必填)',
-          thick: '(必填)',
-          total_points: '(必填)',
-          process_time: '(必填)',
-          other_time: '(必填)',
-          program_CT: '(必填)',
-          average_CT: '(必填)',
-          data_time: '(必填)'
-        }
-      ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
@@ -412,142 +342,143 @@ export default {
       // 表单相关数据
       forms: ['$form'],
       model: {
-        id: '',
-        board: '',
-        SMT_machine_name: '',
-        line: '',
-        line_classify: '',
-        process: '',
-        connecting_plates: 0,
-        passing_plates: 0,
-        single_points: 0,
-        completed_quantity: 0,
-        long: '',
-        wide: '',
-        thick: '',
-        total_points: 0,
-        process_time: 0,
-        other_time: 0,
-        program_CT: 0,
-        average_CT: 0,
-        data_time: ''
+        id: null,
+        board: null,
+        SMT_machine_name: null,
+        line: null,
+        line_classify: null,
+        process: null,
+        connecting_plates: undefined,
+        passing_plates: undefined,
+        single_points: undefined,
+        completed_quantity: undefined,
+        long: null,
+        wide: null,
+        thick: null,
+        total_points: undefined,
+        process_time: undefined,
+        other_time: undefined,
+        program_CT: undefined,
+        average_CT: undefined,
+        data_time: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        board: '',
-        SMT_machine_name: '',
-        line: '',
-        line_classify: '',
-        process: '',
-        connecting_plates: 0,
-        passing_plates: 0,
-        single_points: 0,
-        completed_quantity: 0,
-        long: '',
-        wide: '',
-        thick: '',
-        total_points: 0,
-        process_time: 0,
-        other_time: 0,
-        program_CT: 0,
-        average_CT: 0,
-        data_time: ''
+        id: null,
+        board: null,
+        SMT_machine_name: null,
+        line: null,
+        line_classify: null,
+        process: null,
+        connecting_plates: undefined,
+        passing_plates: undefined,
+        single_points: undefined,
+        completed_quantity: undefined,
+        long: null,
+        wide: null,
+        thick: null,
+        total_points: undefined,
+        process_time: undefined,
+        other_time: undefined,
+        program_CT: undefined,
+        average_CT: undefined,
+        data_time: null
       },
+      modelBackup: {},
       rules: {
         board: [{
           required: true,
-          message: '板号前八位不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         SMT_machine_name: [{
           required: true,
-          message: 'SMT机种名不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         line: [{
           required: true,
-          message: '线体不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         line_classify: [{
           required: true,
-          message: '线别类不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         process: [{
           required: true,
-          message: '制程不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         connecting_plates: [{
           required: true,
-          message: '联片数不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         passing_plates: [{
           required: true,
-          message: '过板数不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         single_points: [{
           required: true,
-          message: '单板点数不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         completed_quantity: [{
           required: true,
-          message: '产出片数不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         long: [{
           required: true,
-          message: '长不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         wide: [{
           required: true,
-          message: '宽不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         thick: [{
           required: true,
-          message: '厚不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         total_points: [{
           required: true,
-          message: '总点数不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         process_time: [{
           required: true,
-          message: '加工时间不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         other_time: [{
           required: true,
-          message: '其他时间不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         program_CT: [{
           required: true,
-          message: '程序CT不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         average_CT: [{
           required: true,
-          message: '平均CT不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         data_time: [{
           required: true,
-          message: '数据时间不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'change'
         }]
       },
-      lineOptions: LineOptions, // 维护线别
-      processOptions: ProcessOptions, // 制程
+      lineOptions: [], // 维护线别
+      processOptions: [], // 制程
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
@@ -562,24 +493,30 @@ export default {
     ])
   },
   created() {
+    GetLangDict().then(res => {
+      this.lang_dict = res.lang_dict
+    })
+    this.getLineProcess()
     this.getTableData(this.currentPage, this.pageSize)
   },
   mounted() {
     // this.getTableData(this.currentPage, this.pageSize)
+    this.modelBackup = deepClone(this.model)
   },
   methods: {
     // dialog可拖拽
     handleDrag() {
       // this.$refs.select.blur()
     },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 28) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 2) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
-      return ''
+    getLineProcess() {
+      GetLineProcess().then(res => {
+        for (const key in res.all_line_list) {
+          this.lineOptions.push({ value: res.all_line_list[key], label: res.all_line_list[key] })
+        }
+        for (const key in res.all_process_list) {
+          this.processOptions.push({ value: res.all_process_list[key], label: res.all_process_list[key] })
+        }
+      })
     },
     // 分页
     handlePageChange(val) {
@@ -609,7 +546,7 @@ export default {
     },
     // 添加数据
     addDataDialog() {
-      this.dialogTitle = '添加数据'
+      this.dialogTitle = this.$t('TablePage.TitleAppendData')
       this.dialogBtnType = true
       this.dataDialogVisible = true
       this.isClick = false
@@ -624,20 +561,19 @@ export default {
           AddData(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
-                title: '添加成功',
-                message: '成功添加 1 条数据',
+                title: this.$t('PublicText.TitleTip'),
+                message: this.$t('TablePage.MsgAppendSuccess'),
                 type: 'success'
               })
-              setTimeout(() => {
-                this.closeFormDialog()
-              }, 1000)
+              this.model = deepClone(this.modelBackup)
+              this.modelOriginal = deepClone(this.modelBackup)
               this.refreshTableData(true)
             }
           })
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
@@ -652,7 +588,7 @@ export default {
       if (dataLength === 0) {
         this.$message({
           type: 'warning',
-          message: '请至少选中一条数据'
+          message: this.$t('TablePage.MsgSelectWarn')
         })
         return
       }
@@ -660,9 +596,9 @@ export default {
       for (let i = 0; i < dataLength; i++) {
         idList.push(this.dataTableSelections[i].id)
       }
-      this.$confirm('确定要删除选中的 ' + dataLength + ' 条数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('TablePage.MsgDeleteMultiDataWarn1') + dataLength + this.$t('TablePage.MsgDeleteMultiDataWarn2'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -670,8 +606,8 @@ export default {
         DeleteData(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '成功删除选中的 ' + dataLength + ' 条数据',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('TablePage.MsgDeleteMultiDataWarn3') + dataLength + this.$t('TablePage.MsgDeleteMultiDataWarn4'),
               type: 'success'
             })
             this.refreshTableData() // 刷新表格数据
@@ -680,14 +616,14 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     // 修改数据
     handleModify(index, row) {
       // 修改dialog
-      this.dialogTitle = '修改数据'
+      this.dialogTitle = this.$t('TablePage.TitleModifyData')
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
@@ -708,7 +644,7 @@ export default {
       if (!this.checkFormChange()) {
         this.$message({
           type: 'info',
-          message: '数据未修改，无需提交'
+          message: this.$t('TablePage.MsgModifyInfo')
         })
         return
       }
@@ -721,7 +657,7 @@ export default {
             if (res.code === 20000) {
               this.$notify({
                 title: res.message,
-                message: '数据已修改',
+                message: this.$t('TablePage.MsgModifySuccess'),
                 type: 'success'
               })
               this.refreshTableData()
@@ -730,7 +666,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
@@ -749,9 +685,9 @@ export default {
     // 表单dialog关闭前提示
     handleFormClose() {
       if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgModifyCloseWarn'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           type: 'warning'
         }).then(() => {
           this.closeFormDialog()
@@ -765,23 +701,15 @@ export default {
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      for (const key in this.model) {
-        var isNum = /^[0-9]+.?[0-9]*/
-        if (isNum.test(this.model[key])) { // 数字要初始化为0
-          this.model[key] = 0
-          this.modelOriginal[key] = 0
-        } else {
-          this.model[key] = ''
-          this.modelOriginal[key] = ''
-        }
-      }
+      this.model = deepClone(this.modelBackup)
+      this.modelOriginal = deepClone(this.modelBackup)
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
     handleDelete(index, row) {
-      this.$confirm('确定要删除该数据？', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('TablePage.MsgDeleteWarn'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -793,8 +721,8 @@ export default {
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
-              title: '删除成功',
-              message: '该数据已删除',
+              title: this.$t('PublicText.TitleTip'),
+              message: this.$t('TablePage.MsgDeleteSuccess'),
               type: 'success'
             })
             this.refreshTableData()
@@ -803,7 +731,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
@@ -814,9 +742,9 @@ export default {
     // 确认导入
     confirmImport() {
       if (this.importMode === 'replace') {
-        this.$confirm('此操作将会清空所有原有内容, 确定要进行替换操作？', '提示', {
-          confirmButtonText: '确定替换',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgImportReplace'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           confirmButtonClass: 'btnDanger',
           type: 'warning'
         }).then(() => {
@@ -824,7 +752,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '取消导入'
+            message: this.$t('PublicBtn.MsgUnimport')
           })
         })
       } else {
@@ -841,8 +769,8 @@ export default {
       form.append('import_mode', this.importMode)
       ImportData(form).then(res => {
         if (res.code === 20000) {
-          this.$alert('本次共导入了 ' + res.data_count + ' 条数据', res.message, {
-            confirmButtonText: '确定',
+          this.$alert(this.$t('TablePage.MsgExportData1') + res.data_count + this.$t('TablePage.MsgExportData2'), res.message, {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
           this.loadingInstance.close() // 清除动画
@@ -854,8 +782,8 @@ export default {
         }
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })
@@ -896,8 +824,8 @@ export default {
           XLSX.utils.book_append_sheet(wb, sheet, tableName)
           XLSX.writeFile(wb, tableName + '.xlsx')
           this.$notify({
-            title: '导出成功',
-            message: '本次共导出了 ' + dataCount + ' 条数据',
+            title: this.$t('TablePage.MsgExportSuccess'),
+            message: this.$t('TablePage.MsgExportData1') + dataCount + this.$t('TablePage.MsgExportData2'),
             type: 'success'
           })
           this.loadingInstance.close() // 清除动画
@@ -908,8 +836,8 @@ export default {
         }
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })

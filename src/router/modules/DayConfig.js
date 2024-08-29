@@ -8,7 +8,7 @@ const DayConfigRouter = {
   alwaysShow: true,
   name: 'DayConfig',
   meta: {
-    title: '每日配置',
+    title: 'DayConfig',
     icon: 'el-icon-setting',
     roles: ['BlockTimeData', 'PackHoliday', 'ProgramData', 'ProductionReportData', 'NoProgramData',
       'NetworkBoard', 'TestProgramData', 'ProductProgramData', 'PackagingLineHoliday', 'DJHoliday', 'GetSmtMoDataResData']
@@ -19,7 +19,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/BlockTimeData'),
       name: 'BlockTimeData',
       meta: {
-        title: '维护时间表',
+        title: 'BlockTimeData',
         roles: ['BlockTimeData']
       }
     },
@@ -28,7 +28,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/GetSmtMoDataResData'),
       name: 'GetSmtMoDataResData',
       meta: {
-        title: '参照AI锡膏',
+        title: 'GetSmtMoDataResData',
         roles: ['GetSmtMoDataResData']
       }
     },
@@ -37,7 +37,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/GetTryData'),
       name: 'GetTryData',
       meta: {
-        title: '试跑工单表',
+        title: 'GetTryData',
         roles: ['GetTryData']
       }
     },
@@ -46,7 +46,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/PackagingLineHoliday'),
       name: 'PackagingLineHoliday',
       meta: {
-        title: '包装线提前天数表',
+        title: 'PackagingLineHoliday',
         roles: ['PackagingLineHoliday']
       }
     },
@@ -55,7 +55,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/PackHoliday'),
       name: 'PackHoliday',
       meta: {
-        title: '包装线放假表',
+        title: 'PackHoliday',
         roles: ['PackHoliday']
       }
     },
@@ -64,7 +64,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/DJHoliday'),
       name: 'DJHoliday',
       meta: {
-        title: '点胶放假表',
+        title: 'DJHoliday',
         roles: ['DJHoliday']
       }
     },
@@ -73,7 +73,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/ProgramData'),
       name: 'ProgramData',
       meta: {
-        title: '程序表',
+        title: 'ProgramData',
         roles: ['ProgramData']
       }
     },
@@ -82,7 +82,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/ProductionReportData'),
       name: 'ProductionReportData',
       meta: {
-        title: '生产报表',
+        title: 'ProductionReportData',
         roles: ['ProductionReportData']
       }
     },
@@ -91,7 +91,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/NoProgramData'),
       name: 'NoProgramData',
       meta: {
-        title: '无程序清单表',
+        title: 'NoProgramData',
         roles: ['NoProgramData']
       }
     },
@@ -100,7 +100,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/NetworkBoard'),
       name: 'NetworkBoard',
       meta: {
-        title: '网板信息表',
+        title: 'NetworkBoard',
         roles: ['NetworkBoard']
       }
     },
@@ -109,7 +109,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/TestProgramData'),
       name: 'TestProgramData',
       meta: {
-        title: '试跑程序表',
+        title: 'TestProgramData',
         roles: ['TestProgramData']
       }
     },
@@ -118,7 +118,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/ProductProgramData'),
       name: 'ProductProgramData',
       meta: {
-        title: '量产程序表',
+        title: 'ProductProgramData',
         roles: ['ProductProgramData']
       }
     },
@@ -127,7 +127,7 @@ const DayConfigRouter = {
       component: () => import('@/views/DayConfig/AiMatchJobRule'),
       name: 'AiMatchJobRule',
       meta: {
-        title: 'AI匹配上阶工单规则表',
+        title: 'AiMatchJobRule',
         roles: ['AiMatchJobRule']
       }
     }

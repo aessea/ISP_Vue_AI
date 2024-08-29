@@ -5,16 +5,16 @@
         <el-col :span="16">
           <div>
             <el-button @click="exportDataDialog">
-              <i class="el-icon-download" />导出
+              <i class="el-icon-download" />{{ $t('TablePage.BtnExport') }}
             </el-button>
             <el-button type="danger" @click="deleteAllJobdataBackup">
-              <i class="el-icon-delete" />清空排程备份表
+              <i class="el-icon-delete" />{{ $t('ParamsConfigPage.BtnClearBackup') }}
             </el-button>
           </div>
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="同步指定数据库的排程配置" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('ParamsConfigPage.TitleSyncData')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-download"
@@ -22,7 +22,7 @@
                 @click="beforeSyncDatabaseData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -30,20 +30,12 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
-              <el-button
-                size="small"
-                icon="el-icon-warning-outline"
-                circle
-                @click="helpTips"
-              />
-            </el-tooltip>
           </div>
         </el-col>
       </el-row>
       <div class="table-box">
         <el-tabs v-model="activeName" type="card">
-          <el-tab-pane label="AI配置" name="main">
+          <el-tab-pane :label="$t('ParamsConfigPage.MainConfig')" name="main">
             <el-table
               id="mytable"
               v-loading="loading"
@@ -54,25 +46,26 @@
               @selection-change="handleSelectionChange"
             >
               <el-table-column type="selection" width="55" />
-              <el-table-column prop="param_classify" label="配置分类" width="200" sortable>
+              <el-table-column prop="param_classify" :label="$t('ParamsConfigPage.param_classify')" width="200" sortable>
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_classify === '未知分类'" size="small" type="info">{{ scope.row.param_classify }}</el-tag>
+                  <el-tag v-if="scope.row.param_classify === $t('ParamsConfigPage.Unknownclassify')" size="small">{{ scope.row.param_classify }}</el-tag>
                   <el-tag v-else size="small" type="primary">{{ scope.row.param_classify }}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="param_name_front" label="配置名" width="260" sortable>
+              <el-table-column prop="param_name_front" :label="$t('ParamsConfigPage.param_name_front')" width="260" sortable>
                 <template slot-scope="scope">
                   <span style="font-weight: bold" type="info">{{ scope.row.param_name_front }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="param_value" label="配置值" width="160">
+              <el-table-column prop="param_value" :label="$t('ParamsConfigPage.param_value')" width="160">
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_value === true" size="small" type="success">开启</el-tag>
-                  <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">关闭</el-tag>
+                  <el-tag v-if="scope.row.param_value === true" size="small" type="success">{{ $t('PublicBtn.Open') }}</el-tag>
+                  <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">{{ $t('PublicBtn.Close') }}</el-tag>
+                  <span v-else-if="scope.row.show_value === false">********</span>
                   <span v-else type="info">{{ scope.row.param_value }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="visible_roles" label="可配置的角色">
+              <el-table-column prop="visible_roles" :label="$t('ParamsConfigPage.visible_roles')">
                 <template slot-scope="scope">
                   <el-tag
                     v-for="(val, key) in scope.row.visible_roles"
@@ -83,9 +76,9 @@
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column width="110" fixed="right" label="操作">
+              <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
                 <template slot-scope="scope">
-                  <el-tooltip class="item" effect="dark" content="修改配置" placement="top">
+                  <el-tooltip class="item" effect="dark" :content="$t('ParamsConfigPage.BtnModifyConfig')" placement="top">
                     <el-button
                       type="primary"
                       size="mini"
@@ -94,20 +87,11 @@
                       @click="handleModify(scope.$index, scope.row)"
                     />
                   </el-tooltip>
-                  <el-tooltip class="item" effect="dark" content="恢复默认" placement="top">
-                    <el-button
-                      type="danger"
-                      size="mini"
-                      icon="el-icon-refresh"
-                      circle
-                      @click="restoreDefault(scope.$index, scope.row)"
-                    />
-                  </el-tooltip>
                 </template>
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="点胶配置" name="small">
+          <!-- <el-tab-pane :label="$t('ParamsConfigPage.SmallConfig')" name="small">
             <el-table
               id="mytable"
               v-loading="loading"
@@ -119,25 +103,26 @@
               @selection-change="handleSelectionChange"
             >
               <el-table-column type="selection" width="55" />
-              <el-table-column prop="param_classify" label="配置分类" width="200" sortable>
+              <el-table-column prop="param_classify" :label="$t('ParamsConfigPage.param_classify')" width="200" sortable>
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_classify === '未知分类'" size="small" type="info">{{ scope.row.param_classify }}</el-tag>
+                  <el-tag v-if="scope.row.param_classify === $t('ParamsConfigPage.Unknownclassify')" size="small">{{ scope.row.param_classify }}</el-tag>
                   <el-tag v-else size="small" type="primary">{{ scope.row.param_classify }}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="param_name_front" label="配置名" width="260" sortable>
+              <el-table-column prop="param_name_front" :label="$t('ParamsConfigPage.param_name_front')" width="260" sortable>
                 <template slot-scope="scope">
                   <span style="font-weight: bold" type="info">{{ scope.row.param_name_front }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="param_value" label="配置值" width="160">
+              <el-table-column prop="param_value" :label="$t('ParamsConfigPage.param_value')" width="160">
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_value === true" size="small" type="success">开启</el-tag>
-                  <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">关闭</el-tag>
+                  <el-tag v-if="scope.row.param_value === true" size="small" type="success">{{ $t('PublicBtn.Open') }}</el-tag>
+                  <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">{{ $t('PublicBtn.Close') }}</el-tag>
+                  <span v-else-if="scope.row.show_value === false">********</span>
                   <span v-else type="info">{{ scope.row.param_value }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="visible_roles" label="可配置的角色">
+              <el-table-column prop="visible_roles" :label="$t('ParamsConfigPage.visible_roles')">
                 <template slot-scope="scope">
                   <el-tag
                     v-for="(val, key) in scope.row.visible_roles"
@@ -148,9 +133,9 @@
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column width="110" fixed="right" label="操作">
+              <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
                 <template slot-scope="scope">
-                  <el-tooltip class="item" effect="dark" content="修改配置" placement="top">
+                  <el-tooltip class="item" effect="dark" :content="$t('ParamsConfigPage.BtnModifyConfig')" placement="top">
                     <el-button
 
                       type="primary"
@@ -160,20 +145,11 @@
                       @click="handleModify(scope.$index, scope.row)"
                     />
                   </el-tooltip>
-                  <el-tooltip class="item" effect="dark" content="恢复默认" placement="top">
-                    <el-button
-                      type="danger"
-                      size="mini"
-                      icon="el-icon-refresh"
-                      circle
-                      @click="restoreDefault(scope.$index, scope.row)"
-                    />
-                  </el-tooltip>
                 </template>
               </el-table-column>
             </el-table>
-          </el-tab-pane>
-          <el-tab-pane label="其他配置" name="other">
+          </el-tab-pane> -->
+          <el-tab-pane :label="$t('ParamsConfigPage.OtherConfig')" name="other">
             <el-table
               id="mytable"
               v-loading="loading"
@@ -185,25 +161,26 @@
               @selection-change="handleSelectionChange"
             >
               <el-table-column type="selection" width="55" />
-              <el-table-column prop="param_classify" label="配置分类" width="120" sortable>
+              <el-table-column prop="param_classify" :label="$t('ParamsConfigPage.param_classify')" width="120" sortable>
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_classify === '未知分类'" size="small" type="info">{{ scope.row.param_classify }}</el-tag>
+                  <el-tag v-if="scope.row.param_classify === $t('ParamsConfigPage.Unknownclassify')" size="small">{{ scope.row.param_classify }}</el-tag>
                   <el-tag v-else size="small" type="primary">{{ scope.row.param_classify }}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="param_name_front" label="配置名" width="200" sortable>
+              <el-table-column prop="param_name_front" :label="$t('ParamsConfigPage.param_name_front')" width="200" sortable>
                 <template slot-scope="scope">
                   <span style="font-weight: bold" type="info">{{ scope.row.param_name_front }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="param_value" label="配置值" width="360">
+              <el-table-column prop="param_value" :label="$t('ParamsConfigPage.param_value')" width="360">
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.param_value === true" size="small" type="success">开启</el-tag>
-                  <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">关闭</el-tag>
+                  <el-tag v-if="scope.row.param_value === true" size="small" type="success">{{ $t('PublicBtn.Open') }}</el-tag>
+                  <el-tag v-else-if="scope.row.param_value === false" size="small" type="danger">{{ $t('PublicBtn.Close') }}</el-tag>
+                  <span v-else-if="scope.row.show_value === false">********</span>
                   <span v-else type="info">{{ scope.row.param_value }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="visible_roles" label="可配置的角色">
+              <el-table-column prop="visible_roles" :label="$t('ParamsConfigPage.visible_roles')">
                 <template slot-scope="scope">
                   <el-tag
                     v-for="(val, key) in scope.row.visible_roles"
@@ -214,24 +191,15 @@
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column width="110" fixed="right" label="操作">
+              <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
                 <template slot-scope="scope">
-                  <el-tooltip class="item" effect="dark" content="修改配置" placement="top">
+                  <el-tooltip class="item" effect="dark" :content="$t('ParamsConfigPage.BtnModifyConfig')" placement="top">
                     <el-button
                       type="primary"
                       size="mini"
                       icon="el-icon-edit"
                       circle
                       @click="handleModify(scope.$index, scope.row)"
-                    />
-                  </el-tooltip>
-                  <el-tooltip class="item" effect="dark" content="恢复默认" placement="top">
-                    <el-button
-                      type="danger"
-                      size="mini"
-                      icon="el-icon-refresh"
-                      circle
-                      @click="restoreDefault(scope.$index, scope.row)"
                     />
                   </el-tooltip>
                 </template>
@@ -262,77 +230,50 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.param_classify" prop="param_classify" label="配置类别">
-              <el-select v-model="model.param_classify" placeholder="请选择" style="width: 100%">
-                <el-option
-                  v-for="item in param_classify_options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
+            <el-form-item :rules="rules.param_classify" prop="param_classify" :label="$t('ParamsConfigPage.param_classify')">
+              <el-select v-model="model.param_classify" :placeholder="$t('Placeholder.Select')" :style="{width: '100%'}">
+                <el-option v-for="(item) in param_classify_options" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.param_name_front" prop="param_name_front" label="配置名">
-              <el-input v-model="model.param_name_front" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.param_value" prop="param_value" :label="$t('ParamsConfigPage.param_value')">
+              <el-input v-if="model.show_value === false" v-model="model.param_value" :placeholder="$t('Placeholder.Enter')" show-password />
+              <el-input-number v-else-if="model.param_value_type === 'int'" v-model="model.param_value" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" clearable />
+              <el-input-number v-else-if="model.param_value_type === 'float'" v-model="model.param_value" :placeholder="$t('Placeholder.Enter')" :step="0.1" :style="{width: '100%'}" clearable />
+              <el-date-picker v-else-if="model.param_value_type === 'datetime'" v-model="model.param_value" value-format="yyyy-MM-dd HH:00:00" type="datetime" :placeholder="$t('Placeholder.Select')" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              <el-date-picker v-else-if="model.param_value_type === 'date'" v-model="model.param_value" :placeholder="$t('Placeholder.Select')" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-time-picker v-else-if="model.param_value_type === 'time'" v-model="model.param_value" arrow-control :placeholder="$t('Placeholder.Select')" value-format="HH:mm:ss" :style="{width: '100%'}" />
+              <el-switch v-else-if="model.param_value_type === 'bool'" v-model="model.param_value" style="width: 100%" />
+              <el-input v-else v-model="model.param_value" :placeholder="$t('Placeholder.Enter')" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.param_value" prop="param_value" label="配置值">
-              <el-input-number v-if="model.param_value_type === 'int'" v-model="model.param_value" placeholder="请输入" :style="{width: '100%'}" clearable />
-              <el-input-number v-else-if="model.param_value_type === 'float'" v-model="model.param_value" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
-              <el-date-picker v-else-if="model.param_value_type === 'datetime'" v-model="model.param_value" value-format="yyyy-MM-dd HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-              <el-date-picker v-else-if="model.param_value_type === 'date'" v-model="model.param_value" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
-              <el-time-picker v-else-if="model.param_value_type === 'time'" v-model="model.param_value" arrow-control placeholder="请选择" value-format="HH:mm:ss" :style="{width: '100%'}" />
-              <el-switch v-else-if="model.param_value_type === 'bool'" v-model="model.param_value" style="width: 100%" />
-              <el-input v-else v-model="model.param_value" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.serial_number" prop="serial_number" :label="$t('ParamsConfigPage.serial_number')">
+              <el-input v-model="model.serial_number" :placeholder="$t('Placeholder.Enter')" clearable />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.param_before_value" prop="param_before_value" label="上一次配置值">
-              <el-input v-model="model.param_before_value" placeholder="" disabled />
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.param_before_value" prop="param_before_value" :label="$t('ParamsConfigPage.param_before_value')">
+              <el-input v-if="model.show_value === false" v-model="model.param_before_value" show-password disabled />
+              <el-input v-else v-model="model.param_before_value" disabled />
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.param_default_value" prop="param_default_value" label="配置默认值">
-              <el-input v-model="model.param_default_value" placeholder="" />
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.update_user" prop="update_user" :label="$t('ParamsConfigPage.update_user')">
+              <el-input v-model="model.update_user" :placeholder="$t('ParamsConfigPage.update_user')" disabled />
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.param_default_name" prop="param_default_name" label="默认配置名">
-              <el-input v-model="model.param_default_name" placeholder="" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.serial_number" prop="serial_number" label="序号（用于设置配置显示顺序）">
-              <el-input v-model="model.serial_number" placeholder="请输入" clearable />
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.update_time" prop="update_time" :label="$t('ParamsConfigPage.update_time')">
+              <el-input v-model="model.update_time" :placeholder="$t('ParamsConfigPage.update_time')" disabled />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.param_description" prop="param_description" label="配置描述">
-              <el-input v-model="model.param_description" placeholder="请输入" :rows="1" type="textarea" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.update_user" prop="update_user" label="修改人">
-              <el-input v-model="model.update_user" placeholder="修改人" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.update_time" prop="update_time" label="修改时间">
-              <el-input v-model="model.update_time" placeholder="修改时间" disabled />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-form-item :rules="rules.visible_roles" prop="visible_roles" label="可配置的角色">
+          <el-form-item :rules="rules.visible_roles" prop="visible_roles" :label="$t('ParamsConfigPage.visible_roles')">
             <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
               <el-checkbox-group v-model="model.visible_roles">
                 <el-checkbox v-for="role in all_role_list" :key="role.index" :label="role" />
@@ -342,41 +283,41 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFormClose">关闭</el-button>
-        <el-button type="primary" @click="modifyData">确认修改</el-button>
+        <el-button @click="handleFormClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="modifyData">{{ $t('PublicBtn.Confirm') }}</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog
+    <!-- <el-dialog
       v-el-drag-dialog
-      title="表格说明"
+      :title="$t('TablePage.TitleFormDescription')"
       :visible.sync="helpDialogVisible"
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>关于表格的各种说明可以写在这</span>
+      <span>{{ $t('TablePage.MsgIllustrate') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="helpDialogVisible = false">关闭</el-button>
+        <el-button @click="helpDialogVisible = false">{{ $t('PublicBtn.Close') }}</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
 
     <el-dialog
       v-el-drag-dialog
-      title="导出数据"
+      :title="$t('TablePage.TitleExportData')"
       :visible.sync="exportDialogVisible"
       :before-close="handleExportClose"
       width="45%"
       @dragDialog="handleDrag"
     >
       <el-row>
-        <span>导出文件格式：</span>
+        <span>{{ $t('PublicBtn.ConfirmModify') }}</span>
         <el-radio-group v-model="exportRadio">
           <el-radio label="xlsx">.xlsx</el-radio>
         </el-radio-group>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleExportClose">关闭</el-button>
-        <el-button type="primary" @click="exportData">确认导出</el-button>
+        <el-button @click="handleExportClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="exportData">{{ $t('PublicBtn.ConfirmModify') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -386,7 +327,8 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, ModifyData, ExportData, RestoreDefault, SyncDatabaseData, DeleteAllJobdataBackup } from '@/api/Control/ParamsConfig'
+import { GetTableData, ModifyData, ExportData, SyncDatabaseData, DeleteAllJobdataBackup } from '@/api/Control/ParamsConfig'
+import { isEqual } from '@/utils/common'
 export default {
   name: 'ParamConfigManage',
   directives: { elDragDialog },
@@ -394,18 +336,18 @@ export default {
     return {
       loading: true, // 表格加载动画
       importLoading: {
-        text: '拼命导入中...',
+        text: this.$t('PublicText.ImportLoadiing'),
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       loadingInstance: null,
-      table_data_ai: [], // 主板配置
-      table_data_dj: [], // 小板配置
-      table_data_other: [], // 其他配置
+      table_data_ai: [], // AI配置
+      table_data_dj: [], // 点胶配置
+      table_data_other: [], // 其它配置
       activeName: 'main',
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
-      helpDialogVisible: false, // 帮助提示dialog
+      // helpDialogVisible: false, // 帮助提示dialog
       scopeIndex: '', // 表格行数index
       scopeRow: '', // 表格行数据
       importDialogVisible: false, // 导入数据dialog
@@ -414,62 +356,55 @@ export default {
       uploadFileName: '', // 上传的文件名
       uploadFileList: [], // 上传的文件列表
       uploadFile: null, // 上传的文件
-      importMode: 'append', // 导入方式选择:追加或替换（方便以后扩展）
+      importMode: 'add', // 导入方式选择:追加或替换（方便以后扩展）
       exportRadio: 'xlsx', // 导出格式选择（方便以后扩展）
       isClick: false, // 是否点击了保存或者提交
       // 表单相关数据
       forms: ['$form'],
       model: {
-        id: '',
-        param_type: '',
-        param_classify: '',
-        param_name_backend: '',
-        param_name_front: '',
-        param_value: '',
-        param_value_type: '',
-        param_default_value: '',
-        param_before_value: '',
-        param_default_name: '',
-        update_time: '',
-        update_user: '',
-        serial_number: '',
-        param_description: '',
-        show_in_front: '',
-        visible_roles: []
+        id: null,
+        param_type: null,
+        param_classify: null,
+        param_name_backend: null,
+        param_name_front: null,
+        param_value: null,
+        param_value_type: null,
+        param_before_value: null,
+        update_time: null,
+        update_user: null,
+        serial_number: null,
+        param_description: null,
+        show_in_front: null,
+        visible_roles: [],
+        show_value: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
-        id: '',
-        param_type: '',
-        param_classify: '',
-        param_name_backend: '',
-        param_name_front: '',
-        param_value: '',
-        param_value_type: '',
-        param_default_value: '',
-        param_default_name: '',
-        param_before_value: '',
-        update_time: '',
-        update_user: '',
-        serial_number: '',
-        param_description: '',
-        show_in_front: '',
-        visible_roles: []
+        id: null,
+        param_type: null,
+        param_classify: null,
+        param_name_backend: null,
+        param_name_front: null,
+        param_value: null,
+        param_value_type: null,
+        param_before_value: null,
+        update_time: null,
+        update_user: null,
+        serial_number: null,
+        param_description: null,
+        show_in_front: null,
+        visible_roles: [],
+        show_value: null
       },
       rules: {
-        param_name_front: [{
-          required: true,
-          message: '不能为空',
-          trigger: 'blur'
-        }],
         param_value: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         param_type: [{
           required: true,
-          message: '不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         param_classify: []
@@ -480,9 +415,9 @@ export default {
       pageSize: 100, // 每页多少条数据
       dataTableSelections: [], // 表格选中的数据
       lineTypeOptions: [
-        { label: '主板配置', value: 'main' },
-        { label: '小板配置', value: 'small' },
-        { label: '其他配置', value: 'other' }
+        { label: this.$t('ParamsConfigPage.MainConfig'), value: 'main' },
+        { label: this.$t('ParamsConfigPage.SmallConfig'), value: 'small' },
+        { label: this.$t('ParamsConfigPage.OtherConfig'), value: 'other' }
       ],
       param_classify_options: [], // 参数分类选项
       all_role_list: []
@@ -504,15 +439,6 @@ export default {
     // dialog可拖拽
     handleDrag() {
       // this.$refs.select.blur()
-    },
-    // 示例表格行颜色
-    setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 2) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 2) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
-      return ''
     },
     // 分页
     handlePageChange(val) {
@@ -545,9 +471,9 @@ export default {
       }
     },
     beforeSyncDatabaseData() {
-      this.$confirm('确定要同步排程配置表中指定数据库的排程配置？', '提示', {
-        confirmButtonText: '确定同步',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('ParamsConfigPage.ConfirmSyncDatabase'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
@@ -555,13 +481,13 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消同步'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     syncDatabaseData() {
       const syncLoading = {
-        text: '拼命同步中...',
+        text: this.$t('PublicText.SyncLoadiing'),
         background: 'rgba(0, 0, 0, 0.6)'
       }
       this.loadingInstance = Loading.service(syncLoading)
@@ -571,16 +497,16 @@ export default {
       SyncDatabaseData(data).then(res => {
         if (res.code === 20000) {
           this.loadingInstance.close() // 清除动画
-          this.$alert(res.message, '提示', {
-            confirmButtonText: '确定',
+          this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
           this.refreshTableData(true)
         }
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
-          confirmButtonText: '确定',
+        this.$alert(err, this.$t('PublicText.TextError'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
           type: 'error'
         })
       })
@@ -592,7 +518,7 @@ export default {
     // 修改数据
     handleModify(index, row) {
       // 修改dialog
-      this.dialogTitle = '修改数据'
+      this.dialogTitle = this.$t('TablePage.TitleModifyData')
       this.dialogBtnType = false
       this.scopeIndex = index
       this.scopeRow = row
@@ -608,54 +534,26 @@ export default {
       this.dataDialogVisible = true
       this.isClick = false
     },
-    // 恢复默认值
-    restoreDefault(index, row) {
-      for (const key in this.model) {
-        this.model[key] = row[key]
-      }
-      this.$confirm('确定要该配置恢复到默认值？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const data = this.model
-        data['user_name'] = this.name
-        RestoreDefault(data).then(res => {
-          if (res.code === 20000) {
-            this.$notify({
-              title: '提示',
-              message: res.message,
-              type: res.message_type
-            })
-            this.refreshTableData()
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
-      })
-    },
     // 编辑数据发送到后端保存
     modifyData() {
       if (!this.checkFormChange()) {
         this.$message({
           type: 'info',
-          message: '数据未修改，无需提交'
+          message: this.$t('TablePage.MsgModifyInfo')
         })
         return
       }
       this.isClick = true
       const data = this.model
       data['user_name'] = this.name
+      data['is_manage'] = true
       this.$refs['$form'].validate((valid) => {
         if (valid) {
           ModifyData(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
                 title: res.message,
-                message: '数据已修改',
+                message: this.$t('TablePage.MsgModifySuccess'),
                 type: 'success'
               })
               this.refreshTableData()
@@ -664,28 +562,21 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
     },
     // 检测表单数据是否发生变化，用于提示
     checkFormChange() {
-      let isChange = false
-      for (const key in this.model) {
-        if (this.model[key] !== this.modelOriginal[key]) {
-          isChange = true
-          break
-        }
-      }
-      return isChange
+      return !isEqual(this.model, this.modelOriginal)
     },
     // 表单dialog关闭前提示
     handleFormClose() {
       if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('TablePage.MsgModifyCloseWarn'), this.$t('PublicText.TitleTip'), {
+          confirmButtonText: this.$t('PublicBtn.Confirm'),
+          cancelButtonText: this.$t('PublicBtn.Cancel'),
           type: 'warning'
         }).then(() => {
           this.closeFormDialog()
@@ -732,8 +623,8 @@ export default {
           XLSX.utils.book_append_sheet(wb, sheet, tableName)
           XLSX.writeFile(wb, tableName + '.xlsx')
           this.$notify({
-            title: '导出成功',
-            message: '本次共导出了 ' + dataCount + ' 条数据',
+            title: this.$t('TablePage.MsgExportSuccess'),
+            message: this.$t('TablePage.MsgExportData1') + dataCount + this.$t('TablePage.MsgExportData2'),
             type: 'success'
           })
           // 1秒后自动关闭窗口
@@ -748,20 +639,20 @@ export default {
       this.exportDialogVisible = false
     },
     // 帮助提示按钮
-    helpTips() {
-      this.helpDialogVisible = true
-    },
+    // helpTips() {
+    //   this.helpDialogVisible = true
+    // },
     deleteAllJobdataBackup() {
-      this.$confirm('确定要清空排程备份表？', '警告', {
-        confirmButtonText: '确定清空',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('ParamsConfigPage.ConfirmClearBackup'), '警告', {
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
         DeleteAllJobdataBackup().then(res => {
           if (res.code === 20000) {
-            this.$alert(res.message, '提示', {
-              confirmButtonText: '确定',
+            this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
               type: 'success'
             })
           }
@@ -769,7 +660,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     }

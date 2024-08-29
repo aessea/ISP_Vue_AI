@@ -1,3 +1,4 @@
+// 每日配置
 import Layout from '@/layout'
 
 const FileManageRouter = {
@@ -5,11 +6,11 @@ const FileManageRouter = {
   component: Layout,
   redirect: '/filemanage/mainoutputfiles',
   alwaysShow: true,
-  name: 'DayConfig',
+  name: 'FileManage',
   meta: {
-    title: '文件管理',
+    title: 'FileManage',
     icon: 'el-icon-download',
-    roles: ['InputFiles', 'MainOutputFiles', 'SmallOutputFiles', 'AnalysisFiles', 'IdleFiles', 'AnalyseProgramFiles', 'StatisticsFiles', 'ApiStatisticsFiles', 'LogFiles']
+    roles: ['InputFiles', 'MainOutputFiles', 'SmallOutputFiles', 'AnalysisFiles', 'IdleFiles', 'AnalyseProgramFiles', 'StatisticsFiles', 'ApiStatisticsFiles', 'LogFiles', 'ABLOutputFiles']
   },
   children: [
     {
@@ -17,7 +18,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/InputFiles'),
       name: 'InputFiles',
       meta: {
-        title: '输入文件',
+        title: 'InputFiles',
         roles: ['InputFiles']
       }
     },
@@ -26,7 +27,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/AnalysisInputFiles'),
       name: 'AnalysisInputFiles',
       meta: {
-        title: '分析排程输入文件',
+        title: 'AnalysisInputFiles',
         roles: ['InputFiles']
       }
     },
@@ -35,7 +36,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/MainOutputFiles'),
       name: 'MainOutputFiles',
       meta: {
-        title: 'AI输出文件',
+        title: 'MainOutputFiles',
         roles: ['MainOutputFiles']
       }
     },
@@ -44,7 +45,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/SmallOutputFiles'),
       name: 'SmallOutputFiles',
       meta: {
-        title: '点胶输出文件',
+        title: 'SmallOutputFiles',
         roles: ['SmallOutputFiles']
       }
     },
@@ -53,7 +54,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/AnalysisFiles'),
       name: 'AnalysisFiles',
       meta: {
-        title: '分析排程输出文件',
+        title: 'AnalysisFiles',
         roles: ['AnalysisFiles']
       }
     },
@@ -62,7 +63,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/IdleFiles'),
       name: 'IdleFiles',
       meta: {
-        title: 'idle明细文件',
+        title: 'IdleFiles',
         roles: ['IdleFiles']
       }
     },
@@ -71,7 +72,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/AnalyseProgramFiles'),
       name: 'AnalyseProgramFiles',
       meta: {
-        title: '无程序清单文件',
+        title: 'AnalyseProgramFiles',
         roles: ['AnalyseProgramFiles']
       }
     },
@@ -80,7 +81,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/StatisticsFiles'),
       name: 'StatisticsFiles',
       meta: {
-        title: '量化文件',
+        title: 'StatisticsFiles',
         roles: ['StatisticsFiles']
       }
     },
@@ -89,7 +90,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/ApiStatisticsFiles'),
       name: 'ApiStatisticsFiles',
       meta: {
-        title: '接口量化文件',
+        title: 'ApiStatisticsFiles',
         roles: ['ApiStatisticsFiles']
       }
     },
@@ -98,7 +99,7 @@ const FileManageRouter = {
       component: () => import('@/views/FileManage/LogFiles'),
       name: 'LogFiles',
       meta: {
-        title: '日志文件',
+        title: 'LogFiles',
         roles: ['LogFiles']
       }
     }

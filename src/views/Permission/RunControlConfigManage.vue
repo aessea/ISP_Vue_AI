@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="24">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -12,14 +12,14 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
+            <!-- <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnViewInstruction')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
                 circle
                 @click="helpTips"
               />
-            </el-tooltip>
+            </el-tooltip> -->
           </div>
         </el-col>
       </el-row>
@@ -34,17 +34,17 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="func_module" label="功能所属模块" sortable />
-          <el-table-column prop="func_des" label="功能名称" sortable />
-          <el-table-column prop="remark" label="备注说明" sortable />
-          <el-table-column prop="is_run" label="是否开启改功能">
+          <el-table-column prop="func_module" :label="$t('FuncManagePage.func_module')" sortable />
+          <el-table-column prop="func_des" :label="$t('FuncManagePage.func_des')" sortable />
+          <el-table-column prop="remark" :label="$t('FuncManagePage.remark')" sortable />
+          <el-table-column prop="is_run" :label="$t('FuncManagePage.is_run')">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_run === true" size="small" type="success">开启</el-tag>
-              <el-tag v-else size="small" type="danger">关闭</el-tag>
+              <el-tag v-if="scope.row.is_run === true" size="small" type="success">{{ $t('PublicBtn.Open') }}</el-tag>
+              <el-tag v-else size="small" type="danger">{{ $t('PublicBtn.Close') }}</el-tag>
             </template>
           </el-table-column>
 
-          <el-table-column width="110" fixed="right" label="操作">
+          <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
               <el-button
                 type="primary"
@@ -79,52 +79,52 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.func_index" prop="func_index" label="显示顺序(数字升序)">
-              <el-input v-model="model.func_index" placeholder="请输入数字" clearable />
+            <el-form-item :rules="rules.func_index" prop="func_index" :label="$t('FuncManagePage.func_index')">
+              <el-input v-model="model.func_index" :placeholder="$t('Placeholder.Enter')" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.func_module" prop="func_module" label="功能所属模块">
-              <el-input v-model="model.func_module" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.func_module" prop="func_module" :label="$t('FuncManagePage.func_module')">
+              <el-input v-model="model.func_module" :placeholder="$t('Placeholder.Enter')" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.func_des" prop="func_des" label="功能名称">
-              <el-input v-model="model.func_des" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.func_des" prop="func_des" :label="$t('FuncManagePage.func_des')">
+              <el-input v-model="model.func_des" :placeholder="$t('Placeholder.Enter')" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.is_run" prop="is_run" label="是否开启">
+            <el-form-item :rules="rules.is_run" prop="is_run" :label="$t('FuncManagePage.is_run')">
               <el-switch v-model="model.is_run" style="width: 100%;" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.remark" prop="remark" label="备注说明">
-              <el-input v-model="model.remark" placeholder="请输入" :rows="1" type="textarea" clearable />
+            <el-form-item :rules="rules.remark" prop="remark" :label="$t('FuncManagePage.remark')">
+              <el-input v-model="model.remark" :placeholder="$t('Placeholder.Enter')" :rows="1" type="textarea" clearable />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFormClose">关闭</el-button>
-        <el-button type="primary" @click="modifyData">确认修改</el-button>
+        <el-button @click="handleFormClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="primary" @click="modifyData">{{ this.$t('PublicBtn.ConfirmModify') }}</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog
+    <!-- <el-dialog
       v-el-drag-dialog
-      title="表格说明"
+      :title="$t('TablePage.TitleFormDescription')"
       :visible.sync="helpDialogVisible"
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>关于表格的各种说明可以写在这</span>
+      <span>{{ $t('TablePage.MsgIllustrate') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="helpDialogVisible = false">关闭</el-button>
+        <el-button @click="helpDialogVisible = false">{{ $t('PublicBtn.Close') }}</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
 
   </div>
 </template>
@@ -133,7 +133,7 @@ import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, ModifyData } from '@/api/Permission/RunControlConfig'
-import { LineOptions } from '@/utils/items'
+
 export default {
   name: 'RunControlConfig',
   directives: { elDragDialog },
@@ -141,14 +141,14 @@ export default {
     return {
       loading: true, // 表格加载动画
       importLoading: {
-        text: '拼命导入中...',
+        text: this.$t('PublicText.ImportLoadiing'),
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
-      helpDialogVisible: false, // 帮助提示dialog
+      // helpDialogVisible: false, // 帮助提示dialog
       scopeIndex: '', // 表格行数index
       scopeRow: '', // 表格行数据
       importDialogVisible: false, // 导入数据dialog
@@ -181,16 +181,16 @@ export default {
       rules: {
         func_des: [{
           required: true,
-          message: '功能描述不能为空',
+          message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
         is_run: [{
           required: true,
-          message: '需要选择是否开启',
+          message: this.$t('Form.PleaseSelect'),
           trigger: 'blur'
         }]
       },
-      line_name_data: LineOptions, // 维护线别
+
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
@@ -248,7 +248,7 @@ export default {
     // 修改数据
     handleModify(index, row) {
       // 修改dialog
-      this.dialogTitle = '修改数据'
+      this.dialogTitle = this.$t('TablePage.TitleModifyData')
       this.scopeIndex = index
       this.scopeRow = row
       // 显示表单数据
@@ -269,7 +269,7 @@ export default {
       if (!this.checkFormChange()) {
         this.$message({
           type: 'info',
-          message: '数据未修改，无需提交'
+          message: this.$t('TablePage.MsgModifyInfo')
         })
         return
       }
@@ -282,7 +282,7 @@ export default {
             if (res.code === 20000) {
               this.$notify({
                 title: res.message,
-                message: '数据已修改',
+                message: this.$t('TablePage.MsgModifySuccess'),
                 type: 'success'
               })
               this.refreshTableData()
@@ -291,7 +291,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照要求填写数据！'
+            message: this.$t('TablePage.MsgAppendError')
           })
         }
       })
@@ -333,11 +333,11 @@ export default {
         this.uploadFileName = this.uploadFileList[0].name // 更新文件名
         this.uploadFile = this.uploadFileList[0].raw // 更新文件
       }
-    },
-    // 帮助提示按钮
-    helpTips() {
-      this.helpDialogVisible = true
     }
+    // 帮助提示按钮
+    // helpTips() {
+    //   this.helpDialogVisible = true
+    // }
   }
 }
 </script>

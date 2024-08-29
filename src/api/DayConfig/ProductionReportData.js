@@ -1,8 +1,10 @@
 import request from '../../utils/request'
+const API_URL_FIRST = 'DayConfig'
+const API_URL_SECOND = 'ProductionReportData'
 // 获取表格数据 分页获取
 export function GetTableData(data) {
   return request({
-    url: '/DayConfig/ProductionReportData/get_table_data/',
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/get_table_data/`,
     method: 'post',
     data
   })
@@ -10,7 +12,7 @@ export function GetTableData(data) {
 // 添加数据
 export function AddData(data) {
   return request({
-    url: '/DayConfig/ProductionReportData/add_data/',
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/add_data/`,
     method: 'post',
     data
   })
@@ -18,7 +20,7 @@ export function AddData(data) {
 // 修改数据
 export function ModifyData(data) {
   return request({
-    url: '/DayConfig/ProductionReportData/modify_data/',
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/modify_data/`,
     method: 'post',
     data
   })
@@ -26,7 +28,7 @@ export function ModifyData(data) {
 // 删除勾选的数据
 export function DeleteData(data) {
   return request({
-    url: '/DayConfig/ProductionReportData/delete_data/',
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/delete_data/`,
     method: 'post',
     data
   })
@@ -34,7 +36,7 @@ export function DeleteData(data) {
 // 删除一条数据
 export function HandleDelete(data) {
   return request({
-    url: '/DayConfig/ProductionReportData/handle_delete/',
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/handle_delete/`,
     method: 'post',
     data
   })
@@ -42,7 +44,7 @@ export function HandleDelete(data) {
 // 确认导入数据
 export function ImportData(data) {
   return request({
-    url: '/DayConfig/ProductionReportData/import_data/',
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/import_data/`,
     method: 'post',
     data
   })
@@ -50,16 +52,23 @@ export function ImportData(data) {
 // 确认导出数据
 export function ExportData(data) {
   return request({
-    url: '/DayConfig/ProductionReportData/export_data/',
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/export_data/`,
     method: 'post',
     data
   })
 }
 export function SyncDatabaseData(data) {
   return request({
-    method: 'get',
-    url: '/DayConfig/ProductionReportData/sync_data/',
+    method: 'post',
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/sync_data/`,
     timeout: 10 * 60 * 1000,
     data
+  })
+}
+// 获取表格列名
+export function GetLangDict() {
+  return request({
+    url: `/${API_URL_FIRST}/${API_URL_SECOND}/get_lang_dict/`,
+    method: 'get'
   })
 }

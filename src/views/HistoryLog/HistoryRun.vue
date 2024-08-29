@@ -3,7 +3,7 @@
     <el-card>
       <el-row>
         <el-col :span="20">
-          <el-select v-model="levelValue" placeholder="选择LEVEL" clearable>
+          <el-select v-model="levelValue" :placeholder="$t('HistoryRunPage.SelectLevel')" clearable>
             <el-option
               v-for="item in levelOptions"
               :key="item.value"
@@ -17,15 +17,15 @@
             style="margin-left: 10px;"
             @click="searchData"
           >
-            搜索
+            {{ $t('PublicBtn.Search') }}
           </el-button>
           <el-button type="danger" icon="el-icon-delete" style="margin-left: 10px;" @click="filterDataDialog">
-            删除历史日志
+            {{ $t('PublicText.BtnDeleteHisLog') }}
           </el-button>
         </el-col>
         <el-col :span="4">
           <div style="float: right;">
-            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnRefreshTable')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-refresh"
@@ -33,7 +33,7 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
+            <el-tooltip class="item" effect="dark" :content="$t('TablePage.BtnViewInstruction')" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
@@ -97,7 +97,7 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="删除历史日志"
+      :title="$t('PublicText.BtnDeleteHisLog')"
       :visible.sync="filterDialogVisible"
       width="45%"
       @dragDialog="handleDrag"
@@ -106,16 +106,16 @@
         <el-form>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item label="删除几个月前的日志：">
-                <el-input-number v-model="save_months" placeholder="请输入月份数" clearable />
+              <el-form-item :label="$t('HistoryOperaPage.TextDeleteMonthAgo')">
+                <el-input-number v-model="save_months" :placeholder="$t('FileDataPage.TextInputMonth')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFilterClose">关闭</el-button>
-        <el-button type="danger" @click="filterData">确认删除</el-button>
+        <el-button @click="handleFilterClose">{{ $t('PublicBtn.Close') }}</el-button>
+        <el-button type="danger" @click="filterData">{{ this.$t('PublicBtn.ConfirmDelete') }}</el-button>
       </span>
     </el-dialog>
 
@@ -124,9 +124,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, SearchData, DeleteHistoryLog } from '@/api/HistoryLog/HistoryRun'
 export default {
   name: 'HistoryRun',
+  directives: { elDragDialog },
   data() {
     return {
       loading: true, // 表格加载动画
@@ -160,6 +162,9 @@ export default {
     this.getTableData(this.currentPage, this.pageSize)
   },
   methods: {
+    handleDrag() {
+      // // this.$refs.select.blur()
+    },
     setCellColor({ row, column, rowIndex, columnIndex }) {
       if (row.level === 30 && columnIndex === 0) {
         return 'color: #E6A23C;font-weight: bold;'
@@ -208,7 +213,7 @@ export default {
       if (this.levelValue === '') {
         this.$message({
           type: 'warning',
-          message: '请选择LEVEL'
+          message: this.$t('HistoryRunPage.SelectLevel')
         })
         return
       }
@@ -234,15 +239,15 @@ export default {
       this.filterDialogVisible = false
     },
     filterData() {
-      this.$confirm(`确认要删除${this.save_months}个月前的日志？`, '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('HistoryOperaPage.DeleteHisLog1') + this.save_months + this.$t('HistoryOperaPage.DeleteHisLog2'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('TablePage.BtnConfirmDelete'),
+        cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
         if (this.save_months === undefined) {
-          this.$alert('删除失败', '提示', {
-            confirmButtonText: '确定',
+          this.$alert(this.$t('PublicText.DeleteFailed'), this.$t('PublicText.TitleTip'), {
+            confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'error'
           })
           return
@@ -253,8 +258,8 @@ export default {
         }
         DeleteHistoryLog(data).then(res => {
           if (res.code === 20000) {
-            this.$alert(res.message, '提示', {
-              confirmButtonText: '确定',
+            this.$alert(res.message, this.$t('PublicText.TitleTip'), {
+              confirmButtonText: this.$t('PublicBtn.Confirm'),
               type: res.message_type
             })
             this.refreshTableData()
@@ -266,7 +271,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消删除'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     }
