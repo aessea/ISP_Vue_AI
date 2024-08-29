@@ -50,6 +50,7 @@
           <el-table-column prop="grouping_factor_day" :label="lang_dict.grouping_factor_day" width="240" />
           <el-table-column prop="grouping_factor_overtime" :label="lang_dict.grouping_factor_overtime" width="160" />
           <el-table-column prop="grouping_factor_hour" :label="lang_dict.grouping_factor_hour" width="170" />
+          <el-table-column prop="process_sequence" :label="lang_dict.process_sequence" width="120" />
           <el-table-column prop="grouping_combination_flag" :label="lang_dict.grouping_combination_flag" width="130">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.grouping_combination_flag === 1" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
@@ -75,19 +76,17 @@
               <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="deleted_process_flag" :label="lang_dict.deleted_process_flag" width="200">
+          <el-table-column prop="is_threshold_constraint" :label="lang_dict.is_threshold_constraint" width="200">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.deleted_process_flag === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
-              <el-tag v-else-if="scope.row.deleted_process_flag === false" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
+              <el-tag v-if="scope.row.is_threshold_constraint === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
+              <el-tag v-else-if="scope.row.is_threshold_constraint === false" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="locked_buffer_time" :label="lang_dict.locked_buffer_time" width="200" />
-          <el-table-column prop="netboard_buffer_time" :label="lang_dict.netboard_buffer_time" width="180" />
           <el-table-column prop="ct_predict_lower" :label="lang_dict.ct_predict_lower" width="120" />
           <el-table-column prop="ct_predict_upper" :label="lang_dict.ct_predict_upper" width="120" />
-          <el-table-column prop="process_sequence" :label="lang_dict.process_sequence" width="120" />
+          <el-table-column prop="upper_completed_buffer_time" :label="lang_dict.ct_predict_lower" width="120" />
+          <el-table-column prop="upper_in_production_buffer_time" :label="lang_dict.ct_predict_lower" width="120" />
           <el-table-column prop="process_order" :label="lang_dict.process_order" width="120" sortable />
-          <el-table-column prop="switch_name" :label="lang_dict.switch_name" width="120" sortable />
           <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
               <el-button
@@ -157,11 +156,6 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process_sequence" prop="process_sequence" :label="lang_dict.process_sequence">
-                <el-input v-model="model.process_sequence" :placeholder="$t('Placeholder.PleInput012')" oninput="this.value=this.value.replace(/[^0-2]/g, '')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.grouping_factor_day" prop="grouping_factor_day" :label="lang_dict.grouping_factor_day">
                 <el-input-number v-model="model.grouping_factor_day" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
@@ -174,6 +168,11 @@
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.grouping_factor_hour" prop="grouping_factor_hour" :label="lang_dict.grouping_factor_hour">
                 <el-input-number v-model="model.grouping_factor_hour" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.process_sequence" prop="process_sequence" :label="lang_dict.process_sequence">
+                <el-input v-model="model.process_sequence" :placeholder="$t('Placeholder.PleInput012')" oninput="this.value=this.value.replace(/[^0-2]/g, '')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -196,16 +195,6 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.locked_buffer_time" prop="locked_buffer_time" :label="lang_dict.locked_buffer_time">
-                <el-input-number v-model="model.locked_buffer_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.netboard_buffer_time" prop="netboard_buffer_time" :label="lang_dict.netboard_buffer_time">
-                <el-input-number v-model="model.netboard_buffer_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.ct_predict_lower" prop="ct_predict_lower" :label="lang_dict.ct_predict_lower">
                 <el-input-number v-model="model.ct_predict_lower" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
@@ -213,6 +202,16 @@
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.ct_predict_upper" prop="ct_predict_upper" :label="lang_dict.ct_predict_upper">
                 <el-input-number v-model="model.ct_predict_upper" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.upper_completed_buffer_time" prop="upper_completed_buffer_time" :label="lang_dict.upper_completed_buffer_time">
+                <el-input-number v-model="model.upper_completed_buffer_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.upper_in_production_buffer_time" prop="upper_in_production_buffer_time" :label="lang_dict.upper_in_production_buffer_time">
+                <el-input-number v-model="model.upper_in_production_buffer_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -228,13 +227,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.switch_name" prop="switch_name" :label="lang_dict.switch_name">
-                <el-input v-model="model.switch_name" :placeholder="$t('Placeholder.Enter')" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.deleted_process_flag" prop="deleted_process_flag" :label="lang_dict.deleted_process_flag">
-                <el-switch v-model="model.deleted_process_flag" style="width: 100%" />
+              <el-form-item :rules="rules.is_threshold_constraint" prop="is_threshold_constraint" :label="lang_dict.is_threshold_constraint">
+                <el-switch v-model="model.is_threshold_constraint" style="width: 100%" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -364,6 +358,7 @@ export default {
         id: null,
         name: null,
         TB: null,
+        enable: true,
         paired_process: null,
         grouping_factor_day: undefined,
         grouping_factor_hour: undefined,
@@ -373,21 +368,21 @@ export default {
         first_second_combination_flag: null,
         is_point: false,
         buffer_time: undefined,
-        locked_buffer_time: undefined,
-        netboard_buffer_time: undefined,
         ct_predict_lower: undefined,
         ct_predict_upper: undefined,
         process_order: null,
-        process_sequence: null,
         onehot_code: null,
-        switch_name: null,
-        deleted_process_flag: false
+        upper_completed_buffer_time: undefined,
+        upper_in_production_buffer_time: undefined,
+        is_threshold_constraint: false,
+        process_sequence: undefined
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: null,
         name: null,
         TB: null,
+        enable: true,
         paired_process: null,
         grouping_factor_day: undefined,
         grouping_factor_hour: undefined,
@@ -397,15 +392,14 @@ export default {
         first_second_combination_flag: null,
         is_point: false,
         buffer_time: undefined,
-        locked_buffer_time: undefined,
-        netboard_buffer_time: undefined,
         ct_predict_lower: undefined,
         ct_predict_upper: undefined,
         process_order: null,
-        process_sequence: null,
         onehot_code: null,
-        switch_name: null,
-        deleted_process_flag: false
+        upper_completed_buffer_time: undefined,
+        upper_in_production_buffer_time: undefined,
+        is_threshold_constraint: false,
+        process_sequence: undefined
       },
       modelBackup: {},
       rules: {
@@ -461,11 +455,6 @@ export default {
           message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        locked_buffer_time: [{
-          required: true,
-          message: this.$t('Form.NotNull'),
-          trigger: 'blur'
-        }],
         netboard_buffer_time: [{
           required: true,
           message: this.$t('Form.NotNull'),
@@ -481,22 +470,7 @@ export default {
           message: this.$t('Form.NotNull'),
           trigger: 'blur'
         }],
-        process_sequence: [{
-          required: true,
-          message: this.$t('Form.NotNull'),
-          trigger: 'blur'
-        }],
         process_order: [{
-          required: true,
-          message: this.$t('Form.NotNull'),
-          trigger: 'blur'
-        }],
-        switch_name: [{
-          required: true,
-          message: this.$t('Form.NotNull'),
-          trigger: 'blur'
-        }],
-        deleted_process_flag: [{
           required: true,
           message: this.$t('Form.NotNull'),
           trigger: 'blur'

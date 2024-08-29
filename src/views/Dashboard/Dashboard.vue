@@ -167,7 +167,7 @@ export default {
       this.$router.push({ path: 'dayconfig/blocktimetata' })
     },
     toProcessData() {
-      this.$router.push({ path: 'longconfig/mainprocessdata' })
+      this.$router.push({ path: 'longconfig/processdata' })
     },
     // 画图
     drawCharts(days) {
