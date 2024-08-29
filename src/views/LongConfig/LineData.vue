@@ -95,24 +95,6 @@
               <el-tag v-else-if="scope.row.is_Big_line_remove22 === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="is_Non_big_line" :label="lang_dict.is_Non_big_line" width="160">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_Non_big_line === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
-              <el-tag v-else-if="scope.row.is_Non_big_line === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="is_special_line" :label="lang_dict.is_special_line" width="160">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_special_line === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
-              <el-tag v-else-if="scope.row.is_special_line === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="is_cannot_binding_line" :label="lang_dict.is_cannot_binding_line" width="160">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.is_cannot_binding_line === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
-              <el-tag v-else-if="scope.row.is_cannot_binding_line === false" size="small" type="info">{{ $t('PublicText.No') }}</el-tag>
-            </template>
-          </el-table-column>
           <el-table-column prop="min_min_threshold" :label="lang_dict.min_min_threshold" width="110" />
           <el-table-column prop="min_threshold" :label="lang_dict.min_threshold" width="110" />
           <el-table-column prop="max_threshold" :label="lang_dict.max_threshold" width="110" />
@@ -302,25 +284,18 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_Non_big_line" prop="is_Non_big_line" :label="lang_dict.is_Non_big_line">
-                <el-switch v-model="model.is_Non_big_line" style="width: 100%" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_special_line" prop="is_special_line" :label="lang_dict.is_special_line">
-                <el-switch v-model="model.is_special_line" style="width: 100%" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_AX_line" prop="is_AX_line" :label="lang_dict.is_AX_line">
                 <el-switch v-model="model.is_AX_line" style="width: 100%" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_cannot_binding_line" prop="is_cannot_binding_line" :label="lang_dict.is_cannot_binding_line">
-                <el-switch v-model="model.is_cannot_binding_line" style="width: 100%" />
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_open_program" prop="is_open_program" :label="lang_dict.is_open_program">
+                <el-switch v-model="model.is_open_program" style="width: 100%" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.fixed_ct" prop="fixed_ct" :label="lang_dict.fixed_ct">
+                <el-input-number v-model="model.fixed_ct" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -356,36 +331,31 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.max_process_time" prop="max_process_time" :label="lang_dict.max_process_time">
                 <el-input-number v-model="model.max_process_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.max_points" prop="max_points" :label="lang_dict.max_points">
                 <el-input-number v-model="model.max_points" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.default_threshould_of_big_small_line" prop="default_threshould_of_big_small_line" :label="lang_dict.default_threshould_of_big_small_line">
-                <el-input-number v-model="model.default_threshould_of_big_small_line" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.type_of_big_small_line" prop="type_of_big_small_line" :label="lang_dict.type_of_big_small_line">
                 <el-input v-model="model.type_of_big_small_line" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.fixed_ct" prop="fixed_ct" :label="lang_dict.fixed_ct">
-                <el-input-number v-model="model.fixed_ct" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
+            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_burn_in" prop="is_burn_in" :label="lang_dict.is_burn_in">
+                <el-input v-model="model.is_burn_in" :placeholder="$t('Placeholder.Enter')" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.is_open_program" prop="is_open_program" :label="lang_dict.is_open_program">
-                <el-switch v-model="model.is_open_program" style="width: 100%" />
+            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.default_threshould_of_big_small_line" prop="default_threshould_of_big_small_line" :label="lang_dict.default_threshould_of_big_small_line">
+                <el-input-number v-model="model.default_threshould_of_big_small_line" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -533,9 +503,6 @@ export default {
         line_type: undefined,
         is_AX_line: false,
         is_Big_line_remove22: false,
-        is_Non_big_line: false,
-        is_special_line: false,
-        is_cannot_binding_line: false,
         big_setup: undefined,
         small_setup: undefined,
         setup_program: undefined,
@@ -572,9 +539,6 @@ export default {
         line_type: undefined,
         is_AX_line: false,
         is_Big_line_remove22: false,
-        is_Non_big_line: false,
-        is_special_line: false,
-        is_cannot_binding_line: false,
         big_setup: undefined,
         small_setup: undefined,
         setup_program: undefined,
@@ -672,21 +636,6 @@ export default {
           trigger: 'blur'
         }],
         is_Big_line_remove22: [{
-          required: true,
-          message: this.$t('Form.NotNull'),
-          trigger: 'blur'
-        }],
-        is_Non_big_line: [{
-          required: true,
-          message: this.$t('Form.NotNull'),
-          trigger: 'blur'
-        }],
-        is_special_line: [{
-          required: true,
-          message: this.$t('Form.NotNull'),
-          trigger: 'blur'
-        }],
-        is_cannot_binding_line: [{
           required: true,
           message: this.$t('Form.NotNull'),
           trigger: 'blur'
