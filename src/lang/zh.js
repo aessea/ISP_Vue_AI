@@ -578,7 +578,7 @@ export default {
   },
   // 接口配置管理
   InterfaceConfigPage: {
-    name: '接口函数名', // 接口函数名
+    name: '接口名称', // 接口名称
     description: '描述', // 接口描述
     url: '地址', // 接口相对地址
     remark: '备注', // 备注

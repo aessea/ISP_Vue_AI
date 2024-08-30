@@ -1,7 +1,7 @@
 export default {
   FileKeyWord: {
-    MainWord: 'AIBoard', // AI
-    SmallWord: 'DJBoard', // 点胶
+    MainWord: 'AI', // AI
+    SmallWord: 'DJ', // 点胶
     SolderPaste: 'Solder Paste', // 锡膏
     DulySchedule: 'Duly', // 正排
     PrepSchedule: 'Prep', // 预排
@@ -177,8 +177,8 @@ export default {
     FileManage: 'System Files', // 系统文件（一级菜单）
     InputFiles: 'Calculate Input Files', // 计算输入文件
     AnalysisInputFiles: 'Analysis Input Files', // 分析输入文件
-    MainOutputFiles: 'AIBoard Output Files', // AI输出文件
-    SmallOutputFiles: 'DJBoard Output Files', // 点胶输出文件
+    MainOutputFiles: 'AI Output Files', // AI输出文件
+    SmallOutputFiles: 'DJ Output Files', // 点胶输出文件
     AnalysisFiles: 'Analyse Output Files', // 分析输出文件
     IdleFiles: 'Idle Detail Files', // Idle明细文件
     AnalyseProgramFiles: 'No Program Files', // 无程序清单文件
@@ -214,16 +214,16 @@ export default {
     ControlPanel: 'Control Center', // 控制中心
     TitleTrainPredictModel: 'Train Predict Model', // 训练预测模型
     TitleRelatedOperate: 'Related Operations', // 排程相关操作
-    MainDowload: 'Download AIBoard', // AI下载
-    SmallDowload: 'Download DJBoard', // 点胶下载
+    MainDowload: 'Download AI', // AI下载
+    SmallDowload: 'Download DJ', // 点胶下载
     LogDownload: 'Download Log', // 日志下载
     Config: 'Config', // 配置
     TitleDownloadNewMain: 'Download the latest output file', // 下载AI最新排程
     TitleDownloadNewSmall: 'Download the latest output file', // 下载点胶最新排程
     TitleDownloadNewLog: 'Download the latest log file', // 下载最新日志
-    TitleComputeBoth: 'Calculate AIBoard and DJBoard', // 计算AI和点胶排程
-    TitleComputeMain: 'Calculate AIBoard', // 计算AI排程
-    TitleComputeSmall: 'Calculate DJBoard', // 计算点胶排程
+    TitleComputeBoth: 'Calculate AI and DJ', // 计算AI和点胶排程
+    TitleComputeMain: 'Calculate AI', // 计算AI排程
+    TitleComputeSmall: 'Calculate DJ', // 计算点胶排程
     ComputeTextStep1: 'Upload File', // 上传排程
     ComputeTextStep2: 'Import File', // 导入排程
     ComputeTextStep3: 'Update File', // 更新信息
@@ -231,8 +231,8 @@ export default {
     TextMainUploadName: 'Retrieve Main Upload File', // 获取AI上传文件
     TextSmallUploadName: 'Retrieve Small Upload File', // 获取点胶上传文件
     TextChooseHoliday: 'Select one or more holiday dates', // 选择一个或多个包装放假日期
-    TextUploadMainFile: 'Please upload AIBoard file', // 请上传AI排程文件
-    TextUploadSmallFile: 'Please upload DJBoard file', // 请上传点胶排程文件
+    TextUploadMainFile: 'Please upload AI file', // 请上传AI排程文件
+    TextUploadSmallFile: 'Please upload DJ file', // 请上传点胶排程文件
     TextUploadABLFile: 'Please upload ABLBoard file', // 请上传ABL排程文件
     TextRefreshUploadTime: 'Refresh File Upload Time', // 刷新文件上传时间
     // 提示
@@ -296,9 +296,9 @@ export default {
     BtnContinueCompute: 'Yes, Continue Calculate', // 确定，仍要计算
     BtnModifyPackHoliday: 'Modify Packaging Holiday', // 修改包装放假
     BtnTrainPredictModel: 'Train Predict Model', // 训练预测模型
-    BtnComputeMain: 'Calculate AIBoard', // 计算AI排程
-    BtnComputeSmall: 'Calculate DJBoard', // 计算点胶排程
-    BtnComputeBoth: 'Calculate BothBoard', // 计算AI点胶
+    BtnComputeMain: 'Calculate AI', // 计算AI排程
+    BtnComputeSmall: 'Calculate DJ', // 计算点胶排程
+    BtnComputeBoth: 'Calculate Both', // 计算AI点胶
     BtnEndDeepSearch: 'Stop DeepSearch', // 终止深度搜索
     BtnEndCompute: 'Stop Calculate', // 终止计算排程
     BtnPushStatistics: 'Push Stastic', // 推送量化结果
@@ -577,7 +577,7 @@ export default {
   },
   // 接口配置管理
   InterfaceConfigPage: {
-    name: 'API Name', // 接口函数名
+    name: 'API Name', // 接口名称
     description: 'Description', // 接口描述
     url: 'Address', // 接口相对地址
     remark: 'Remark', // 备注

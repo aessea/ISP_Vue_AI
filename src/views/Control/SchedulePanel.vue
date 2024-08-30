@@ -943,7 +943,7 @@ export default {
         regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI)(正排|预排).*$/
         TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
       } else {
-        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(AIBoard)_(Preliminary|Regular).*$/
+        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(AI)_(Preliminary|Regular).*$/
         TextFileTypeError2 = '(Example of correct file name: 0901_AIBoard_Regular.xlsx)'
       }
       if (!regex.test(fileName)) {
@@ -972,7 +972,7 @@ export default {
         regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(点胶)(正排|预排).*$/
         TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
       } else {
-        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(DJBoard)_(Preliminary|Regular).*$/
+        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(DJ)_(Preliminary|Regular).*$/
         TextFileTypeError2 = '(Example of correct file name: 0901_DJBoard_Regular.xlsx)'
       }
       if (!regex.test(fileName)) {
