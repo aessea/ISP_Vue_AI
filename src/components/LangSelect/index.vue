@@ -83,15 +83,14 @@ export default {
           }
           this.$i18n.locale = command
           this.$store.dispatch('app/setLanguage', command)
+          // 重新加载
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000)
           this.$message({
             type: 'success',
             message: this.$t('Msg.LangSwitchSuccess')
           })
-          // window.location.reload() // 重新加载
-          // 1.5秒后重新加载
-          setTimeout(() => {
-            window.location.reload()
-          }, 1000)
         }
       })
     }
