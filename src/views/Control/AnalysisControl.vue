@@ -540,7 +540,7 @@ export default {
         TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
       } else {
         regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(AI|DJ)_(Preliminary|Regular).*$/
-        TextFileTypeError2 = '(Example of correct file name: 0901_AIBoard_Regular.xlsx)'
+        TextFileTypeError2 = '(Example of correct file name: 0901_AI_Regular.xlsx)'
       }
       if (!regex.test(fileName)) {
         const tip = this.$t('SchedulePanelPage.TextFileTypeError1') + `<br/>` + TextFileTypeError2

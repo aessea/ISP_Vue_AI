@@ -944,7 +944,7 @@ export default {
         TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
       } else {
         regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(AI)_(Preliminary|Regular).*$/
-        TextFileTypeError2 = '(Example of correct file name: 0901_AIBoard_Regular.xlsx)'
+        TextFileTypeError2 = '(Example of correct file name: 0901_AI_Regular.xlsx)'
       }
       if (!regex.test(fileName)) {
         const tip = this.$t('SchedulePanelPage.TextFileTypeError1') + `<br/>` + TextFileTypeError2
@@ -968,12 +968,12 @@ export default {
     handleChangeSmall(file, fileList) {
       const fileName = file.name.replace(/\.xlsx$/, '')
       let regex, TextFileTypeError2
-      if (sessionStorage.getItem('lang') === 'zh') {
+      if (this.language === 'zh') {
         regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(点胶)(正排|预排).*$/
-        TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
+        TextFileTypeError2 = '（正确文件名示例：0901点胶预排）'
       } else {
         regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(DJ)_(Preliminary|Regular).*$/
-        TextFileTypeError2 = '(Example of correct file name: 0901_DJBoard_Regular.xlsx)'
+        TextFileTypeError2 = '(Example of correct file name: 0901_DJ_Regular.xlsx)'
       }
       if (!regex.test(fileName)) {
         const tip = this.$t('SchedulePanelPage.TextFileTypeError1') + `<br/>` + TextFileTypeError2

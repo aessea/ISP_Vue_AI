@@ -54,7 +54,7 @@ export function GetLanguage() {
     method: 'post'
   })
 }
-// 获取语言
+// 获取修改语言权限
 export function GetLanguagePermission(data) {
   return request({
     url: `/${API_URL_FIRST}/get_language_permission/`,
