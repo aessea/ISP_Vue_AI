@@ -939,7 +939,7 @@ export default {
     handleChangeMain(file, fileList) {
       const fileName = file.name.replace(/\.xlsx$/, '')
       let regex, TextFileTypeError2
-      if (sessionStorage.getItem('lang') === 'zh') {
+      if (this.language === 'zh') {
         regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI)(正排|预排).*$/
         TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
       } else {
