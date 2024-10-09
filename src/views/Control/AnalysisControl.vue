@@ -220,12 +220,12 @@
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="aitPrescheduledTip" placement="top">
             <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" @click="post_ai_pre_scheduled">
-              {{ $t('AnalysisControlPage.BtnPsuhAIPre') }}
+              {{ $t('AnalysisControlPage.BtnPushAIPre') }}
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="aitScheduledTip" placement="top">
             <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" @click="post_ai_scheduled">
-              {{ $t('AnalysisControlPage.BtnPsuhAINor') }}
+              {{ $t('AnalysisControlPage.BtnPushAINor') }}
             </el-button>
           </el-tooltip>
         </el-col>
