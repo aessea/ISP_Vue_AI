@@ -818,7 +818,7 @@ export default {
       ImportData(form).then(res => {
         if (res.code === 20000) {
           if (res.data_count >= 0) {
-            this.$alert(this.$t('TablePage.MsgExportData1') + res.data_count + this.$t('TablePage.MsgExportData2'), res.message, {
+            this.$alert(this.$t('TablePage.MsgImportData1') + res.data_count + this.$t('TablePage.MsgImportData2'), res.message, {
               confirmButtonText: this.$t('PublicBtn.Confirm'),
               type: 'success'
             })
@@ -854,11 +854,11 @@ export default {
       const fileName = file.name.replace(/\.xlsx$/, '')
       let regex, TextFileTypeError2
       if (this.language === 'zh') {
-        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI|点胶)(正排|预排).*$/
+        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(AI|主板)(正排|预排).*$/
         TextFileTypeError2 = '（正确文件名示例：0901AI预排）'
       } else {
-        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(AI|DJ)_(Preliminary|Regular).*$/
-        TextFileTypeError2 = '(Example of correct file name: 0901_DJBoard_Regular.xlsx)'
+        regex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])_(AI|MainBoard)_(Preliminary|Regular).*$/
+        TextFileTypeError2 = '(Example of correct file name: 0901_MainBoard_Regular.xlsx)'
       }
       if (!regex.test(fileName)) {
         const tip = this.$t('SchedulePanelPage.TextFileTypeError1') + `<br/>` + TextFileTypeError2
