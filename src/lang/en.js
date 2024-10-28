@@ -153,7 +153,7 @@ export default {
     OptimizedMachineData: 'Optimized Model Data', // 优化机种表
     ProcessData: 'Process Config', // 制程配置表
     KeyBoardLineData: 'KeyBoard Data', // 按键板表
-    EarlyDueDateBoard8: 'Board Early Delivery Data', // 板号提早交期表
+    EarlyDueDateBoard8: 'Component Early Delivery Data', // 机种提早交期表
     ChangeLineData: 'Change Line Data', // 线体变化表
     PairedSMTMachineData: 'Related Board Data', // 配套板表
     KeyBoardSpecialModel: 'Model Data No Need AI', // 无需打板机种表

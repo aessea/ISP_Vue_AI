@@ -445,11 +445,11 @@
               {{ $t('SchedulePanelPage.BtnGetApsProgram') }}
             </el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
+          <!-- <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
             <el-button type="primary" @click="getApsMtool('both')">
               {{ $t('SchedulePanelPage.BtnGetApsMtool') }}
             </el-button>
-          </el-tooltip>
+          </el-tooltip> -->
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData('both')">
               {{ $t('SchedulePanelPage.BtnGetApsMoBaseData') }}
@@ -547,11 +547,11 @@
               {{ $t('SchedulePanelPage.BtnGetApsProgram') }}
             </el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
+          <!-- <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
             <el-button type="primary" @click="getApsMtool('main')">
               {{ $t('SchedulePanelPage.BtnGetApsMtool') }}
             </el-button>
-          </el-tooltip>
+          </el-tooltip> -->
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData('main')">
               {{ $t('SchedulePanelPage.BtnGetApsMoBaseData') }}
@@ -644,11 +644,11 @@
               {{ $t('SchedulePanelPage.BtnGetApsProgram') }}
             </el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
+          <!-- <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
             <el-button type="primary" @click="getApsMtool('small')">
               {{ $t('SchedulePanelPage.BtnGetApsMtool') }}
             </el-button>
-          </el-tooltip>
+          </el-tooltip> -->
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData('small')">
               {{ $t('SchedulePanelPage.BtnGetApsMoBaseData') }}

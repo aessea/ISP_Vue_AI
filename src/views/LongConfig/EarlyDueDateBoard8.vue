@@ -51,7 +51,7 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="board8" :label="lang_dict.board8" sortable />
+          <el-table-column prop="component_name" :label="lang_dict.component_name" sortable />
           <el-table-column prop="advance_days" :label="lang_dict.advance_days" />
           <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
@@ -97,8 +97,8 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.board8" prop="board8" :label="lang_dict.board8">
-              <el-input v-model="model.board8" :placeholder="$t('Placeholder.Enter')" clearable />
+            <el-form-item :rules="rules.component_name" prop="component_name" :label="lang_dict.component_name">
+              <el-input v-model="model.component_name" :placeholder="$t('Placeholder.Enter')" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
@@ -231,18 +231,18 @@ export default {
       forms: ['$form'],
       model: {
         id: null,
-        board8: null,
+        component_name: null,
         advance_days: null
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: null,
-        board8: null,
+        component_name: null,
         advance_days: null
       },
       modelBackup: {},
       rules: {
-        board8: [{
+        component_name: [{
           required: true,
           message: this.$t('Form.NotNull'),
           trigger: 'blur'
@@ -480,7 +480,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['board8'] = row.board8
+        data['component_name'] = row.component_name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
