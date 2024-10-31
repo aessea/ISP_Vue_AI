@@ -971,7 +971,7 @@ export default {
             confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
-          this.aiPrescheduledTip = this.$t('PublicText.MesApiPushed')
+          this.aitPrescheduledTip = this.$t('PublicText.MesApiPushed')
         } else {
           this.$alert(this.$t('PublicText.MesApiPushError'), this.$t('PublicText.TextError'), {
             confirmButtonText: this.$t('PublicBtn.Confirm'),
@@ -998,7 +998,7 @@ export default {
             confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
-          this.aiScheduledTip = this.$t('PublicText.MesApiPushed')
+          this.aitScheduledTip = this.$t('PublicText.MesApiPushed')
         } else {
           this.$alert(this.$t('PublicText.MesApiPushError'), this.$t('PublicText.TextError'), {
             confirmButtonText: this.$t('PublicBtn.Confirm'),
