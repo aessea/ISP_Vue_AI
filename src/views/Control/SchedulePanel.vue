@@ -2108,7 +2108,7 @@ export default {
     // },
     beforeDoBucklePoints(upload_file_name) {
       if (upload_file_name.includes(this.$t('FileKeyWord.MainWord'))) {
-        if (this.isImportMain === false) {
+        if (this.isImportMain === false && this.isImportBoth === false) {
           this.$message({
             type: 'warning',
             message: this.$t('SchedulePanelPage.TextBucklePoints1')
@@ -2117,7 +2117,7 @@ export default {
         }
       }
       if (upload_file_name.includes(this.$t('FileKeyWord.SmallWord'))) {
-        if (this.isImportSmall === false) {
+        if (this.isImportSmall === false && this.isImportBoth === false) {
           this.$message({
             type: 'warning',
             message: this.$t('SchedulePanelPage.TextBucklePoints1')
@@ -2126,7 +2126,7 @@ export default {
         }
       }
       var tip_message = this.$t('SchedulePanelPage.TextBucklePoints2')
-      if (this.apsMoProgData !== this.$t('PublicText.MesApiNotUpdate')) {
+      if (this.apsMoProgData !== this.$t('PublicText.MesApiUpdate')) {
         tip_message = this.$t('SchedulePanelPage.TextBucklePoints3')
       }
       this.doBucklePoints(upload_file_name, tip_message)

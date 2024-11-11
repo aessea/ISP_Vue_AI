@@ -650,9 +650,8 @@ export default {
   },
   // 产线配置表
   LineDataPage: {
-    NotBPRLine: 'Not BPR', // 非BPR线
-    IsBPRLine: 'BPR', // BPR线
-    SmallBoardLine: 'Small Line', // 点胶线
+    NotBPRLine: 'AI', // AI线
+    IsBPRLine: 'Dispensing', // 点胶线
     SmallLine: 'Small Line', // 小工单线
     SmallMiddleLine: 'SmallMiddle Line', // 中小工单线
     MiddleLine: 'Middle Line', // 中工单线

@@ -62,7 +62,7 @@
             <template slot-scope="scope">
               <el-tag v-if="scope.row.line_type === 1" size="small" type="primary">{{ $t('LineDataPage.NotBPRLine') }}</el-tag>
               <el-tag v-else-if="scope.row.line_type === 2" size="small" type="primary">{{ $t('LineDataPage.IsBPRLine') }}</el-tag>
-              <el-tag v-else-if="scope.row.line_type === 3" size="small" type="primary">{{ $t('LineDataPage.SmallBoardLine') }}</el-tag>
+              <!-- <el-tag v-else-if="scope.row.line_type === 3" size="small" type="primary">{{ $t('LineDataPage.SmallBoardLine') }}</el-tag> -->
               <el-tag v-else size="small" type="info">{{ $t('LineDataPage.UnkonwnLine') }}</el-tag>
             </template>
           </el-table-column>
@@ -699,7 +699,7 @@ export default {
       lineTypeOptions: [
         { label: this.$t('LineDataPage.NotBPRLine'), value: 1 },
         { label: this.$t('LineDataPage.IsBPRLine'), value: 2 },
-        { label: this.$t('LineDataPage.SmallBoardLine'), value: 3 },
+        // { label: this.$t('LineDataPage.SmallBoardLine'), value: 3 },
         { label: this.$t('LineDataPage.UnkonwnLine'), value: 0 }
       ],
       lineSizeTypeOptions: [
