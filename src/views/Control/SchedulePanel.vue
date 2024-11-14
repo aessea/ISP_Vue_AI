@@ -422,12 +422,12 @@
           {{ $t('SchedulePanelPage.BtnExportSmall') }}
         </el-button>
         <el-tooltip class="item" effect="dark" :content="mainUploadName" placement="top">
-          <el-button style="margin-left: 10px;" @click="downloadFileBackend('upload_file_path_main')">
+          <el-button style="margin-left: 10px;" @click="getUploadFileMain">
             {{ $t('SchedulePanelPage.BtnGetMainUpload') }}
           </el-button>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" :content="smallUploadName" placement="top">
-          <el-button style="margin-left: 10px;" @click="downloadFileBackend('upload_file_path_small')">
+          <el-button style="margin-left: 10px;" @click="getUploadFileSmall">
             {{ $t('SchedulePanelPage.BtnGetSmallUpload') }}
           </el-button>
         </el-tooltip>

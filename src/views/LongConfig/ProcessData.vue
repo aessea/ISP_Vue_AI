@@ -84,8 +84,8 @@
           </el-table-column>
           <el-table-column prop="ct_predict_lower" :label="lang_dict.ct_predict_lower" width="120" />
           <el-table-column prop="ct_predict_upper" :label="lang_dict.ct_predict_upper" width="120" />
-          <el-table-column prop="upper_completed_buffer_time" :label="lang_dict.ct_predict_lower" width="120" />
-          <el-table-column prop="upper_in_production_buffer_time" :label="lang_dict.ct_predict_lower" width="120" />
+          <el-table-column prop="upper_completed_buffer_time" :label="lang_dict.upper_completed_buffer_time" width="120" />
+          <el-table-column prop="upper_in_production_buffer_time" :label="lang_dict.upper_in_production_buffer_time" width="120" />
           <el-table-column prop="process_order" :label="lang_dict.process_order" width="120" sortable />
           <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">
