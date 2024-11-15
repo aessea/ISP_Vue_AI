@@ -121,7 +121,7 @@
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.wheather_alter_MD" prop="wheather_alter_MD" :label="lang_dict.wheather_alter_MD">
-              <el-input v-model="model.wheather_alter_MD" :placeholder="$t('Placeholder.Enter')" clearable />
+              <el-switch v-model="model.wheather_alter_MD" style="width: 100%" />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
