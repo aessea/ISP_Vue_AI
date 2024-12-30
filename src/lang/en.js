@@ -460,6 +460,12 @@ export default {
     param_classify: 'Config Classification', // 配置分类
     param_name_front: 'Config Name', // 配置名
     param_value: 'Config Value', // 配置值
+    param_type: 'Config Type', // 配置类别
+    param_name_backend: 'Backend Config Name', // 后端配置名
+    show_in_front: 'Whether to Show in Front', // 是否在前端显示
+    show_value: 'Whether to Show Value', // 是否显示具体值
+    param_value_type: 'Config Value Type', // 配置值类型
+    config_enable: 'Whether Can Config', // 是否可修改
     param_description: 'Config Description', // 配置描述
     param_before_value: 'The Last Config Value', // 上一次配置值
     param_default_value: 'Default Config Value', // 配置默认值

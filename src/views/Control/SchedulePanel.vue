@@ -1104,7 +1104,7 @@ export default {
           })
         } else {
           this.listenProgress()
-          TrainModel({ 'end_time': this.trainDate ,'user_name': this.name }).then(res => {
+          TrainModel({ 'end_time': this.trainDate, 'user_name': this.name }).then(res => {
             if (res.code === 20000) {
               this.$message({
                 message: res.message,

@@ -70,12 +70,12 @@
             </template>
           </el-table-column>
           <el-table-column prop="buffer_time" :label="lang_dict.buffer_time" width="130" />
-          <el-table-column prop="is_point" :label="lang_dict.is_point" width="100">
+          <!--<el-table-column prop="is_point" :label="lang_dict.is_point" width="100">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.is_point === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
               <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">{{ $t('PublicText.No') }}</el-tag>
             </template>
-          </el-table-column>
+          </el-table-column>-->
           <el-table-column prop="is_threshold_constraint" :label="lang_dict.is_threshold_constraint" width="200">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.is_threshold_constraint === true" size="small" type="success">{{ $t('PublicText.Yes') }}</el-tag>
@@ -221,11 +221,11 @@
                 <el-input-number v-model="model.buffer_time" :placeholder="$t('Placeholder.Enter')" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <!--<el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_point" prop="is_point" :label="lang_dict.is_point">
                 <el-switch v-model="model.is_point" style="width: 100%" />
               </el-form-item>
-            </el-col>
+            </el-col>-->
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.is_threshold_constraint" prop="is_threshold_constraint" :label="lang_dict.is_threshold_constraint">
                 <el-switch v-model="model.is_threshold_constraint" style="width: 100%" />

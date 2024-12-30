@@ -461,6 +461,12 @@ export default {
     param_classify: '配置分类', // 配置分类
     param_name_front: '配置名', // 配置名
     param_value: '配置值', // 配置值
+    param_type: '配置类别', // 配置类别
+    param_name_backend: '后端配置名', // 后端配置名
+    show_in_front: '是否在前端显示', // 是否在前端显示
+    show_value: '是否显示具体值', // 是否显示具体值
+    param_value_type: '配置值类型', // 配置值类型
+    config_enable: '是否可修改', // 是否可修改
     param_description: '配置描述', // 配置描述
     param_before_value: '上一次配置值', // 上一次配置值
     param_default_value: '配置默认值', // 配置默认值
