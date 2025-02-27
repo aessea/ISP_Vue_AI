@@ -486,11 +486,14 @@ export default {
   // 生产报表
   ProductionReportDataPage: {
     ExportDateRange: '导出日期范围:', // 导出日期范围：
-    SyncDatabase: '同步指定数据库的生产报表' // 同步指定数据库的生产报表
+    SyncDatabase: '同步指定数据库的生产报表', // 同步指定数据库的生产报表
+    ConfirmSyncDatabase: '确定要同步排程配置表中指定数据库的生产报表？' // 确定要同步排程配置表中指定数据库的生产报表？
   },
   // 量产程序表
   ProductProgramDataPage: {
-    UpdateMesData: '更新MES程序' // 更新MES程序
+    UpdateMesData: '更新MES程序', // 更新MES程序
+    ConfirmUpdateData1: '确定要更新量产程序表？', // 确定要更新量产程序表？
+    ConfirmUpdateData2: '注意：此操作将会清空原来的所有数据！' // 注意：此操作将会清空原来的所有数据！
   },
   // 运行日志
   HistoryRunPage: {
@@ -533,10 +536,10 @@ export default {
   },
   // 用户管理
   UserManagePage: {
-    username: '用户名', // 用户名
+    username: '用户编码', // 用户编码
     password: '密码', // 密码
     roles: '用户角色', // 用户角色
-    remark: '备注', // 备注
+    remark: '用户名', // 用户名
     enable: '是否启用', // 是否启用
     email: '邮箱', // 邮箱
     description: '描述', // 描述

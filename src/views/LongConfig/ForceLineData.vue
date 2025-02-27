@@ -52,11 +52,11 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="go_where_name" :label="lang_dict.go_where_name" width="120" />
-          <el-table-column prop="customer_name" :label="lang_dict.customer_name" width="120" />
-          <el-table-column prop="require_str_name" :label="lang_dict.require_str_name" width="120" />
-          <el-table-column prop="board8" :label="lang_dict.board8" width="120" />
-          <el-table-column prop="connecting_plates_num" :label="lang_dict.connecting_plates_num" width="120" />
+          <el-table-column prop="go_where_name" :label="lang_dict.go_where_name" width="210" />
+          <el-table-column prop="customer_name" :label="lang_dict.customer_name" width="210" />
+          <el-table-column prop="require_str_name" :label="lang_dict.require_str_name" width="210" />
+          <el-table-column prop="board8" :label="lang_dict.board8" width="210" />
+          <el-table-column prop="connecting_plates_num" :label="lang_dict.connecting_plates_num" width="210" />
           <el-table-column prop="forced_line" :label="lang_dict.forced_line" />
           <el-table-column width="110" fixed="right" :label="$t('TablePage.TitleOperate')">
             <template slot-scope="scope">

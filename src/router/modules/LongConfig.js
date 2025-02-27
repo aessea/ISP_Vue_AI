@@ -13,7 +13,7 @@ const LongConfigRouter = {
     roles: [
       'MP1AddLineData', 'NotMP1AddLineData', 'ExchangeLineData', 'LineData', 'CapacityChangeData', 'OptimizedMachineData',
       'ProcessData', 'EarlyDueDateBoard8', 'ChangeLineData', 'PairedSMTMachineData', 'CorrespondenceData', 'KeyBoardSpecialModel',
-      'DispensingBeforeAIMachine', 'EarlyDueDateGoWhereName', 'BoardAdvanceDate', 'DyeLineData', 'ProcessSequenceMap',
+      'DispensingBeforeAIMachine', 'EarlyDueDateGoWhereName', 'DyeLineData', 'ProcessSequenceMap',
       'CustomerData', 'DelayPackingLine', 'ForceLineData', 'ContinuousData', 'GroupAloneData'
     ]
   },
@@ -153,15 +153,15 @@ const LongConfigRouter = {
         roles: ['EarlyDueDateGoWhereName']
       }
     },
-    {
-      path: 'boardadvancedate',
-      component: () => import('@/views/LongConfig/BoardAdvanceDate'),
-      name: 'BoardAdvanceDate',
-      meta: {
-        title: 'BoardAdvanceDate',
-        roles: ['BoardAdvanceDate']
-      }
-    },
+    // {
+    //   path: 'boardadvancedate',
+    //   component: () => import('@/views/LongConfig/BoardAdvanceDate'),
+    //   name: 'BoardAdvanceDate',
+    //   meta: {
+    //     title: 'BoardAdvanceDate',
+    //     roles: ['BoardAdvanceDate']
+    //   }
+    // },
     {
       path: 'dyelinedata',
       component: () => import('@/views/LongConfig/DyeLineData'),

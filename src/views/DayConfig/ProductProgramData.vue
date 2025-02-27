@@ -794,7 +794,7 @@ export default {
     },
     // 从MES更新量产程序表
     getAllProgramData() {
-      const confirmText = ['确定要更新量产程序表？', '注意：此操作将会清空原来的所有数据！']
+      const confirmText = [this.$t('ProductProgramDataPage.ConfirmUpdateData1'), this.$t('ProductProgramDataPage.ConfirmUpdateData2')]
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
@@ -831,7 +831,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: this.$t('PublicBtn.TextCancel')
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },

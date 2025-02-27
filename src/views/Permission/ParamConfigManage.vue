@@ -661,7 +661,7 @@ export default {
     //   this.helpDialogVisible = true
     // },
     deleteAllJobdataBackup() {
-      this.$confirm(this.$t('ParamsConfigPage.ConfirmClearBackup'), '警告', {
+      this.$confirm(this.$t('ParamsConfigPage.ConfirmClearBackup'), this.$t('PublicText.TextWarn'), {
         confirmButtonText: this.$t('PublicBtn.Confirm'),
         cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',

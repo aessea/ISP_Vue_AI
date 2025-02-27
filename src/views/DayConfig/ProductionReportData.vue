@@ -853,8 +853,8 @@ export default {
       })
     },
     beforeSyncDatabaseData() {
-      this.$confirm('确定要同步排程配置表中指定数据库的生产报表？', '提示', {
-        confirmButtonText: '确定同步',
+      this.$confirm(this.$t('ProductionReportDataPage.ConfirmSyncDatabase'), this.$t('PublicText.TitleTip'), {
+        confirmButtonText: this.$t('PublicBtn.Confirm'),
         cancelButtonText: this.$t('PublicBtn.Cancel'),
         confirmButtonClass: 'btnDanger',
         type: 'warning'
@@ -863,13 +863,13 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '取消同步'
+          message: this.$t('PublicText.TextCancel')
         })
       })
     },
     syncDatabaseData() {
       const syncLoading = {
-        text: '拼命同步中...',
+        text: this.$t('PublicText.SyncLoadiing'),
         background: 'rgba(0, 0, 0, 0.6)'
       }
       this.loadingInstance = Loading.service(syncLoading)
@@ -879,7 +879,7 @@ export default {
       SyncDatabaseData(data).then(res => {
         if (res.code === 20000) {
           this.loadingInstance.close() // 清除动画
-          this.$alert(res.message, '提示', {
+          this.$alert(res.message, this.$t('PublicText.TitleTip'), {
             confirmButtonText: this.$t('PublicBtn.Confirm'),
             type: 'success'
           })
